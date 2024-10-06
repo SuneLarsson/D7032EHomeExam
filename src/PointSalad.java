@@ -494,6 +494,7 @@ public class PointSalad {
 	public PointSalad(String[] args) {
 		int numberPlayers = 0;
 		int numberOfBots = 0;
+
 		if(args.length == 0) {
 			System.out.println("Please enter the number of players (1-6): ");
 			Scanner in = new Scanner(System.in);
