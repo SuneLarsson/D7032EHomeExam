@@ -3,17 +3,17 @@ package main.game.players;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import main.game.card.ICard;
+import main.game.card.Card;
 
 public class LocalPlayer implements IHumanPlayer{
     private int playerID;
-    private ArrayList<ICard> hand;
+    private ArrayList<Card> hand;
     private int score;
     
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
-        this.hand = new ArrayList<ICard>();
+        this.hand = new ArrayList<Card>();
     }
     @Override
     public void sendMessage(Object message) {
@@ -32,7 +32,7 @@ public class LocalPlayer implements IHumanPlayer{
         return playerID;
     }
     @Override
-    public ArrayList<ICard> getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
     }
     @Override
@@ -44,18 +44,18 @@ public class LocalPlayer implements IHumanPlayer{
         this.score = score;
     }
     
-    // public void addCard(ICard card) {
+    // public void addCard(Card card) {
     //     hand.add(card);
     // }
     
-    // public void removeCard(ICard card) {
+    // public void removeCard(Card card) {
     //     hand.remove(card);
     // }
     
-    // public void flipCard(ICard card) {
+    // public void flipCard(Card card) {
     //     card.flip();
     // }
     
-    // public void playCard(ICard card) {
+    // public void playCard(Card card) {
     
 }

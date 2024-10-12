@@ -1,15 +1,15 @@
 package main.game.players;
-import main.game.card.ICard;
+import main.game.card.Card;
 import java.util.ArrayList;
 
 public class BotPlayer implements IPlayer{
     private int playerID;
-    private ArrayList<ICard> hand;
+    private ArrayList<Card> hand;
     private int score;
 
     public BotPlayer(int playerID){
         this.playerID = playerID;
-        this.hand = new ArrayList<ICard>();
+        this.hand = new ArrayList<Card>();
         this.score = 0;
     }
     @Override
@@ -17,7 +17,7 @@ public class BotPlayer implements IPlayer{
         return playerID;
     }
     @Override
-    public ArrayList<ICard> getHand(){
+    public ArrayList<Card> getHand(){
         return hand;
     }
     @Override

@@ -5,12 +5,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import main.game.card.ICard;
+import main.game.card.Card;
 
 public class OnlinePlayer implements IHumanPlayer {
     private int playerID;
     private int score;
-    private ArrayList<ICard> hand;
+    private ArrayList<Card> hand;
     private String message;
     private Socket connection;
     private ObjectInputStream inFromClient;
@@ -19,7 +19,7 @@ public class OnlinePlayer implements IHumanPlayer {
     public OnlinePlayer(int playerID, Socket connection, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
         this.playerID = playerID;
         this.score = 0;
-        this.hand = new ArrayList<ICard>();
+        this.hand = new ArrayList<Card>();
         this.connection = connection; 
         this.inFromClient = inFromClient; 
         this.outToClient = outToClient; 
@@ -49,7 +49,7 @@ public class OnlinePlayer implements IHumanPlayer {
         return message;
     }
     @Override
-    public ArrayList<ICard> getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
     }
     public Socket getConnection() {
