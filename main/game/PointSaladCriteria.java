@@ -2,8 +2,9 @@ package main.game;
 
 import java.util.ArrayList;
 
-import main.game.card.ICard;
-import main.game.card.PointSaladCard;
+import main.game.card.Card;
+import main.game.card.SaladCard;
+import main.game.card.Card;
 import main.game.players.IPlayer;
 
 public class PointSaladCriteria {
@@ -12,12 +13,12 @@ public class PointSaladCriteria {
 
     public static int calculateScore(IPlayer player, ArrayList<IPlayer> players) {
         int playerID = player.getPlayerID();
-        ArrayList<ICard> hand = player.getHand();
+        ArrayList<Card> hand = player.getHand();
         String criteria;
         String[] parts; 
-        for (PointSaladCard criteriaCard : hand) {
-            if (criteriaCard.isCriteriaSideUp()) {
-                criteria = criteriaCard.getCritera();
+        for (Card criteriaCard : hand) {
+            if (criteriaCard.isPointSideUp()) {
+                criteria = criteriaCard.getPointSide();
                 parts = criteria.split(",");
             }
         }
@@ -42,20 +43,20 @@ public class PointSaladCriteria {
         return totalScore;
     }
 
-    private void ID1_2(ArrayList<PointSaladCard> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
+    private static void ID1_2(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
 
         int vegIndex = criteria.indexOf("MOST")>=0 ? criteria.indexOf("MOST")+5 : criteria.indexOf("FEWEST")+7;
         String veg = criteria.substring(vegIndex, criteria.indexOf("=")).trim();
-        int countVeg = countVegetables(hand, PointSaladCard.Vegetable.valueOf(veg));
+        int countVeg = countVegetables(hand, veg);
         int nrVeg = countVeg;
         for(IPlayer p : players) {
             if(p.getPlayerID() != playerID) {
-                int playerVeg = countVegetables(p.getHand(), PointSaladCard.Vegetable.valueOf(veg));
+                int playerVeg = countVegetables(p.getHand(), veg);
                 if((criteria.indexOf("MOST")>=0) && (playerVeg > nrVeg)) {
-                    nrVeg = countVegetables(p.getHand(), PointSaladCard.Vegetable.valueOf(veg));
+                    nrVeg = countVegetables(p.getHand(), veg);
                 }
                 if((criteria.indexOf("FEWEST")>=0) && (playerVeg < nrVeg)) {
-                    nrVeg = countVegetables(p.getHand(), PointSaladCard.Vegetable.valueOf(veg));
+                    nrVeg = countVegetables(p.getHand(), veg);
                 }
             }
         }
@@ -66,7 +67,7 @@ public class PointSaladCriteria {
     }
 
     // ID5, ID6, ID7, ID11, ID12, ID13
-    private void ID5(ArrayList<PointSaladCard> hand, String criteria,  ArrayList<IPlayer> players, int playerID) {
+    private static void ID5(ArrayList<Card> hand, String criteria,  ArrayList<IPlayer> players, int playerID) {
         String expr = criteria.split("=")[0].trim();
         String[] vegs = expr.split("\\+");
         int[] nrVeg = new int[vegs.length];
@@ -77,11 +78,11 @@ public class PointSaladCriteria {
             }
         }
         if(countSameKind > 1) {
-            //System.out.print("ID5/ID11: "+ ((int)countVegetables(hand, Card.Vegetable.valueOf(vegs[0].trim()))/countSameKind) * Integer.parseInt(criteria.split("=")[1].trim()) + " ");
-            totalScore +=  ((int)countVegetables(hand, PointSaladCard.Vegetable.valueOf(vegs[0].trim()))/countSameKind) * Integer.parseInt(criteria.split("=")[1].trim());
+            //System.out.print("ID5/ID11: "+ ((int)countVegetables(hand, SaladCard.Vegetable.valueOf(vegs[0].trim()))/countSameKind) * Integer.parseInt(criteria.split("=")[1].trim()) + " ");
+            totalScore +=  ((int)countVegetables(hand, SaladCard.Vegetable.valueOf(vegs[0].trim()))/countSameKind) * Integer.parseInt(criteria.split("=")[1].trim());
         } else {
             for(int i = 0; i < vegs.length; i++) {
-                nrVeg[i] = countVegetables(hand, PointSaladCard.Vegetable.valueOf(vegs[i].trim()));
+                nrVeg[i] = countVegetables(hand, SaladCard.Vegetable.valueOf(vegs[i].trim()));
             }
             //find the lowest number in the nrVeg array
             int min = nrVeg[0];
@@ -96,24 +97,24 @@ public class PointSaladCriteria {
     }
     
     // ID3
-    private void ID3(ArrayList<PointSaladCard> hand, String criteria, String[] parts, ArrayList<IPlayer> players, int playerID) {
+    private static void ID3(ArrayList<Card> hand, String criteria, String[] parts, ArrayList<IPlayer> players, int playerID) {
         String veg = parts[0].substring(0, parts[0].indexOf(":"));
-        int countVeg = countVegetables(hand, PointSaladCard.Vegetable.valueOf(veg));
+        int countVeg = countVegetables(hand, veg);
         //System.out.print("ID3: "+((countVeg%2==0)?7:3) + " ");
         totalScore += (countVeg%2==0)?7:3;
     }
 
     // ID4, ID8, ID9, ID10, ID14, ID15, ID16, ID17
-    private void ID4(ArrayList<PointSaladCard> hand, String criteria, String[] parts, ArrayList<IPlayer> players, int playerID) {
+    private static void ID4(ArrayList<Card> hand, String criteria, String[] parts, ArrayList<IPlayer> players, int playerID) {
         for(int i = 0; i < parts.length; i++) {
             String[] veg = parts[i].split("/");
-            //System.out.print("ID4/ID8/ID9/ID10/ID14/ID15/ID16/ID17: " + Integer.parseInt(veg[0].trim()) * countVegetables(hand, Card.Vegetable.valueOf(veg[1].trim())) + " ");
-            totalScore += Integer.parseInt(veg[0].trim()) * countVegetables(hand, PointSaladCard.Vegetable.valueOf(veg[1].trim()));
+            //System.out.print("ID4/ID8/ID9/ID10/ID14/ID15/ID16/ID17: " + Integer.parseInt(veg[0].trim()) * countVegetables(hand, SaladCard.Vegetable.valueOf(veg[1].trim())) + " ");
+            totalScore += Integer.parseInt(veg[0].trim()) * countVegetables(hand, SaladCard.Vegetable.valueOf(veg[1].trim()));
         }
     }
 
     // ID18
-    private void ID18(ArrayList<PointSaladCard> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
+    private void ID18(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
         if(criteria.indexOf("TOTAL")>=0) {
             int countVeg = countTotalVegetables(hand);
             int thisHandCount = countVeg;
@@ -139,7 +140,7 @@ public class PointSaladCriteria {
             int addScore = Integer.parseInt(expr[0].trim());
             if(expr[1].indexOf("MISSING")>=0) {
                 int missing = 0;
-                for (PointSaladCard.Vegetable vegetable : PointSaladCard.Vegetable.values()) {
+                for (SaladCard.Vegetable vegetable : SaladCard.Vegetable.values()) {
                     if(countVegetables(hand, vegetable) == 0) {
                         missing++;
                     }
@@ -151,7 +152,7 @@ public class PointSaladCriteria {
             else {
                 int atLeastPerVegType = Integer.parseInt(expr[1].substring(expr[1].indexOf(">=")+2).trim());
                 int totalType = 0;
-                for(PointSaladCard.Vegetable vegetable : PointSaladCard.Vegetable.values()) {
+                for(SaladCard.Vegetable vegetable : SaladCard.Vegetable.values()) {
                     int countVeg = countVegetables(hand, vegetable);
                     if(countVeg >= atLeastPerVegType) {
                         totalType++;
@@ -164,7 +165,7 @@ public class PointSaladCriteria {
         }
         if(criteria.indexOf("SET")>=0) {
             int addScore = 12;
-            for (PointSaladCard.Vegetable vegetable : PointSaladCard.Vegetable.values()) {
+            for (SaladCard.Vegetable vegetable : SaladCard.Vegetable.values()) {
                 int countVeg = countVegetables(hand, vegetable);
                 if(countVeg == 0) {
                     addScore = 0;
@@ -176,20 +177,20 @@ public class PointSaladCriteria {
         }
     }
 
-    private int countTotalVegetables(ArrayList<PointSaladCard> hand) {
+    private static int countTotalVegetables(ArrayList<Card> hand) {
         int count = 0;
-        for (PointSaladCard card : hand) {
-            if (card.isCriteriaSideUp()) {
+        for (Card card : hand) {
+            if (card.isPointSideUp()) {
                 count++;
             }
         }
         return count;
     }
 
-    private int countVegetables(ArrayList<PointSaladCard> hand, PointSaladCard.Vegetable vegetable) {
+    private static int countVegetables(ArrayList<Card> hand, String vegetable) {
         int count = 0;
-        for (PointSaladCard card : hand) {
-            if (card.isCriteriaSideUp() && card.getVegetable() == vegetable) {
+        for (Card card : hand) {
+            if (card.isPointSideUp() && card.getResourceSide() == vegetable) {
                 count++;
             }
         }

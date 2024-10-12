@@ -3,37 +3,37 @@ package main.game.piles;
 
 import java.util.ArrayList;
 
-import main.game.card.ICard;
-import main.game.card.PointSaladCard;
+import main.game.card.Card;
+import main.game.card.Card;
 
 
 public class PilePointSalad implements IPile{
-    private ArrayList<PointSaladCard> cards = new ArrayList<PointSaladCard>();
-    private PointSaladCard[] veggieCards = new PointSaladCard[2];
+    private ArrayList<Card> cards = new ArrayList<Card>();
+    private Card[] veggieCards = new Card[2];
     private PileManager pileManager;
     private int pileIndex;
 
 
-    @SuppressWarnings("unchecked")
+
     public PilePointSalad(PileManager pileManager, int pileIndex) {
         this.pileManager = pileManager;
         this.pileIndex = pileIndex;
-        this.cards = (ArrayList<PointSaladCard>) pileManager.getPile(pileIndex);
+        this.cards = (ArrayList<Card>) pileManager.getPile(pileIndex);
         // this.cards = pileManager.getPile(pileIndex);
         this.veggieCards[0] = cards.remove(0);
         this.veggieCards[1] = cards.remove(0);
         // UPPREPNIGN kanske hjälp funktion
-        if (this.veggieCards[0].isCriteriaSideUp()) {
+        if (this.veggieCards[0].isPointSideUp()) {
             this.veggieCards[0].flip();
         }
-        if (this.veggieCards[1].isCriteriaSideUp()) {
+        if (this.veggieCards[1].isPointSideUp()) {
             this.veggieCards[0].flip();
         }
     }
 
 
     @Override
-    public PointSaladCard getPileCard(){
+    public Card getPileCard(){
         if(cards.isEmpty()) {
            if(otherPileSize()) {
                return cards.get(0);
@@ -45,7 +45,7 @@ public class PilePointSalad implements IPile{
     }
 
     @Override
-    public PointSaladCard buyPileCard(){
+    public Card buyPileCard(){
         if(cards.isEmpty()) {
             if(otherPileSize()) {
                 return cards.get(0);
@@ -57,13 +57,13 @@ public class PilePointSalad implements IPile{
     }
 
     @Override
-    public PointSaladCard getMarketCard (int index){
+    public Card getMarketCard (int index){
         return veggieCards[index];
     }
 
     @Override
-    public PointSaladCard buyMarketCard(int index){
-        PointSaladCard aCard = veggieCards[index];
+    public Card buyMarketCard(int index){
+        Card aCard = veggieCards[index];
         if (cards.size() <= 1) {
             int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
             if (biggestPileIndex != -1) {
@@ -72,11 +72,11 @@ public class PilePointSalad implements IPile{
                 // if (veggieCards[index].isCriteriaSideUp()) {
                 //     veggieCards[index].flip();
                 // }
-                ICard card = pileManager.removeCardFromPile(biggestPileIndex);
-                if (card instanceof PointSaladCard) {  // Check if card is PointSaladCard
-                    cards.add((PointSaladCard) card);  // Safe cast
+                Card card = pileManager.removeCardFromPile(biggestPileIndex);
+                if (card instanceof Card) {  // Check if card is Card
+                    cards.add((Card) card);  // Safe cast
                     veggieCards[index] = cards.remove(0);
-                    if (veggieCards[index].isCriteriaSideUp()) {
+                    if (veggieCards[index].isPointSideUp()) {
                         veggieCards[index].flip();
                     }
             }
@@ -85,7 +85,7 @@ public class PilePointSalad implements IPile{
             }
         } else {
             veggieCards[index] = cards.remove(0);
-            if (veggieCards[index].isCriteriaSideUp()) {
+            if (veggieCards[index].isPointSideUp()) {
                 veggieCards[index].flip();
             }
         }
@@ -100,9 +100,9 @@ public class PilePointSalad implements IPile{
     private boolean otherPileSize() {
         int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
         if (biggestPileIndex != -1) {
-            ICard card = pileManager.removeCardFromPile(biggestPileIndex);
-            if (card instanceof PointSaladCard) {  // Check if card is PointSaladCard
-                cards.add((PointSaladCard) card);
+            Card card = pileManager.removeCardFromPile(biggestPileIndex);
+            if (card instanceof Card) {  // Check if card is Card
+                cards.add((Card) card);
             return true;
         }
         }

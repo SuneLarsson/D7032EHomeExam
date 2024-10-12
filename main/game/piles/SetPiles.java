@@ -6,7 +6,8 @@ import java.util.Collections;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import main.game.card.PointSaladCard;
+import main.game.card.Card;
+import main.game.card.SaladCard;
 import main.game.json.ReadJson;
 
 
@@ -16,12 +17,12 @@ import main.game.json.ReadJson;
 public class SetPiles implements ISetPiles {
     //FACTORY? 
     private PileManager pileManager;
-    private ArrayList<PointSaladCard> deckPepper = new ArrayList<>();
-    private ArrayList<PointSaladCard> deckLettuce = new ArrayList<>();
-    private ArrayList<PointSaladCard> deckCarrot = new ArrayList<>();
-    private ArrayList<PointSaladCard> deckCabbage = new ArrayList<>();
-    private ArrayList<PointSaladCard> deckOnion = new ArrayList<>();
-    private ArrayList<PointSaladCard> deckTomato = new ArrayList<>();
+    private ArrayList<Card> deckPepper = new ArrayList<>();
+    private ArrayList<Card> deckLettuce = new ArrayList<>();
+    private ArrayList<Card> deckCarrot = new ArrayList<>();
+    private ArrayList<Card> deckCabbage = new ArrayList<>();
+    private ArrayList<Card> deckOnion = new ArrayList<>();
+    private ArrayList<Card> deckTomato = new ArrayList<>();
     private JSONArray cardsArray;
 
     public SetPiles(PileManager pileManager) {
@@ -55,12 +56,18 @@ public class SetPiles implements ISetPiles {
             JSONObject criteriaObj = cardJson.getJSONObject("criteria");
 
             // Add each vegetable card to the deck with its corresponding criteria
-            deckPepper.add(new PointSaladCard(PointSaladCard.Vegetable.PEPPER, criteriaObj.getString("PEPPER")));
-            deckLettuce.add(new PointSaladCard(PointSaladCard.Vegetable.LETTUCE, criteriaObj.getString("LETTUCE")));
-            deckCarrot.add(new PointSaladCard(PointSaladCard.Vegetable.CARROT, criteriaObj.getString("CARROT")));
-            deckCabbage.add(new PointSaladCard(PointSaladCard.Vegetable.CABBAGE, criteriaObj.getString("CABBAGE")));
-            deckOnion.add(new PointSaladCard(PointSaladCard.Vegetable.ONION, criteriaObj.getString("ONION")));
-            deckTomato.add(new PointSaladCard(PointSaladCard.Vegetable.TOMATO, criteriaObj.getString("TOMATO")));
+            deckPepper.add(new SaladCard("PEPPER", criteriaObj.getString("PEPPER") , false));
+            deckLettuce.add(new SaladCard("LETTUCE", criteriaObj.getString("LETTUCE") , false));
+            deckCarrot.add(new SaladCard("CARROT", criteriaObj.getString("CARROT") , false));
+            deckCabbage.add(new SaladCard("CABBAGE", criteriaObj.getString("CABBAGE") , false));
+            deckOnion.add(new SaladCard("ONION", criteriaObj.getString("ONION") , false));
+            deckTomato.add(new SaladCard("TOMATO", criteriaObj.getString("TOMATO") , false));
+
+            // deckLettuce.add(new PointSaladCard(PointSaladCard.Vegetable.LETTUCE, criteriaObj.getString("LETTUCE")));
+            // deckCarrot.add(new PointSaladCard(PointSaladCard.Vegetable.CARROT, criteriaObj.getString("CARROT")));
+            // deckCabbage.add(new PointSaladCard(PointSaladCard.Vegetable.CABBAGE, criteriaObj.getString("CABBAGE")));
+            // deckOnion.add(new PointSaladCard(PointSaladCard.Vegetable.ONION, criteriaObj.getString("ONION")));
+            // deckTomato.add(new PointSaladCard(PointSaladCard.Vegetable.TOMATO, criteriaObj.getString("TOMATO")));
         }
     }
 
@@ -74,7 +81,7 @@ public class SetPiles implements ISetPiles {
         shuffleDeck(deckTomato);
     }
 
-	private void shuffleDeck(ArrayList<PointSaladCard> deck) {
+	private void shuffleDeck(ArrayList<Card> deck) {
 		Collections.shuffle(deck);
 	}
     
@@ -82,7 +89,7 @@ public class SetPiles implements ISetPiles {
         //getNrPlayers
         int cardsPerVeggie = 4/2 * 6;
 
-        ArrayList<PointSaladCard> deck = new ArrayList<>();
+        ArrayList<Card> deck = new ArrayList<>();
         for(int i = 0; i < cardsPerVeggie; i++) {
             deck.add(deckPepper.remove(0));
             deck.add(deckLettuce.remove(0));
@@ -94,9 +101,9 @@ public class SetPiles implements ISetPiles {
         shuffleDeck(deck);
 
         //divide the deck into 3 piles
-        ArrayList<PointSaladCard> pile1 = new ArrayList<>();
-        ArrayList<PointSaladCard> pile2 = new ArrayList<>();
-        ArrayList<PointSaladCard> pile3 = new ArrayList<>();
+        ArrayList<Card> pile1 = new ArrayList<>();
+        ArrayList<Card> pile2 = new ArrayList<>();
+        ArrayList<Card> pile3 = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
             if (i % 3 == 0) {
                 pile1.add(deck.get(i));

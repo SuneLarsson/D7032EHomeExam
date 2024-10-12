@@ -2,26 +2,27 @@ package main.game.piles;
 
 import java.util.ArrayList;
 
-import main.game.card.ICard;
+import main.game.card.Card;
+
 
 
 public class PileManager {
-    // private ArrayList<ArrayList<ICard>> piles;
-    private ArrayList<ArrayList<? extends ICard>> piles;
+    // private ArrayList<ArrayList<Card>> piles;
+    private ArrayList<ArrayList<Card>> piles;
 
     public void createPiles() {
         piles = new ArrayList<>();
     }
-    @SuppressWarnings("unchecked")
-    public void addPile(ArrayList<? extends ICard> pile) {
-        piles.add((ArrayList<ICard>) pile);
+
+    public void addPile(ArrayList<Card> pile) {
+        piles.add((ArrayList<Card>) pile);
     }
 
-    // public ArrayList<ICard> getPile(int index) {
+    // public ArrayList<Card> getPile(int index) {
     //     return piles.get(index);
     // }
 
-    public ArrayList<? extends ICard> getPile(int index) {
+    public ArrayList<Card> getPile(int index) {
         return piles.get(index);
     }
 
@@ -37,7 +38,7 @@ public class PileManager {
         return biggestPileIndex;
     }
 
-    public ICard removeCardFromPile(int pileIndex) {
+    public Card removeCardFromPile(int pileIndex) {
         if (pileIndex >= 0 && pileIndex < piles.size() && !piles.get(pileIndex).isEmpty()) {
             return piles.get(pileIndex).remove(piles.get(pileIndex).size() - 1);
         }
