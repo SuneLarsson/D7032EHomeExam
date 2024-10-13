@@ -26,35 +26,6 @@ public class WhatsLeft {
 	
 
 
-	private void sendToAllPlayers(String message) {
-		for(Player player : players) {
-			player.sendMessage(message);
-		}
-	}
-
-
-	private String printMarket() {
-		String pileString = "Point Cards:\t";
-		for (int p=0; p<piles.size(); p++) {
-			if(piles.get(p).getPointCard()==null) {
-				pileString += "["+p+"]"+String.format("%-43s", "Empty") + "\t";
-			}
-			else
-				pileString += "["+p+"]"+String.format("%-43s", piles.get(p).getPointCard()) + "\t";
-		}
-		pileString += "\nVeggie Cards:\t";
-		char veggieCardIndex = 'A';
-		for (Pile pile : piles) {
-			pileString += "["+veggieCardIndex+"]"+String.format("%-43s", pile.getVeggieCard(0)) + "\t";
-			veggieCardIndex++;
-		}
-		pileString += "\n\t\t";
-		for (Pile pile : piles) {
-			pileString += "["+veggieCardIndex+"]"+String.format("%-43s", pile.getVeggieCard(1)) + "\t";
-			veggieCardIndex++;
-		}
-		return pileString;
-	}
 
 
 	public WhatsLeft(String[] args) {
