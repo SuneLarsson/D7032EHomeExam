@@ -18,9 +18,10 @@ public class SaladCard extends Card {
 
     @Override
     public void flip() {
-        if (!isPointSideUp()) {
-            super.flip();;
-        }
+        super.flip();
+    //     if (!isPointSideUp()) {
+    //         super.flip();;
+        // }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package main.game.piles;
+package main.game.piles.Old;
 
 import java.util.ArrayList;
 
@@ -8,21 +8,21 @@ import main.game.card.Card;
 
 public class PileManager {
     // private ArrayList<ArrayList<Card>> piles;
-    private ArrayList<Pile> piles;
+    private ArrayList<ArrayList<Card>> piles;
 
     public void pileManager() {
         this.piles = new ArrayList<>();
     }
 
-    public void addPile(Pile pile) {
-        piles.add((Pile) pile);
+    public void addPile(ArrayList<Card> pile) {
+        piles.add((ArrayList<Card>) pile);
     }
 
-    public ArrayList<Pile> getPiles() {
+    public ArrayList<ArrayList<Card>> getPiles() {
         return piles;
     }
     
-    public Pile getPile(int index) {
+    public ArrayList<Card> getPile(int index) {
         return piles.get(index);
     }
 
@@ -30,8 +30,8 @@ public class PileManager {
         int biggestPileIndex = -1;
         int biggestSize = 0;
         for (int i = 0; i < piles.size(); i++) {
-            if (i != excludeIndex && piles.get(i).getPileSize() > biggestSize) {
-                biggestSize = piles.get(i).getPileSize();
+            if (i != excludeIndex && piles.get(i).size() > biggestSize) {
+                biggestSize = piles.get(i).size();
                 biggestPileIndex = i;
             }
         }
@@ -40,7 +40,7 @@ public class PileManager {
 
     public Card removeCardFromPile(int pileIndex) {
         if (pileIndex >= 0 && pileIndex < piles.size() && !piles.get(pileIndex).isEmpty()) {
-            return piles.get(pileIndex).removeCard(piles.get(pileIndex).getPileSize() - 1);
+            return piles.get(pileIndex).remove(piles.get(pileIndex).size() - 1);
         }
         return null;
     }

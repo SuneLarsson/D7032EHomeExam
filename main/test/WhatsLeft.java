@@ -25,23 +25,6 @@ public class WhatsLeft {
 	
 	
 
-	public String displayHand(ArrayList<Card> hand) {
-		String handString = "Criteria:\t";
-		for (int i = 0; i < hand.size(); i++) {
-			if(hand.get(i).criteriaSideUp && hand.get(i).vegetable != null) {
-				handString += "["+i+"] "+hand.get(i).criteria + " ("+hand.get(i).vegetable.toString()+")"+"\t";
-			}
-		}
-		handString += "\nVegetables:\t";
-		//Sum up the number of each vegetable and show the total number of each vegetable
-		for (Card.Vegetable vegetable : Card.Vegetable.values()) {
-			int count = countVegetables(hand, vegetable);
-			if(count > 0) {
-				handString += vegetable + ": " + count + "\t";
-			}
-		}
-		return handString;
-	}
 
 	private void sendToAllPlayers(String message) {
 		for(Player player : players) {
@@ -49,39 +32,6 @@ public class WhatsLeft {
 		}
 	}
 
-	public void client(String ipAddress) throws Exception {
-        //Connect to server
-        Socket aSocket = new Socket(ipAddress, 2048);
-        ObjectOutputStream outToServer = new ObjectOutputStream(aSocket.getOutputStream());
-        ObjectInputStream inFromServer = new ObjectInputStream(aSocket.getInputStream());
-        String nextMessage = "";
-        while(!nextMessage.contains("winner")){
-            nextMessage = (String) inFromServer.readObject();
-            System.out.println(nextMessage);
-            if(nextMessage.contains("Take") || nextMessage.contains("into")) {
-                Scanner in = new Scanner(System.in);
-                outToServer.writeObject(in.nextLine());
-            } 
-        }
-    }
-
-    public void server(int numberPlayers, int numberOfBots) throws Exception {
-        players.add(new Player(0, false, null, null, null)); //add this instance as a player
-        //Open for connections if there are online players
-        for(int i=0; i<numberOfBots; i++) {
-            players.add(new Player(i+1, true, null, null, null)); //add a bot    
-        }
-        if(numberPlayers>1)
-            aSocket = new ServerSocket(2048);
-        for(int i=numberOfBots+1; i<numberPlayers+numberOfBots; i++) {
-            Socket connectionSocket = aSocket.accept();
-            ObjectInputStream inFromClient = new ObjectInputStream(connectionSocket.getInputStream());
-            ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
-            players.add(new Player(i, false, connectionSocket, inFromClient, outToClient)); //add an online client
-            System.out.println("Connected to player " + i);
-            outToClient.writeObject("You connected to the server as player " + i + "\n");
-        }    
-    }
 
 	private String printMarket() {
 		String pileString = "Point Cards:\t";

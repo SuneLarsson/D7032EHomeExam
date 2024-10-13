@@ -23,7 +23,6 @@ public abstract class Card implements ICard{
         return pointSideUp;
     }
 
-    @Override
     public void flip() {
         pointSideUp = !pointSideUp;
     }

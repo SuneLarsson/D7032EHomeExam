@@ -1,4 +1,4 @@
-package main.game.piles;
+package main.game.piles.Old;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,19 +106,16 @@ public class SetPiles implements ISetPiles {
         shuffleDeck(deck);
 
         //divide the deck into 3 piles
-        Pile pile1 = new SaladPile(pileManager, 0);
-        Pile pile2 = new SaladPile(pileManager, 1);
-        Pile pile3 = new SaladPile(pileManager, 2);
-        // ArrayList<Card> pile1 = new ArrayList<>();
-        // ArrayList<Card> pile2 = new ArrayList<>();
-        // ArrayList<Card> pile3 = new ArrayList<>();
+        ArrayList<Card> pile1 = new ArrayList<>();
+        ArrayList<Card> pile2 = new ArrayList<>();
+        ArrayList<Card> pile3 = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
             if (i % 3 == 0) {
-                pile1.addCard(deck.get(i));
+                pile1.add(deck.get(i));
             } else if (i % 3 == 1) {
-                pile2.addCard(deck.get(i));
+                pile2.add(deck.get(i));
             } else {
-                pile3.addCard(deck.get(i));
+                pile3.add(deck.get(i));
             }
         }
         pileManager.addPile(pile1);
