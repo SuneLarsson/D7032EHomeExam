@@ -5,11 +5,24 @@ import main.game.card.Card;
 public class SaladPile extends Pile {
     private PileManager pileManager;
     private int pileIndex;
+    private Card[] veggieCards = new Card[2];
 
     public SaladPile(PileManager pileManager, int pileIndex) {
         super();
         this.pileManager = pileManager;
         this.pileIndex = pileIndex;
+        // veggieCards[0] = getCards().remove(0);
+        // veggieCards[1] = getCards().remove(0);
+        // veggieCards[0].flip();
+        // veggieCards[1].flip();
+
+    }
+    @Override
+    public void setupMarket() {
+        this.veggieCards[0] = getCards().remove(0);
+        this.veggieCards[1] = getCards().remove(0);
+        this.veggieCards[0].flip();
+        this.veggieCards[1].flip();
     }
 
     @Override
@@ -36,14 +49,16 @@ public class SaladPile extends Pile {
         return getCards().remove(0);
     }
 
-    @Override
-    public Card getMarketCard (int index){
-        return getPlayCard(index);
+   @Override
+    public Card getMarketCard(int index){
+        return veggieCards[index];
     }
+    
+    
 
     @Override
     public Card buyMarketCard(int index){
-        Card aCard = getPlayCard(index);
+        Card aCard = veggieCards[index];
         if (getPileSize() <= 1) {
             int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
             if (biggestPileIndex != -1) {
@@ -55,27 +70,27 @@ public class SaladPile extends Pile {
                 Card card = pileManager.removeCardFromPile(biggestPileIndex);
                 if (card instanceof Card) {  // Check if card is Card
                     addCard(card);
-                    setPlayCard(index, removeCard(0));
-                    if (getPlayCard(index).isPointSideUp()) {
-                        getPlayCard(index).flip();
+                    veggieCards[index] = getCards().remove(0);
+                    if (veggieCards[index].isPointSideUp()) {
+                        veggieCards[index].flip();
                     }
             }
             } else {
-                setPlayCard(index, null); 
+                veggieCards[index] = null; 
             }
         } else {
-            setPlayCard(index, removeCard(0));
-            if (getPlayCard(index).isPointSideUp()) {
-                getPlayCard(index).flip();
+            veggieCards[index] = getCards().remove(0);
+            if (veggieCards[index].isPointSideUp()) {
+                veggieCards[index].flip();
             }
         }
         return aCard;
     }
 
-    // @Override
-    // public boolean isEmpty() {
-    //     return cards.isEmpty() && veggieCards[0] == null && veggieCards[1] == null;
-    // }
+    @Override
+    public boolean isEmpty() {
+        return getCards().isEmpty() && veggieCards[0] == null && veggieCards[1] == null;
+    }
 
     private boolean otherPileSize() {
         int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);

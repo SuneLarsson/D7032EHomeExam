@@ -32,6 +32,10 @@ public class LocalPlayer implements IHumanPlayer{
         return playerID;
     }
     @Override
+    public void addCard(Card card){
+        hand.add(card);
+    }
+    @Override
     public ArrayList<Card> getHand() {
         return hand;
     }

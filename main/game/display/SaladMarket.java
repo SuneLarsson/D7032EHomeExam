@@ -2,7 +2,6 @@ package main.game.display;
 
 import java.util.ArrayList;
 
-import main.game.card.Card;
 import main.game.piles.Pile;
 import main.game.piles.PileManager;
 

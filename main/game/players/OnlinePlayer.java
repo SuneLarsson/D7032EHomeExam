@@ -34,6 +34,10 @@ public class OnlinePlayer implements IHumanPlayer {
         return score;
     }
     @Override
+    public void addCard(Card card){
+        hand.add(card);
+    }
+    @Override
     public void sendMessage(Object message) {
         try {
             outToClient.writeObject(message);

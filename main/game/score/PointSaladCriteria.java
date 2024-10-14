@@ -3,7 +3,7 @@ package main.game.score;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-import main.game.piles.Old.SetPiles;
+import main.game.piles.SetPiles;
 import main.game.players.IPlayer;
 
 public class PointSaladCriteria {
@@ -11,9 +11,12 @@ public class PointSaladCriteria {
 
 
 
-    public static int calculateScore(IPlayer player, ArrayList<IPlayer> players, ArrayList<String> vegetableTypes) {
+    public static int calculateScore(IPlayer player, ArrayList<IPlayer> players, ArrayList<String> vegetableTypes, ArrayList<Card> hand) {
         int playerID = player.getPlayerID();
-        ArrayList<Card> hand = player.getHand();
+        if (hand == null) {
+            hand = player.getHand();
+        }
+        // ArrayList<Card> hand = player.getHand();
         String criteria = "";
         String[] parts = new String[0]; 
         // ArrayList<String> vegetableTypes = vegetableTypes;

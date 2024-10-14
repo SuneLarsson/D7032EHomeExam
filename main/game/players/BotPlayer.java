@@ -20,6 +20,11 @@ public class BotPlayer implements IPlayer{
     public ArrayList<Card> getHand(){
         return hand;
     }
+
+    @Override
+    public void addCard(Card card){
+        hand.add(card);
+    }
     @Override
     public int getScore(){
         return score;

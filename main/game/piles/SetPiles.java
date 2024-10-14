@@ -25,7 +25,9 @@ public class SetPiles implements ISetPiles {
     private ArrayList<Card> deckOnion = new ArrayList<>();
     private ArrayList<Card> deckTomato = new ArrayList<>();
     private JSONArray cardsArray;
-    private static ArrayList<String> vegetableTypes = (ArrayList<String>) Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO");
+    // private static ArrayList<String> vegetableTypes = (ArrayList<String>) Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO");1
+    private static ArrayList<String> vegetableTypes = new ArrayList<>(Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO"));
+
 
     public SetPiles(PileManager pileManager) {
         this.pileManager = pileManager;
@@ -124,6 +126,9 @@ public class SetPiles implements ISetPiles {
         pileManager.addPile(pile1);
         pileManager.addPile(pile2);
         pileManager.addPile(pile3);
+        for(Pile pile : pileManager.getPiles()) {
+            pile.setupMarket();
+        }
     }
 
 }

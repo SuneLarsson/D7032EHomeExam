@@ -10,12 +10,12 @@ public class PileManager {
     // private ArrayList<ArrayList<Card>> piles;
     private ArrayList<Pile> piles;
 
-    public void pileManager() {
+    public PileManager() {
         this.piles = new ArrayList<>();
     }
 
     public void addPile(Pile pile) {
-        piles.add((Pile) pile);
+        this.piles.add(pile);
     }
 
     public ArrayList<Pile> getPiles() {

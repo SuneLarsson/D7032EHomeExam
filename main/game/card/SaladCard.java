@@ -1,9 +1,7 @@
 package main.game.card;
 
 public class SaladCard extends Card {
-    public enum Vegetable {
-        PEPPER, LETTUCE, CARROT, CABBAGE, ONION, TOMATO
-    }
+
     // private String vegetable;
     // private String criteria;
     // private boolean criteriaSideUp;
@@ -18,10 +16,9 @@ public class SaladCard extends Card {
 
     @Override
     public void flip() {
-        super.flip();
-    //     if (!isPointSideUp()) {
-    //         super.flip();;
-        // }
+        if (!isPointSideUp()) {
+            super.flip();
+        }
     }
 
     @Override

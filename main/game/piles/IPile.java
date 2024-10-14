@@ -9,7 +9,6 @@ public interface IPile {
     int getPileSize();
     void addCard(Card card);
     ArrayList<Card> getCards();
-    Card getPlayCard(int index);
     Card removeCard(int index);
     
     Card getPileCard();
@@ -17,5 +16,5 @@ public interface IPile {
     Card getMarketCard(int index);
     Card buyMarketCard(int index);
     boolean isEmpty();
-    void setPlayCard(int index, Card card);
+    void setupMarket();
 }

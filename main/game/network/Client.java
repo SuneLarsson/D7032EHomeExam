@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    public void connectToServer(String ipAddress) throws Exception {
+    public static void connectToServer(String ipAddress) throws Exception {
         // Connect to server
         Socket aSocket = new Socket(ipAddress, 2048);
         ObjectOutputStream outToServer = new ObjectOutputStream(aSocket.getOutputStream());
