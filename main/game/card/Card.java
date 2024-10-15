@@ -1,6 +1,6 @@
 package main.game.card;
 
-public abstract class Card implements ICard{
+public abstract class Card{
     private boolean pointSideUp;
     private String pointSide;
     private String resourceSide;

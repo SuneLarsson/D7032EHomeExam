@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import main.game.card.Card;
+import main.game.display.SendMessage;
+import main.game.players.actions.HumanAction;
+import main.game.players.actions.IPlayerActions;
+import main.game.setupgame.GameState;
 
 public class OnlinePlayer implements IHumanPlayer {
     private int playerID;
@@ -15,6 +19,7 @@ public class OnlinePlayer implements IHumanPlayer {
     private Socket connection;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
+    private IPlayerActions playerActions;
     
     public OnlinePlayer(int playerID, Socket connection, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
         this.playerID = playerID;
@@ -22,7 +27,8 @@ public class OnlinePlayer implements IHumanPlayer {
         this.hand = new ArrayList<Card>();
         this.connection = connection; 
         this.inFromClient = inFromClient; 
-        this.outToClient = outToClient; 
+        this.outToClient = outToClient;
+        this.playerActions = new HumanAction();
     }
     
     @Override
@@ -62,6 +68,11 @@ public class OnlinePlayer implements IHumanPlayer {
     @Override
     public void setScore(int score){
         this.score = score;
+    }
+
+    @Override
+    public void takeTurn(GameState gameState) {
+        playerActions.turnAction(this, gameState);
     }
     
     

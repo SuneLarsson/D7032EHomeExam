@@ -3,6 +3,7 @@ package main.game.players;
 import java.util.ArrayList;
 
 import main.game.card.Card;
+import main.game.setupgame.GameState;
 
 
 public interface IPlayer {
@@ -12,4 +13,6 @@ public interface IPlayer {
     void addCard(Card card);
 
     void setScore(int score);
+    void takeTurn(GameState gameState);
+
 }

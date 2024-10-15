@@ -1,6 +1,6 @@
 package main.game.piles;
 
-public interface ISetPiles {
+public interface ISetupPiles {
     public void createPiles();
 
 

@@ -11,14 +11,9 @@ import main.game.players.OnlinePlayer;
 import main.game.setupgame.GameState;;
 
 public class Server {
-    private static ServerSocket aSocket;
-    // private ArrayList<IPlayer> players;
+    private ServerSocket aSocket;
 
-    // public Server(ArrayList<IPlayer> players) {
-    //     this.players = players;
-    // }
-
-    public static void startServer(GameState gameState) throws Exception {
+    public Server(GameState gameState) throws Exception {
         int numberPlayers = gameState.getNumPlayers();
         int numberOfBots = gameState.getNumberOfBots();
         int playerID = 0;
@@ -42,4 +37,5 @@ public class Server {
             playerID++;
         }
     }
+
 }

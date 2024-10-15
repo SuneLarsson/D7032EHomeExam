@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import main.game.card.Card;
+import main.game.players.actions.HumanAction;
+import main.game.players.actions.IPlayerActions;
+import main.game.setupgame.GameState;
 
 public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
     private final Scanner scanner;
+    private IPlayerActions playerActions;
     
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
         this.hand = new ArrayList<Card>();
         this.scanner = new Scanner(System.in);
+        this.playerActions = new HumanAction();
     }
     @Override
     public void sendMessage(Object message) {
@@ -62,6 +67,10 @@ public class LocalPlayer implements IHumanPlayer{
         this.score = score;
     }
     
+    @Override
+    public void takeTurn(GameState gameState) {
+        playerActions.turnAction(this, gameState);
+    }
     // public void addCard(Card card) {
     //     hand.add(card);
     // }

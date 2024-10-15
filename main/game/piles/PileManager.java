@@ -7,7 +7,6 @@ import main.game.card.Card;
 
 
 public class PileManager {
-    // private ArrayList<ArrayList<Card>> piles;
     private ArrayList<Pile> piles;
 
     public PileManager() {
@@ -27,16 +26,6 @@ public class PileManager {
     }
 
     public int getBiggestPileIndex(int excludeIndex) {
-        // int biggestPileIndex = -1;
-        // int biggestSize = 0;
-        // for (int i = 0; i < piles.size(); i++) {
-        //     if (i != excludeIndex && piles.get(i).getPileSize() > biggestSize) {
-        //         biggestSize = piles.get(i).getPileSize();
-        //         biggestPileIndex = i;
-        //     }
-        // }
-        // return biggestPileIndex;
-
         int biggestPileIndex = 0;
         int biggestSize = 0;
         for(int i = 0; i < piles.size(); i++) {

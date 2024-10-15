@@ -7,36 +7,36 @@ import main.game.display.SendMessage;
 import main.game.gamelogic.PointSaladGame;
 import main.game.network.Client;
 import main.game.network.Server;
-import main.game.piles.SetPiles;
-import main.game.piles.ISetPiles;
+import main.game.piles.SetupSaladPiles;
+import main.game.piles.ISetupPiles;
+import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
-import main.game.players.LocalPlayer;
-import main.game.players.OnlinePlayer;
-import main.game.score.PointSaladCriteria;
+import main.game.score.CalculatePoints;
 import main.game.setupgame.GameState;
+import main.game.setupgame.ISettings;
+import main.game.setupgame.SaladSettings;
+
 import java.util.ArrayList;
 
 public class PointGame {
 
     public PointGame(String[] args) {
-        int numberPlayers = 0;
-        int numberOfBots = 0;
         String gameMode = "";
         ArrayList<Integer> playersAndBots = new ArrayList<>();
         if (args.length == 0) {
             gameMode = gameMode();
+            GameState gameState = new GameState(gameMode);
+            gameState.setSettings(selectSettings(gameState));
             System.out.println("Game mode: " + gameMode);
-            playersAndBots = selectPlayers(gameMode);
-            numberPlayers = playersAndBots.get(0);
-            numberOfBots = playersAndBots.get(1);
-            GameState gameState = new GameState(numberPlayers, numberOfBots, gameMode);
+            selectPlayers(gameState);
             if (gameMode.equals("PointSalad")) {
                 //PointSalad setPiles
-                ISetPiles setPiles = new SetPiles(gameState);
+                ISetupPiles setPiles = new SetupSaladPiles(gameState);
                 setPiles.createPiles();
             }
             try {
-                Server.startServer(gameState);
+                Server server = new Server(gameState);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,8 +53,9 @@ public class PointGame {
             //check if args[0] is a String (ip address) or an integer (number of players)
             // fixa så man direkt kan skriva in game mode och antal spelare och bots
 			if(args[0].matches("\\d+")) {
-                numberPlayers = Integer.parseInt(args[0]);
-				numberOfBots = Integer.parseInt(args[1]);
+                // gameMode = String.valueOf(args[0]);
+                // numberPlayers = Integer.parseInt(args[1]);
+				// numberOfBots = Integer.parseInt(args[2]);
 			}
 			else {
                 try {
@@ -68,13 +69,23 @@ public class PointGame {
 
     }
 
+    private ISettings selectSettings(GameState gameState) {
+        if (gameState.getGameMode().equals("PointSalad")) {
+            return new SaladSettings();
+        } else {
+            System.out.println("Invalid game mode. Please try again.");
+        }
+        return null;
+    }
+
     private String gameMode() {
         while (true) {
             String mode = "";
             System.out.println("Game modes implemented:\n 1. PointSalad \n E. Exit\n");
             System.out.println("Please enter the game mode: ");
-            Scanner in = new Scanner(System.in);
-            mode = in.nextLine();
+            try (Scanner in = new Scanner(System.in)) {
+                mode = in.nextLine();
+            }
             if (mode.equals("1")) {
                 return "PointSalad";
             } else if (mode.equals("E")) {
@@ -87,17 +98,15 @@ public class PointGame {
     }
 
     private void endGame(GameState gameState) {
-        int currentPlayer = gameState.getCurrentPlayer();
         SendMessage sendToAll = new SendMessage();
         HandDisplay handDisplay = new HandDisplay();
         ArrayList<IPlayer> players = gameState.getPlayers();
-        PointSaladCriteria pointSaladCriteria;
+        CalculatePoints calculatePoints = new CalculatePoints();
 		sendToAll.sendToAllPlayers(("\n-------------------------------------- CALCULATING SCORES --------------------------------------\n"), players);
+        calculatePoints.scorePoints(gameState);
 		for(IPlayer player : players) {
 
-			sendToAll.sendToAllPlayers("Player " + player.getPlayerID() + "'s hand is: \n"+ handDisplay.displayHand(player.getHand(), SetPiles.getCardType()), players);
-            pointSaladCriteria = new PointSaladCriteria();
-			player.setScore(pointSaladCriteria.calculateScore(player, players, SetPiles.getCardType(), null)); 
+			sendToAll.sendToAllPlayers("Player " + player.getPlayerID() + "'s hand is: \n"+ handDisplay.displayHand(player.getHand(), gameState), players);
 			sendToAll.sendToAllPlayers("\nPlayer " + player.getPlayerID() + "'s score is: " + player.getScore(), players);
 		}
 
@@ -111,92 +120,63 @@ public class PointGame {
 		}
 		for(IPlayer player : players) {
 			if(player.getPlayerID() == playerID ) {
-                if (player instanceof LocalPlayer) {
-                    LocalPlayer localPlayer = (LocalPlayer) player;
-                    localPlayer.sendMessage("\nCongratulations! You are the winner with a score of " + maxScore);
-                    
-                } else if (player instanceof OnlinePlayer) {
-                    OnlinePlayer onlinePlayer = (OnlinePlayer) player;
-                    onlinePlayer.sendMessage("\nCongratulations! You are the winner with a score of " + maxScore);
+                String winnerMessage = "\\nCongratulations! You are the winner with a score of " + maxScore;
+                if (player instanceof IHumanPlayer) {
+                    IHumanPlayer humanPlayer = (IHumanPlayer) player;
+                    humanPlayer.sendMessage(winnerMessage);   
                 }
-
 			} else {
-                if (player instanceof LocalPlayer) {
-                    LocalPlayer localPlayer = (LocalPlayer) player;
-                    localPlayer.sendMessage("\nThe winner is player " + playerID + " with a score of " + maxScore);
-                    
-                } else if (player instanceof OnlinePlayer) {
-                    OnlinePlayer onlinePlayer = (OnlinePlayer) player;
-                    onlinePlayer.sendMessage("\nThe winner is player " + playerID + " with a score of " + maxScore);
+                String looserMessage = "\nSorry, you lost. The winner is player " + playerID + " with a score of " + maxScore;
+                if (player instanceof IHumanPlayer) {
+                    IHumanPlayer humanPlayer = (IHumanPlayer) player;
+                    humanPlayer.sendMessage(looserMessage);   
                 }
 			}
 		}
     }
 
-    private ArrayList<Integer> selectPlayers(String gameMode) {
-        ArrayList<Integer> playersAndBots = new ArrayList<>();
+    private void selectPlayers(GameState gameState) {
         int numberPlayers = 0;
         int numberOfBots = 0;
-
-        //fixa så att max antal spelare och bots är beroende av game mode inte hårdkodat
+        int maxNumberOfPlayers = gameState.getMaxPlayers();
         
-        if (gameMode.equals("PointSalad")) {
-            while (true) {
-                System.out.println("Please enter the number of players (1-6): ");
-                Scanner in = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Please enter the number of players (1-" + maxNumberOfPlayers + "): ");
+            try (Scanner in = new Scanner(System.in)) {
                 numberPlayers = in.nextInt();
-                if (numberPlayers < 1 || numberPlayers > 6) {
-                    System.out.println("Invalid number of players. Please try again.");
-                } else {
-                    break;
-                }
             }
-            while (true) {
-                int maxNumberOfBots =  6 - numberPlayers;
-                int minimumBots = 0;
-                if (numberPlayers == 1) {
-                    minimumBots = 1;
-                } 
-                if (maxNumberOfBots == -1) {
-                    break;
-                } else {
-                    System.out.println("Please enter the number of bots ("+ minimumBots +"-" + maxNumberOfBots + "): ");
-                    Scanner in = new Scanner(System.in);
-                    numberOfBots = in.nextInt();
-                    if (numberOfBots < 0 || numberOfBots > maxNumberOfBots) {
-                        System.out.println("Invalid number of bots. Please try again.");
-                    } else if (numberOfBots + numberPlayers < 2) {
-                        System.out.println("Need atleast 2 players. Please select atleast 1 bot.");
-                    } else {
-                        break;
-                    } 
-
-                }
+            if (numberPlayers < 1 || numberPlayers > maxNumberOfPlayers) {
+                System.out.println("Invalid number of players. Please try again.");
+            } else {
+                gameState.setNumPlayers(numberPlayers);
+                break;
             }
-            
-            // PointSaladGame game = new PointSaladGame();
-            // game.play();
-        } else {
-            System.out.println("Invalid game mode. Please try again.");
         }
-       
-        playersAndBots.add(numberPlayers);
-        playersAndBots.add(numberOfBots);
-        return playersAndBots;
-        // int numberPlayers = gameState.getNumPlayers();
-        // int numberOfBots = gameState.getNumberOfBots();
-        // int playerID = 0;
-        // gameState.addPlayer(new LocalPlayer(playerID));
-        // playerID++;
+        while (true) {
+            int maxNumberOfBots =  maxNumberOfPlayers - numberPlayers;
+            int minimumBots = 0;
+            if (numberPlayers == 1) {
+                minimumBots = 1;
+            } 
+            if (maxNumberOfBots == -1) {
+                break;
+            } else {
+                System.out.println("Please enter the number of bots ("+ minimumBots +"-" + maxNumberOfBots + "): ");
+                try (Scanner in = new Scanner(System.in)) {
+                    numberOfBots = in.nextInt();
+                }
+                if (numberOfBots < 0 || numberOfBots > maxNumberOfBots) {
+                    System.out.println("Invalid number of bots. Please try again.");
+                } else if (numberOfBots + numberPlayers < 2) {
+                    System.out.println("Need atleast 2 players. Please select atleast 1 bot.");
+                } else {
+                    gameState.setNumberOfBots(numberOfBots);
+                    break;
+                } 
 
-        // for (int i = 1; i < numberPlayers; i++) {
-        //     gameState.addPlayer(new OnlinePlayer(playerID));
-        //     playerID++;
-        // }
-        // for (int i = 0; i < numberOfBots; i++) {
-        //     gameState.addPlayer(new BotPlayer(playerID));
-        //     playerID++;
-        // }
+            }
+        }
     }
 
     public static void main(String[] args) {

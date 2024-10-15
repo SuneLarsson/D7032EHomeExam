@@ -11,10 +11,6 @@ public class SaladPile extends Pile {
         super();
         this.pileManager = pileManager;
         this.pileIndex = pileIndex;
-        // veggieCards[0] = getCards().remove(0);
-        // veggieCards[1] = getCards().remove(0);
-        // veggieCards[0].flip();
-        // veggieCards[1].flip();
 
     }
     @Override
@@ -27,15 +23,6 @@ public class SaladPile extends Pile {
 
     @Override
     public Card getPileCard(){
-        // if(isEmpty()) {
-        //    if(otherPileSize()) {
-        //        return getCards().get(0);
-        //    } else {
-        //        return null;
-        //    }
-        // }
-        // return getCards().get(0);
-
         if(isPileEmpty()) {
             if(otherPileSize()) {
                 return getCards().get(0);
@@ -71,11 +58,6 @@ public class SaladPile extends Pile {
         if (getPileSize() <= 0) {
             int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
             if (pileManager.getPile(biggestPileIndex).getPileSize() > 1) {
-                // cards.add(pileManager.removeCardFromPile(biggestPileIndex));
-                // veggieCards[index] = cards.remove(0);
-                // if (veggieCards[index].isCriteriaSideUp()) {
-                //     veggieCards[index].flip();
-                // }
                 Card card = pileManager.removeCardFromPile(biggestPileIndex);
                 if (card instanceof Card) {  // Check if card is Card
                     addCard(card);

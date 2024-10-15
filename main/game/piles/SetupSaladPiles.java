@@ -1,7 +1,6 @@
 package main.game.piles;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.json.JSONArray;
@@ -16,7 +15,7 @@ import main.game.setupgame.GameState;
 
 
 
-public class SetPiles implements ISetPiles {
+public class SetupSaladPiles implements ISetupPiles {
     //FACTORY? 
     private PileManager pileManager;
     private GameState gameState;
@@ -27,14 +26,12 @@ public class SetPiles implements ISetPiles {
     private ArrayList<Card> deckOnion = new ArrayList<>();
     private ArrayList<Card> deckTomato = new ArrayList<>();
     private JSONArray cardsArray;
-    // private static ArrayList<String> vegetableTypes = (ArrayList<String>) Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO");1
-    private static ArrayList<String> vegetableTypes = new ArrayList<>(Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO"));
 
 
-    public SetPiles(GameState gameState) {
+    public SetupSaladPiles(GameState gameState) {
         this.gameState = gameState;
         this.pileManager = gameState.getPileManager();
-        this.cardsArray = null;//loook here
+        this.cardsArray = null;
     }
 
     @Override
@@ -53,10 +50,6 @@ public class SetPiles implements ISetPiles {
 
     }
     
-    public static ArrayList<String> getCardType() {
-        return vegetableTypes;
-    }
-    
 
     private void populateDecks() {
         for (int i = 0; i < cardsArray.length(); i++) {
@@ -72,12 +65,6 @@ public class SetPiles implements ISetPiles {
             deckCabbage.add(new SaladCard("CABBAGE", criteriaObj.getString("CABBAGE") , true));
             deckOnion.add(new SaladCard("ONION", criteriaObj.getString("ONION") , true));
             deckTomato.add(new SaladCard("TOMATO", criteriaObj.getString("TOMATO") , true));
-
-            // deckLettuce.add(new PointSaladCard(PointSaladCard.Vegetable.LETTUCE, criteriaObj.getString("LETTUCE")));
-            // deckCarrot.add(new PointSaladCard(PointSaladCard.Vegetable.CARROT, criteriaObj.getString("CARROT")));
-            // deckCabbage.add(new PointSaladCard(PointSaladCard.Vegetable.CABBAGE, criteriaObj.getString("CABBAGE")));
-            // deckOnion.add(new PointSaladCard(PointSaladCard.Vegetable.ONION, criteriaObj.getString("ONION")));
-            // deckTomato.add(new PointSaladCard(PointSaladCard.Vegetable.TOMATO, criteriaObj.getString("TOMATO")));
         }
     }
 
@@ -98,7 +85,7 @@ public class SetPiles implements ISetPiles {
     private void makeDeck() {
         int numberOfPlayers = gameState.getNumPlayers() + gameState.getNumberOfBots();
         int cardsPerVeggie = numberOfPlayers/2 * 6;
-        cardsPerVeggie = 3; //test value
+        // cardsPerVeggie = 3; //test value
 
         ArrayList<Card> deck = new ArrayList<>();
         for(int i = 0; i < cardsPerVeggie; i++) {
