@@ -9,24 +9,38 @@ public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
+    private final Scanner scanner;
     
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
         this.hand = new ArrayList<Card>();
+        this.scanner = new Scanner(System.in);
     }
     @Override
     public void sendMessage(Object message) {
         System.out.println(message);
     }
+    // @Override
+    // public String readMessage() {
+    //     String message = "";
+    //     try (Scanner scanner = new Scanner(System.in)) {
+    //         message =  scanner.nextLine();
+    //     }catch(Exception e){}
+    //     return message;
+    // }
+
     @Override
     public String readMessage() {
         String message = "";
-        try (Scanner scanner = new Scanner(System.in)) {
-            message =  scanner.nextLine();
-        }catch(Exception e){}
+        try {
+            message = scanner.nextLine();
+        } catch (Exception e) {
+            System.err.println("Error reading input: " + e.getMessage());
+        }
         return message;
     }
+    
     @Override
     public int getPlayerID() {
         return playerID;

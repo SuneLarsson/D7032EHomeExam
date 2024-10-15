@@ -10,6 +10,8 @@ import main.game.piles.SetPiles;
 import main.game.players.BotPlayer;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
+import main.game.players.LocalPlayer;
+import main.game.players.OnlinePlayer;
 import main.game.score.PointSaladCriteria;
 import main.game.setupgame.GameState;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class PointSaladGame {
 		while(keepPlaying) {
 			IPlayer thisPlayer = gameState.getPlayer(gameState.getCurrentPlayer());
 			boolean stillAvailableCards = false;
+			PointSaladCriteria pointSaladCriteria = new PointSaladCriteria();
 			for(Pile p: pileManager.getPiles()) {
 				if(!p.isEmpty()) {
 					stillAvailableCards = true;
@@ -50,7 +53,17 @@ public class PointSaladGame {
 			}
 			if(!(thisPlayer instanceof BotPlayer)) {
                 // Human player logic
-                IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
+				IHumanPlayer humanPlayer;
+				if (thisPlayer instanceof LocalPlayer) {
+					humanPlayer = (LocalPlayer) thisPlayer;
+					
+				} else if (thisPlayer instanceof OnlinePlayer) {
+					humanPlayer = (OnlinePlayer) thisPlayer;
+				} else {
+					humanPlayer = null;
+					
+				}
+                // IHumanPlayer humanPlayer = (LocalPlayer) thisPlayer;
 				humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
 				humanPlayer.sendMessage(HandDisplay.displayHand(humanPlayer.getHand(), SetPiles.getCardType()));
 				humanPlayer.sendMessage("\nThe piles are: ");
@@ -61,6 +74,7 @@ public class PointSaladGame {
 					humanPlayer.sendMessage("\n\nTake either one point card (Syntax example: 2) or up to two vegetable cards (Syntax example: CF).\n");
 					String pileChoice = humanPlayer.readMessage();
 					if(pileChoice.matches("\\d")) {
+						System.out.println("pileChoice: " + pileChoice);
 						int pileIndex = Integer.parseInt(pileChoice);
 						if(pileManager.getPile(pileIndex).getPileCard() == null) {
 							humanPlayer.sendMessage("\nThis pile is empty. Please choose another pile.\n");
@@ -142,8 +156,8 @@ public class PointSaladGame {
 								tempHand.add(handCard);
 							}
 							tempHand.add(pileManager.getPile(i).getPileCard());
-
-                            int score = PointSaladCriteria.calculateScore(thisPlayer, gameState.getPlayers(), SetPiles.getCardType(), tempHand);
+							pointSaladCriteria = new PointSaladCriteria();
+                            int score = pointSaladCriteria.calculateScore(thisPlayer, gameState.getPlayers(), SetPiles.getCardType(), tempHand);
 							// int score = calculateScore(tempHand, thisPlayer);
 							if(score > highestPointCardScore) {
 								highestPointCardScore = score;
@@ -181,7 +195,8 @@ public class PointSaladGame {
 									tempHand.add(handCard);
 								}
 								tempHand.add(pileManager.getPile(i).getPileCard());
-								int score = PointSaladCriteria.calculateScore(thisPlayer, gameState.getPlayers(), SetPiles.getCardType(), tempHand);
+								pointSaladCriteria = new PointSaladCriteria();
+								int score = pointSaladCriteria.calculateScore(thisPlayer, gameState.getPlayers(), SetPiles.getCardType(), tempHand);
 								if(score > highestPointCardScore) {
 									highestPointCardScore = score;
 									highestPointCardIndex = i;

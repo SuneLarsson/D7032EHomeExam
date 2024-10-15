@@ -32,7 +32,7 @@ public class PointGame {
             GameState gameState = new GameState(numberPlayers, numberOfBots, gameMode);
             if (gameMode.equals("PointSalad")) {
                 //PointSalad setPiles
-                ISetPiles setPiles = new SetPiles(gameState.getPileManager());
+                ISetPiles setPiles = new SetPiles(gameState);
                 setPiles.createPiles();
             }
             try {
@@ -44,6 +44,7 @@ public class PointGame {
             gameState.setCurrentPlayer((int) (Math.random() * (gameState.getPlayers().size())));
             PointSaladGame game = new PointSaladGame(gameState);
             game.gameLoop(gameState);
+            endGame(gameState);
 
             
 
@@ -90,11 +91,13 @@ public class PointGame {
         SendMessage sendToAll = new SendMessage();
         HandDisplay handDisplay = new HandDisplay();
         ArrayList<IPlayer> players = gameState.getPlayers();
+        PointSaladCriteria pointSaladCriteria;
 		sendToAll.sendToAllPlayers(("\n-------------------------------------- CALCULATING SCORES --------------------------------------\n"), players);
 		for(IPlayer player : players) {
 
 			sendToAll.sendToAllPlayers("Player " + player.getPlayerID() + "'s hand is: \n"+ handDisplay.displayHand(player.getHand(), SetPiles.getCardType()), players);
-			player.setScore(PointSaladCriteria.calculateScore(player, players, SetPiles.getCardType(), null)); 
+            pointSaladCriteria = new PointSaladCriteria();
+			player.setScore(pointSaladCriteria.calculateScore(player, players, SetPiles.getCardType(), null)); 
 			sendToAll.sendToAllPlayers("\nPlayer " + player.getPlayerID() + "'s score is: " + player.getScore(), players);
 		}
 

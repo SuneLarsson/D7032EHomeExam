@@ -19,7 +19,8 @@ public class HandDisplay {
         // Sum up the number of each vegetable and show the total number of each vegetable
         
         for (String cardType : cardTypes) {
-            int count = PointSaladCriteria.countVegetables(hand, cardType);
+            PointSaladCriteria pointSaladCriteria = new PointSaladCriteria();
+            int count = pointSaladCriteria.countVegetables(hand, cardType);
             if(count > 0) {
                 handString += cardType + ": " + count + "\t";
             }

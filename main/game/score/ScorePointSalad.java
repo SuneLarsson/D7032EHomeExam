@@ -12,19 +12,23 @@ public class ScorePointSalad {
 
     public void setupScore(ArrayList<IPlayer> players){
         ArrayList<String> cardTypes = SetPiles.getCardType();
+        PointSaladCriteria pointSaladCriteria;
         for (IPlayer player : players) {
             if (player instanceof BotPlayer) {
                 BotPlayer botPlayer = (BotPlayer) player;
-                botPlayer.setScore(PointSaladCriteria.calculateScore(botPlayer, players, cardTypes, null));
+                pointSaladCriteria = new PointSaladCriteria();
+                botPlayer.setScore(pointSaladCriteria.calculateScore(botPlayer, players, cardTypes, null));
             }
             else if (player instanceof OnlinePlayer) {
                 // Handle online player actions
                 OnlinePlayer onlinePlayer = (OnlinePlayer) player;
-                onlinePlayer.setScore(PointSaladCriteria.calculateScore(onlinePlayer, players, cardTypes, null));
+                pointSaladCriteria = new PointSaladCriteria();
+                onlinePlayer.setScore(pointSaladCriteria.calculateScore(onlinePlayer, players, cardTypes, null));
             } else   {
                 // Handle local player actions
                 LocalPlayer localPlayer = (LocalPlayer) player;
-                localPlayer.setScore(PointSaladCriteria.calculateScore(localPlayer, players, cardTypes, null));
+                pointSaladCriteria = new PointSaladCriteria();
+                localPlayer.setScore(pointSaladCriteria.calculateScore(localPlayer, players, cardTypes, null));
             }
         }
     }

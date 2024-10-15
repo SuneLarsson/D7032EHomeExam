@@ -19,6 +19,7 @@ public class GameState {
         this.players = new ArrayList<IPlayer>();
         this.currentPlayer = 0;
         this.pileManager = new PileManager();
+        this.gameName = gameName;
     }
 
     public int getNumPlayers() {

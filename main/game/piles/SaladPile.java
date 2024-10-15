@@ -27,19 +27,28 @@ public class SaladPile extends Pile {
 
     @Override
     public Card getPileCard(){
-        if(isEmpty()) {
-           if(otherPileSize()) {
-               return getCards().get(0);
-           } else {
-               return null;
-           }
-        }
-        return getCards().get(0);
+        // if(isEmpty()) {
+        //    if(otherPileSize()) {
+        //        return getCards().get(0);
+        //    } else {
+        //        return null;
+        //    }
+        // }
+        // return getCards().get(0);
+
+        if(isPileEmpty()) {
+            if(otherPileSize()) {
+                return getCards().get(0);
+            } else {
+                return null;
+            }
+         }
+         return getCards().get(0);
     }
 
     @Override
     public Card buyPileCard(){
-        if(getCards().isEmpty()) {
+        if(isEmpty()) {
             if(otherPileSize()) {
                 return getCards().get(0);
             } else {
@@ -59,9 +68,9 @@ public class SaladPile extends Pile {
     @Override
     public Card buyMarketCard(int index){
         Card aCard = veggieCards[index];
-        if (getPileSize() <= 1) {
+        if (getPileSize() <= 0) {
             int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
-            if (biggestPileIndex != -1) {
+            if (pileManager.getPile(biggestPileIndex).getPileSize() > 1) {
                 // cards.add(pileManager.removeCardFromPile(biggestPileIndex));
                 // veggieCards[index] = cards.remove(0);
                 // if (veggieCards[index].isCriteriaSideUp()) {
@@ -89,12 +98,17 @@ public class SaladPile extends Pile {
 
     @Override
     public boolean isEmpty() {
+        // System.out.println("isEmpty: " + getCards().isEmpty() + " && " + veggieCards[0] + " == null && " + veggieCards[1] + " == null");
         return getCards().isEmpty() && veggieCards[0] == null && veggieCards[1] == null;
+    }
+
+    public boolean isPileEmpty() {
+        return getCards().isEmpty();
     }
 
     private boolean otherPileSize() {
         int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
-        if (biggestPileIndex != -1) {
+        if (pileManager.getPile(biggestPileIndex).getPileSize() > 1) {
             Card card = pileManager.removeCardFromPile(biggestPileIndex);
             if (card instanceof Card) {  // Check if card is Card
                 addCard(card);

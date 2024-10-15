@@ -18,11 +18,11 @@ public class SaladMarket implements IMarket {
             }
             else
                 pileString += "["+p+"]"+String.format("%-43s", piles.get(p).getPileCard()) + "\t";
-            if(pileManager.getPile(p).getPileCard()==null) {
-                pileString += "["+p+"]"+String.format("%-43s", "Empty") + "\t";
-            }
-            else
-                pileString += "["+p+"]"+String.format("%-43s", piles.get(p).getPileCard()) + "\t";
+            // if(pileManager.getPile(p).getPileCard()==null) {
+            //     pileString += "["+p+"]"+String.format("%-43s", "Empty") + "\t";
+            // }
+            // else
+            //     pileString += "["+p+"]"+String.format("%-43s", piles.get(p).getPileCard()) + "\t";
         }
         pileString += "\nVeggie Cards:\t";
         char veggieCardIndex = 'A';
