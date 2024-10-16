@@ -8,7 +8,18 @@ public class SaladSettings implements ISettings {
     private ArrayList<String> vegetableTypes = new ArrayList<>(Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO"));
     private String pointName = "Criteria";
     private String resourceName = "Vegetable";
-    
+    private int amountOfEachVegetablePerPlayer = 3;
+
+    @Override
+    public ArrayList<Integer> getAmountOfEachCardType() {
+        ArrayList<Integer> amountPerType = new ArrayList<>();
+        for (int i = 0; i < vegetableTypes.size(); i++) {
+            amountPerType.add(amountOfEachVegetablePerPlayer);
+        }
+        // amountPerType.add(amountOfEachVegetablePerPlayer);
+        return amountPerType;
+
+    }
 
     @Override
     public int getMaxPlayers() {
@@ -34,4 +45,11 @@ public class SaladSettings implements ISettings {
     public String getResourceName() {
         return resourceName;
     }
+
+    @Override
+    // Rule 6: Randomly select a starting player.
+    public int startingPlayerRule(int numPlayers) {
+        return (int) (Math.random() * numPlayers);
+    }
+
 }

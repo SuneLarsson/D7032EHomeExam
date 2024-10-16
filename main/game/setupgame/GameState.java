@@ -14,6 +14,7 @@ public class GameState {
     private String gameMode;
     private ArrayList<String> cardTypes;
     private ISettings settings;
+    
 
     public GameState(String gameMode) {
 
@@ -25,16 +26,17 @@ public class GameState {
 
     public void setSettings(ISettings settings) {
         this.settings = settings;
+        // TODO flytta cardTypes till settings
         this.cardTypes = settings.getCardTypes();
     }
 
-    public int getMaxPlayers() {
-        return settings.getMaxPlayers();
-    }
+    // public int getMaxPlayers() {
+    //     return settings.getMaxPlayers();
+    // }
 
-    public int getMinPlayers() {
-        return settings.getMinPlayers();
-    }
+    // public int getMinPlayers() {
+    //     return settings.getMinPlayers();
+    // }
     public int getNumPlayers() {
         
         return numPlayers;
@@ -77,15 +79,17 @@ public class GameState {
         return gameMode;
     }
 
-    public String getResourceName() {
-        return settings.getResourceName();
+    // public String getResourceName() {
+    //     return settings.getResourceName();
+    // }
+
+    // public String getPointName() {
+    //     return settings.getPointName();
+    // }
+
+    public ISettings getSettings() {
+        return settings;
     }
-
-    public String getPointName() {
-        return settings.getPointName();
-    }
-
-
     public ArrayList<String> getCardTypes() {
         return cardTypes;
     }

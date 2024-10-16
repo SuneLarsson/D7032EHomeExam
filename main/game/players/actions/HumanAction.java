@@ -18,7 +18,12 @@ public class HumanAction implements IPlayerActions {
         HandDisplay handDisplay = new HandDisplay();
         IMarket saladMarket = new SaladMarket();
         
+        // Rule 7. On a player’s turn the player may draft one or more cards and add to the player’s hand. Either:
+            // a. One point card from the top of any of the draw piles, or
+            // b. Two veggie cards from those available in the veggie market
+        // TODO Split rule 7 a/b into separate methods
 
+  
         humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
         humanPlayer.sendMessage(handDisplay.displayHand(humanPlayer.getHand(), gameState));
         humanPlayer.sendMessage("\nThe piles are: ");
@@ -78,6 +83,8 @@ public class HumanAction implements IPlayerActions {
                 break;
             }
         }
+        // Rule 8 The player may opt to turn a point card to its vegetable side (but not the other way around).
+        //Todo Create a method for this
         if(criteriaCardInHand) {
             //Give the player an option to turn a criteria card into a veggie card
             humanPlayer.sendMessage("\n"+handDisplay.displayHand(humanPlayer.getHand(), gameState)+"\nWould you like to turn a criteria card into a veggie card? (Syntax example: n or 2)");

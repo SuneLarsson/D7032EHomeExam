@@ -3,7 +3,6 @@ package main.game.score;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-import main.game.piles.SetupSaladPiles;
 import main.game.players.IPlayer;
 
 public class PointSaladCriteria implements ICriteria {

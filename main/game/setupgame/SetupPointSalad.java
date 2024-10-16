@@ -4,7 +4,7 @@ public class SetupPointSalad implements ISetup {
 
     @Override
     public void setupGame() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         
     }
     

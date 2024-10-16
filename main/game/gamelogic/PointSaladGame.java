@@ -38,6 +38,8 @@ public class PointSaladGame {
 
 			thisPlayer.takeTurn(gameState);
 			
+			//Rule 9 - Display the player's hand to all players
+			//TODO: Implement this in the correct place to provide testing?
             SendMessage.sendToAllPlayers("Player " + thisPlayer.getPlayerID() + "'s hand is now: \n"+HandDisplay.displayHand(thisPlayer.getHand(), gameState)+"\n", gameState.getPlayers());	
 
 			

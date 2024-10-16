@@ -35,21 +35,21 @@ public class LocalPlayer implements IHumanPlayer{
     //     return message;
     // }
 
-    // @Override
-    // public String readMessage() {
-    //     String message = "";
-    //     try {
-    //         message = scanner.nextLine();
-    //     } catch (Exception e) {
-    //         System.err.println("Error reading input: " + e.getMessage());
-    //     }
-    //     return message;
-    // }
-
     @Override
     public String readMessage() {
-        return scanner.nextLine();
+        String message = "";
+        try {
+            message = scanner.nextLine();
+        } catch (Exception e) {
+            System.err.println("Error reading input: " + e.getMessage());
+        }
+        return message;
     }
+
+    // @Override
+    // public String readMessage() {
+    //     return scanner.nextLine();
+    // }
     
     @Override
     public int getPlayerID() {

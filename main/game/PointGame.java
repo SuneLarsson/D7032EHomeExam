@@ -23,7 +23,6 @@ public class PointGame {
 
     public PointGame(String[] args) {
         String gameMode = "";
-        ArrayList<Integer> playersAndBots = new ArrayList<>();
         try {
             this.in = new Scanner(System.in);
         } catch (Exception s) {
@@ -48,6 +47,7 @@ public class PointGame {
             }
             //set Starting player
             gameState.setCurrentPlayer((int) (Math.random() * (gameState.getPlayers().size())));
+            gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
             PointSaladGame game = new PointSaladGame(gameState);
             game.gameLoop(gameState);
             endGame(gameState);
@@ -145,22 +145,13 @@ public class PointGame {
     private void selectPlayers(GameState gameState) {
         int numberPlayers = 0;
         int numberOfBots = 0;
-        int maxNumberOfPlayers = gameState.getMaxPlayers();
+        int maxNumberOfPlayers = gameState.getSettings().getMaxPlayers();
         
         // try (Scanner in = new Scanner(System.in)) {
         
         while (true) {
             System.out.println("Please enter the number of players (1-" + maxNumberOfPlayers + "): ");
-            // if (in.hasNextInt()) {
-            //     numberPlayers = in.nextInt();
-            // } else {
-            //     in.next();
-            //     System.out.println("Invalid input. Please try again.");
-            // }
             numberPlayers = in.nextInt();
-            // try (Scanner in = new Scanner(System.in)) {
-            //     numberPlayers = in.nextInt();
-            // }
             if (numberPlayers < 1 || numberPlayers > maxNumberOfPlayers) {
                 System.out.println("Invalid number of players. Please try again.");
             } else {
@@ -178,15 +169,6 @@ public class PointGame {
                 break;
             } else {
                 System.out.println("Please enter the number of bots ("+ minimumBots +"-" + maxNumberOfBots + "): ");
-                // try (Scanner in = new Scanner(System.in)) {
-                //     numberOfBots = in.nextInt();
-                // }
-                // if (in.hasNextInt()) {
-                //     numberOfBots = in.nextInt();
-                // } else {
-                //     in.next();
-                //     System.out.println("Invalid input. Please try again.");
-                // }
                 numberOfBots = in.nextInt();
                 if (numberOfBots < 0 || numberOfBots > maxNumberOfBots) {
                     System.out.println("Invalid number of bots. Please try again.");

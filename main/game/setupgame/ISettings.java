@@ -8,4 +8,6 @@ public interface ISettings {
     ArrayList<String> getCardTypes();
     String getPointName();
     String getResourceName();
+    int startingPlayerRule(int numPlayers);
+    ArrayList<Integer> getAmountOfEachCardType();
 }
