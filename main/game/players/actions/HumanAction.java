@@ -17,6 +17,7 @@ public class HumanAction implements IPlayerActions {
         PileManager pileManager = gameState.getPileManager();
         HandDisplay handDisplay = new HandDisplay();
         IMarket saladMarket = new SaladMarket();
+        
 
         humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
         humanPlayer.sendMessage(handDisplay.displayHand(humanPlayer.getHand(), gameState));

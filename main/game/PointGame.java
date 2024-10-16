@@ -19,10 +19,16 @@ import main.game.setupgame.SaladSettings;
 import java.util.ArrayList;
 
 public class PointGame {
+    private Scanner in;
 
     public PointGame(String[] args) {
         String gameMode = "";
         ArrayList<Integer> playersAndBots = new ArrayList<>();
+        try {
+            this.in = new Scanner(System.in);
+        } catch (Exception s) {
+            s.printStackTrace();
+        }
         if (args.length == 0) {
             gameMode = gameMode();
             GameState gameState = new GameState(gameMode);
@@ -83,9 +89,10 @@ public class PointGame {
             String mode = "";
             System.out.println("Game modes implemented:\n 1. PointSalad \n E. Exit\n");
             System.out.println("Please enter the game mode: ");
-            try (Scanner in = new Scanner(System.in)) {
-                mode = in.nextLine();
-            }
+            mode = in.nextLine();
+            // try (Scanner in = new Scanner(System.in)) {
+            //     mode = in.nextLine();
+            // }
             if (mode.equals("1")) {
                 return "PointSalad";
             } else if (mode.equals("E")) {
@@ -140,12 +147,20 @@ public class PointGame {
         int numberOfBots = 0;
         int maxNumberOfPlayers = gameState.getMaxPlayers();
         
-
+        // try (Scanner in = new Scanner(System.in)) {
+        
         while (true) {
             System.out.println("Please enter the number of players (1-" + maxNumberOfPlayers + "): ");
-            try (Scanner in = new Scanner(System.in)) {
-                numberPlayers = in.nextInt();
-            }
+            // if (in.hasNextInt()) {
+            //     numberPlayers = in.nextInt();
+            // } else {
+            //     in.next();
+            //     System.out.println("Invalid input. Please try again.");
+            // }
+            numberPlayers = in.nextInt();
+            // try (Scanner in = new Scanner(System.in)) {
+            //     numberPlayers = in.nextInt();
+            // }
             if (numberPlayers < 1 || numberPlayers > maxNumberOfPlayers) {
                 System.out.println("Invalid number of players. Please try again.");
             } else {
@@ -163,9 +178,16 @@ public class PointGame {
                 break;
             } else {
                 System.out.println("Please enter the number of bots ("+ minimumBots +"-" + maxNumberOfBots + "): ");
-                try (Scanner in = new Scanner(System.in)) {
-                    numberOfBots = in.nextInt();
-                }
+                // try (Scanner in = new Scanner(System.in)) {
+                //     numberOfBots = in.nextInt();
+                // }
+                // if (in.hasNextInt()) {
+                //     numberOfBots = in.nextInt();
+                // } else {
+                //     in.next();
+                //     System.out.println("Invalid input. Please try again.");
+                // }
+                numberOfBots = in.nextInt();
                 if (numberOfBots < 0 || numberOfBots > maxNumberOfBots) {
                     System.out.println("Invalid number of bots. Please try again.");
                 } else if (numberOfBots + numberPlayers < 2) {
@@ -177,6 +199,7 @@ public class PointGame {
 
             }
         }
+        // }
     }
 
     public static void main(String[] args) {

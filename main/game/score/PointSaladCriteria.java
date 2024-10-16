@@ -51,6 +51,8 @@ public class PointSaladCriteria implements ICriteria {
                     ID5(hand, parts[i], players, playerID, vegetableTypes);
                 }else if(parts[i].indexOf("=")>=0) {
                     ID3(hand, parts[i], players, playerID);
+                    // Skip the next part of the criteria
+                    i++;
                 } else {
                     ID4(hand, parts[i], players, playerID);
                 }

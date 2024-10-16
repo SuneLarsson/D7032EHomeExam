@@ -30,11 +30,11 @@ public class PointSaladGame {
 
     public void gameLoop(GameState gameState) {
         boolean keepPlaying = true;
-		ArrayList<String> cardTypes = gameState.getCardTypes();
+		// ArrayList<String> cardTypes = gameState.getCardTypes();
 		while(keepPlaying) {
 			IPlayer thisPlayer = gameState.getPlayer(gameState.getCurrentPlayer());
 			boolean stillAvailableCards = false;
-			PointSaladCriteria pointSaladCriteria = new PointSaladCriteria();
+			// PointSaladCriteria pointSaladCriteria = new PointSaladCriteria();
 			for(Pile p: pileManager.getPiles()) {
 				if(!p.isEmpty()) {
 					
@@ -211,7 +211,7 @@ public class PointSaladGame {
 				// sendToAllPlayers("Bot " + thisPlayer.getPlayerID() + "'s hand is now: \n"+displayHand(thisPlayer.getHand())+"\n");
                 SendMessage.sendToAllPlayers("Player " + thisPlayer.getPlayerID() + "'s hand is now: \n"+HandDisplay.displayHand(thisPlayer.getHand(), gameState)+"\n", gameState.getPlayers());	
 
-			}
+			// }
 			
 			if(gameState.getCurrentPlayer() == gameState.getPlayers().size()-1) {
 				gameState.setCurrentPlayer(0);
@@ -223,4 +223,4 @@ public class PointSaladGame {
 		}
     }
 
-// }
+}

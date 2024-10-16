@@ -6,6 +6,8 @@ import java.util.Arrays;
 public class SaladSettings implements ISettings {
     private int maxPlayers = 6;
     private ArrayList<String> vegetableTypes = new ArrayList<>(Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO"));
+    private String pointName = "Criteria";
+    private String resourceName = "Vegetable";
     
 
     @Override
@@ -23,4 +25,13 @@ public class SaladSettings implements ISettings {
         return vegetableTypes;
     }
     
+    @Override
+    public String getPointName() {
+        return pointName;
+    }
+
+    @Override
+    public String getResourceName() {
+        return resourceName;
+    }
 }

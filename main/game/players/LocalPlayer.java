@@ -12,7 +12,7 @@ public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
-    private final Scanner scanner;
+    private Scanner scanner;
     private IPlayerActions playerActions;
     
     public LocalPlayer(int playerID) {
@@ -35,15 +35,20 @@ public class LocalPlayer implements IHumanPlayer{
     //     return message;
     // }
 
+    // @Override
+    // public String readMessage() {
+    //     String message = "";
+    //     try {
+    //         message = scanner.nextLine();
+    //     } catch (Exception e) {
+    //         System.err.println("Error reading input: " + e.getMessage());
+    //     }
+    //     return message;
+    // }
+
     @Override
     public String readMessage() {
-        String message = "";
-        try {
-            message = scanner.nextLine();
-        } catch (Exception e) {
-            System.err.println("Error reading input: " + e.getMessage());
-        }
-        return message;
+        return scanner.nextLine();
     }
     
     @Override

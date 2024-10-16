@@ -12,8 +12,6 @@ public class GameState {
     private int currentPlayer;
     private PileManager pileManager;
     private String gameMode;
-    private String resourceName;
-    private String pointName;
     private ArrayList<String> cardTypes;
     private ISettings settings;
 
@@ -80,20 +78,13 @@ public class GameState {
     }
 
     public String getResourceName() {
-        return resourceName;
-    }
-
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
+        return settings.getResourceName();
     }
 
     public String getPointName() {
-        return pointName;
+        return settings.getPointName();
     }
 
-    public void setPointName(String pointName) {
-        this.pointName = pointName;
-    }
 
     public ArrayList<String> getCardTypes() {
         return cardTypes;
