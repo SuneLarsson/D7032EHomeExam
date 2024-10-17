@@ -6,6 +6,7 @@ import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
 import main.game.gamelogic.PointSaladGame;
 import main.game.network.Client;
+import main.game.network.Server;
 import main.game.piles.SetupPiles;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
@@ -35,7 +36,8 @@ public class PointGame {
             selectPlayers(gameState);
             
             try {
-                new CreatePlayers(gameState);
+                Server server = new Server(gameState);
+                new CreatePlayers(gameState, server);
                 // Server server = new Server(gameState);
                 
             } catch (Exception e) {

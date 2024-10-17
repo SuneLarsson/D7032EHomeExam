@@ -32,7 +32,6 @@ public class GameState {
     }
 
     public int getNumPlayers() {
-        
         return numPlayers;
     }
     

@@ -12,9 +12,11 @@ import java.io.ObjectOutputStream;
 
 public class CreatePlayers {
     private GameState gameState;
+    private Server server;
 
-    public CreatePlayers(GameState gameState) throws Exception {
+    public CreatePlayers(GameState gameState, Server server) throws Exception {
         this.gameState = gameState;
+        this.server = server;
         createLocalPlayer();
         createOnlinePlayers();
         createBotPlayers();
@@ -27,7 +29,6 @@ public class CreatePlayers {
 
     // todo error handling
     private void createOnlinePlayers() throws Exception {
-        Server server = new Server(gameState);
         ArrayList<Socket> connectionSockets = server.getConnectionSockets();
         for (int i = 1; i < gameState.getNumPlayers(); i++) {
             Socket connectionSocket = connectionSockets.get(i - 1);
