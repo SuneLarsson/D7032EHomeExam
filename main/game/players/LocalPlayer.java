@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import main.game.card.Card;
-import main.game.players.actions.HumanAction;
+import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.players.actions.IPlayerActions;
 import main.game.setupgame.GameState;
 
@@ -13,14 +13,14 @@ public class LocalPlayer implements IHumanPlayer{
     private ArrayList<Card> hand;
     private int score;
     private Scanner scanner;
-    private IPlayerActions playerActions;
+    // private IPlayerActions playerActions;
     
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
         this.hand = new ArrayList<Card>();
         this.scanner = new Scanner(System.in);
-        this.playerActions = new HumanAction();
+        // this.playerActions = gameState.getSetup().getHumanActions();
     }
     @Override
     public void sendMessage(Object message) {
@@ -74,8 +74,13 @@ public class LocalPlayer implements IHumanPlayer{
     
     @Override
     public void takeTurn(GameState gameState) {
-        playerActions.turnAction(this, gameState);
+        gameState.getSetup().getTurnLogic().takeTurn(gameState, this);
     }
+
+    // @Override
+    // public IPlayerActions getActions(GameState gameState) {
+    //     return gameState.getSetup().getHumanActions();
+    // }
     // public void addCard(Card card) {
     //     hand.add(card);
     // }

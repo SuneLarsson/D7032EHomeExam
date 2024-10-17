@@ -2,8 +2,8 @@ package main.game.gamelogic;
 
 import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
-import main.game.piles.Pile;
 import main.game.piles.PileManager;
+import main.game.piles.pile.Pile;
 import main.game.players.IPlayer;
 import main.game.setupgame.GameState;
 

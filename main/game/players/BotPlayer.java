@@ -1,7 +1,5 @@
 package main.game.players;
 import main.game.card.Card;
-import main.game.players.actions.BotAction;
-import main.game.players.actions.IPlayerActions;
 import main.game.setupgame.GameState;
 
 import java.util.ArrayList;
@@ -10,13 +8,11 @@ public class BotPlayer implements IPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
-    private IPlayerActions playerActions;
 
     public BotPlayer(int playerID){
         this.playerID = playerID;
         this.hand = new ArrayList<Card>();
         this.score = 0;
-        this.playerActions = new BotAction();
     }
     @Override
     public int getPlayerID(){
@@ -41,7 +37,7 @@ public class BotPlayer implements IPlayer{
     }
     @Override
     public void takeTurn(GameState gameState) {
-        playerActions.turnAction(this, gameState);
+        gameState.getSetup().getTurnLogic().takeTurn(gameState, this);
     }
 
 }

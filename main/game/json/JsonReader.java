@@ -8,8 +8,8 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ReadJson {
-    public static JSONArray jsonData(String filePath){
+public class JsonReader {
+    public JSONArray jsonData(String filePath){
         try (InputStream fInputStream = new FileInputStream(filePath);
             Scanner scanner = new Scanner(fInputStream, "UTF-8").useDelimiter("\\A")) {
     
@@ -21,7 +21,11 @@ public class ReadJson {
     
             // Get the "cards" array from the JSONObject
             JSONArray cardsArray = jsonObject.getJSONArray("cards");
-
+            if (cardsArray == null) {
+                //FIXME: handle error
+                System.out.println("Error reading JSON file");
+                return null;
+            }
             return cardsArray;
 
         } catch (IOException e) {

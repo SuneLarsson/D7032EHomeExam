@@ -1,6 +1,7 @@
-package main.game.piles;
+package main.game.piles.pile;
 
 import main.game.card.Card;
+import main.game.piles.PileManager;
 
 public class SaladPile extends Pile {
     private PileManager pileManager;

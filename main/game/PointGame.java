@@ -6,12 +6,11 @@ import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
 import main.game.gamelogic.PointSaladGame;
 import main.game.network.Client;
-import main.game.network.Server;
-import main.game.piles.SetupSaladPiles;
-import main.game.piles.ISetupPiles;
+import main.game.piles.SetupPiles;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
 import main.game.score.CalculatePoints;
+import main.game.setupgame.CreatePlayers;
 import main.game.setupgame.GameState;
 import main.game.setupgame.ISettings;
 import main.game.setupgame.SaladSettings;
@@ -34,19 +33,18 @@ public class PointGame {
             gameState.setSettings(selectSettings(gameState));
             System.out.println("Game mode: " + gameMode);
             selectPlayers(gameState);
-            if (gameMode.equals("PointSalad")) {
-                //PointSalad setPiles
-                ISetupPiles setPiles = new SetupSaladPiles(gameState);
-                setPiles.createPiles();
-            }
+            
+
             try {
-                Server server = new Server(gameState);
+                CreatePlayers createPlayers = new CreatePlayers(gameState);
+                // Server server = new Server(gameState);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            new SetupPiles(gameState);
             //set Starting player
-            gameState.setCurrentPlayer((int) (Math.random() * (gameState.getPlayers().size())));
+            // gameState.setCurrentPlayer((int) (Math.random() * (gameState.getPlayers().size())));
             gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
             PointSaladGame game = new PointSaladGame(gameState);
             game.gameLoop(gameState);
@@ -146,6 +144,7 @@ public class PointGame {
         int numberPlayers = 0;
         int numberOfBots = 0;
         int maxNumberOfPlayers = gameState.getSettings().getMaxPlayers();
+        int minNumberOfPlayers = gameState.getSettings().getMinPlayers();
         
         // try (Scanner in = new Scanner(System.in)) {
         
@@ -162,17 +161,17 @@ public class PointGame {
         while (true) {
             int maxNumberOfBots =  maxNumberOfPlayers - numberPlayers;
             int minimumBots = 0;
-            if (numberPlayers == 1) {
+            if (numberPlayers == 1 && minNumberOfPlayers != 1) {
                 minimumBots = 1;
             } 
-            if (maxNumberOfBots == -1) {
+            if (maxNumberOfBots < 1) {
                 break;
             } else {
                 System.out.println("Please enter the number of bots ("+ minimumBots +"-" + maxNumberOfBots + "): ");
                 numberOfBots = in.nextInt();
                 if (numberOfBots < 0 || numberOfBots > maxNumberOfBots) {
                     System.out.println("Invalid number of bots. Please try again.");
-                } else if (numberOfBots + numberPlayers < 2) {
+                } else if (numberOfBots + numberPlayers < 2 && minNumberOfPlayers > 1) {
                     System.out.println("Need atleast 2 players. Please select atleast 1 bot.");
                 } else {
                     gameState.setNumberOfBots(numberOfBots);

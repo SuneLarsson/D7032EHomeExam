@@ -17,9 +17,9 @@ public class HandDisplay {
             }
         }
         handString += "\n" + gameState.getSettings().getResourceName() + "\t";
-        // Sum up the number of each vegetable and show the total number of each vegetable
+        // Sum up the number of each resourceCards and show the total number of each resource
         
-        for (String cardType : gameState.getCardTypes()) {
+        for (String cardType : gameState.getSettings().getCardTypes()) {
             CountResources countResources = new CountResources();;
             int count = countResources.countResource(hand, cardType);
             if(count > 0) {

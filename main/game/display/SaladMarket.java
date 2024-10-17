@@ -2,8 +2,8 @@ package main.game.display;
 
 import java.util.ArrayList;
 
-import main.game.piles.Pile;
 import main.game.piles.PileManager;
+import main.game.piles.pile.Pile;
 
 public class SaladMarket implements IMarket {
     

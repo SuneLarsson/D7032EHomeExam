@@ -1,41 +1,38 @@
 package main.game.network;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import main.game.players.BotPlayer;
-import main.game.players.LocalPlayer;
-import main.game.players.OnlinePlayer;
-import main.game.setupgame.GameState;;
+
+import main.game.setupgame.GameState;
+import java.util.ArrayList;
 
 public class Server {
     private ServerSocket aSocket;
+    private ArrayList<Socket> connectionSockets;
 
-    public Server(GameState gameState) throws Exception {
-        int numberPlayers = gameState.getNumPlayers();
-        int numberOfBots = gameState.getNumberOfBots();
-        int playerID = 0;
-        gameState.addPlayer(new LocalPlayer(playerID));
-        playerID++;
-        // players.add(new LocalPlayer(0)); // add this instance as a player
-        // Open for connections if there are online players
-        for (int i = 0; i < numberOfBots; i++) {
-            gameState.addPlayer(new BotPlayer(playerID));
-            playerID++;
-        }
-        if (numberPlayers > 1)
-            aSocket = new ServerSocket(2048);
-        for (int i = numberOfBots + 1; i < numberPlayers + numberOfBots; i++) {
+
+    public Server(GameState gamestate) throws Exception {
+        int numberPlayers = gamestate.getNumPlayers() - 1;
+        aSocket = new ServerSocket(2048);
+        // todo error handling
+        for (int i = 0; i < numberPlayers; i++) {
             Socket connectionSocket = aSocket.accept();
-            ObjectInputStream inFromClient = new ObjectInputStream(connectionSocket.getInputStream());
-            ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
-            gameState.addPlayer(new OnlinePlayer(playerID, connectionSocket, inFromClient, outToClient)); // add an online client
-            System.out.println("Connected to player " + i);
-            outToClient.writeObject("You connected to the server as player " + i + "\n");
-            playerID++;
+            connectionSockets.add(connectionSocket);
         }
     }
+
+    // todo implement close
+    // public void close() {
+    //     try {
+    //         aSocket.close();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+
+    public ArrayList<Socket> getConnectionSockets() {
+        return connectionSockets;
+    }
+
 
 }

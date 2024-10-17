@@ -122,6 +122,7 @@ public class PointSaladCriteria implements ICriteria {
         String veg = criteria.substring(0, criteria.indexOf(":"));
         int countVeg = countResources.countResource(hand, veg);
         //System.out.print("ID3: "+((countVeg%2==0)?7:3) + " ");
+        //todo lägg till if sats för att kolla om det är 0
         this.totalScore += (countVeg%2==0)?7:3;
     }
 

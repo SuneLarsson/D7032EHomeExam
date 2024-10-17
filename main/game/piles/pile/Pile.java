@@ -1,4 +1,4 @@
-package main.game.piles;
+package main.game.piles.pile;
 
 import java.util.ArrayList;
 

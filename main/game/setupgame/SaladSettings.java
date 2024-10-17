@@ -9,12 +9,15 @@ public class SaladSettings implements ISettings {
     private String pointName = "Criteria";
     private String resourceName = "Vegetable";
     private int amountOfEachVegetablePerPlayer = 3;
+    private String jsonPath = "./src/PointSaladManifest.json";
+
 
     @Override
-    public ArrayList<Integer> getAmountOfEachCardType() {
+    public ArrayList<Integer> getAmountOfEachCardType(int numberPlayers) {
         ArrayList<Integer> amountPerType = new ArrayList<>();
+        int amountOfEachVegetable = amountOfEachVegetablePerPlayer * numberPlayers;
         for (int i = 0; i < vegetableTypes.size(); i++) {
-            amountPerType.add(amountOfEachVegetablePerPlayer);
+            amountPerType.add(amountOfEachVegetable);
         }
         // amountPerType.add(amountOfEachVegetablePerPlayer);
         return amountPerType;
@@ -51,5 +54,11 @@ public class SaladSettings implements ISettings {
     public int startingPlayerRule(int numPlayers) {
         return (int) (Math.random() * numPlayers);
     }
+
+    @Override
+    public String getJsonPath() {
+        return jsonPath;
+    }
+
 
 }

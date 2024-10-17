@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 import main.game.PointGame;
 import main.game.gamelogic.PointSaladGame;
 import main.game.network.Server;
-import main.game.piles.ISetupPiles;
-import main.game.piles.Pile;
 import main.game.piles.PileManager;
-import main.game.piles.SetupSaladPiles;
+import main.game.piles.SetupPiles;
+import main.game.piles.pile.Pile;
+import main.game.piles.piles.ICreatePiles;
+import main.game.setupgame.CreatePlayers;
 import main.game.setupgame.GameState;
 import main.game.setupgame.SaladSettings;
 
@@ -22,27 +23,30 @@ import java.util.Set;
 class PointSaladTest {
     private PointSaladGame game;
     private GameState gameState;
-    private ISetupPiles setPiles;
+    private ICreatePiles setPiles;
     private Server server;
     private PointSaladGame pointSaladGame;
     private PileManager pileManager;
 
     @BeforeEach
     void setUp() {
-        gameState = new GameState("pointSalad");
+        gameState = new GameState("PointSalad");
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
         gameState.setNumberOfBots(1);
-        setPiles = new SetupSaladPiles(gameState);
-        pileManager = gameState.getPileManager();
-        setPiles.createPiles();
+        new SetupPiles(gameState);
+        // pileManager = gameState.getPileManager();
+        // setPiles.createPiles();
         try {
-            server = new Server(gameState);
+            CreatePlayers createPlayers = new CreatePlayers(gameState);
+            // Server server = new Server(gameState);
+
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
         pointSaladGame = new PointSaladGame(gameState);
+        pileManager = gameState.getPileManager();
     }
 
     @Test

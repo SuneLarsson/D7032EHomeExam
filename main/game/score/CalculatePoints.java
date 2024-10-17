@@ -8,7 +8,7 @@ import main.game.setupgame.GameState;
 public class CalculatePoints {
 
     public void scorePoints(GameState gameState) {
-        ArrayList<String> cardTypes = gameState.getCardTypes();
+        ArrayList<String> cardTypes = gameState.getSettings().getCardTypes();
         ArrayList<IPlayer> players = gameState.getPlayers();
         ICriteria ScoreCriteria;
         for (IPlayer player : players) {

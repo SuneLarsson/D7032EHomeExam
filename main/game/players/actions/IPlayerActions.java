@@ -5,5 +5,9 @@ import main.game.players.IPlayer;
 import main.game.setupgame.GameState;
 
 public interface IPlayerActions {
-    void turnAction(IPlayer player, GameState gameState) ;
+    // void turnAction(IPlayer player, GameState gameState) ;
+    boolean drawCardFromPile(int pileIndex);
+    boolean takeFromMarket(String pileChoice);
+
+
 }

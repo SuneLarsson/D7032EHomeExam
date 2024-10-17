@@ -9,5 +9,7 @@ public interface ISettings {
     String getPointName();
     String getResourceName();
     int startingPlayerRule(int numPlayers);
-    ArrayList<Integer> getAmountOfEachCardType();
+    ArrayList<Integer> getAmountOfEachCardType(int numberPlayers);
+    String getJsonPath();
+
 }

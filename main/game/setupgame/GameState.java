@@ -2,18 +2,20 @@ package main.game.setupgame;
 
 import java.util.ArrayList;
 
+import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.piles.PileManager;
 import main.game.players.IPlayer;
 
 public class GameState {
+    private String gameMode;
     private int numPlayers;
     private int numberOfBots;
     private ArrayList<IPlayer> players;
     private int currentPlayer;
     private PileManager pileManager;
-    private String gameMode;
-    private ArrayList<String> cardTypes;
     private ISettings settings;
+    private Setup setup;
+    private ITurnLogic turnLogic;
     
 
     public GameState(String gameMode) {
@@ -22,21 +24,13 @@ public class GameState {
         this.currentPlayer = 0;
         this.pileManager = new PileManager();
         this.gameMode = gameMode;
+        this.setup = new Setup(this);
     }
 
     public void setSettings(ISettings settings) {
         this.settings = settings;
-        // TODO flytta cardTypes till settings
-        this.cardTypes = settings.getCardTypes();
     }
 
-    // public int getMaxPlayers() {
-    //     return settings.getMaxPlayers();
-    // }
-
-    // public int getMinPlayers() {
-    //     return settings.getMinPlayers();
-    // }
     public int getNumPlayers() {
         
         return numPlayers;
@@ -79,25 +73,25 @@ public class GameState {
         return gameMode;
     }
 
-    // public String getResourceName() {
-    //     return settings.getResourceName();
-    // }
-
-    // public String getPointName() {
-    //     return settings.getPointName();
-    // }
-
     public ISettings getSettings() {
         return settings;
     }
-    public ArrayList<String> getCardTypes() {
-        return cardTypes;
+
+    public Setup getSetup() {
+        return setup;
     }
 
-    public void setCardTypes(ArrayList<String> cardTypes) {
-        this.cardTypes = cardTypes;
+    public int availableMarketCards(){
+        int marketCards = 0;
+        for (int i = 0; i < pileManager.getPiles().size(); i++) {
+            for (int j = 0; j < 2; j++) {
+                if (pileManager.getPile(i).getMarketCard(j) != null) {
+                    marketCards++;
+                }
+            }
+        }
+        return marketCards;
     }
-
-
+    
 
 }
