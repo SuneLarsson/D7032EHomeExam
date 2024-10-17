@@ -6,10 +6,11 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonReader {
-    public JSONArray jsonData(String filePath){
+    public JSONArray jsonData(String filePath) {
         try (InputStream fInputStream = new FileInputStream(filePath);
             Scanner scanner = new Scanner(fInputStream, "UTF-8").useDelimiter("\\A")) {
     
@@ -20,17 +21,16 @@ public class JsonReader {
             JSONObject jsonObject = new JSONObject(jsonString);
     
             // Get the "cards" array from the JSONObject
-            JSONArray cardsArray = jsonObject.getJSONArray("cards");
-            if (cardsArray == null) {
-                //FIXME: handle error
-                System.out.println("Error reading JSON file");
-                return null;
-            }
-            return cardsArray;
+            // JSONArray cardsArray = jsonObject.getJSONArray("cards");
+            return jsonObject.getJSONArray("cards");
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            System.out.println("File error: " + e.getMessage());
+            return new JSONArray(); // Return empty JSONArray instead of null
+        } catch (JSONException e) {
+            System.out.println("JSON parsing error: " + e.getMessage());
+            return new JSONArray(); // Return empty JSONArray instead of null
         }
+
     }
 }

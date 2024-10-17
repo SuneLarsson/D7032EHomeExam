@@ -2,7 +2,7 @@ package main.game.setupgame;
 
 import java.util.ArrayList;
 
-import main.game.gamelogic.turnlogic.ITurnLogic;
+// import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.piles.PileManager;
 import main.game.players.IPlayer;
 
@@ -15,7 +15,7 @@ public class GameState {
     private PileManager pileManager;
     private ISettings settings;
     private Setup setup;
-    private ITurnLogic turnLogic;
+    // private ITurnLogic turnLogic;
     
 
     public GameState(String gameMode) {

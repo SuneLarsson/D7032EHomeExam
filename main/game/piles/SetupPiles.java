@@ -25,6 +25,7 @@ public class SetupPiles {
         pilesCreator.createPiles(gameState, buildDecks.getDecks());
 
         for(Pile pile : gameState.getPileManager().getPiles()) {
+            System.out.println(pile.getCards().get(0));
             pile.setupMarket();
         }
         

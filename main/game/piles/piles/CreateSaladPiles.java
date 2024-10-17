@@ -19,12 +19,15 @@ public class CreateSaladPiles implements ICreatePiles {
         shufflePiles(decks);
         ArrayList<Card> combineDeck = new ArrayList<>();
         int numberOfPlayers = gameState.getPlayers().size();
+        System.out.println("Number of players: " + numberOfPlayers);
         for (ArrayList<Card> deck : decks.values()) {
             int j = 0;
             for (int i = 0; i < gameState.getSettings().getAmountOfEachCardType(numberOfPlayers).get(j); i++) {
                 combineDeck.add(deck.remove(0));
             }
         }
+
+        System.out.println("Deck size: " + combineDeck.size());
         shuffleDeck(combineDeck);
         
         //divide the deck into 3 piles
@@ -47,6 +50,7 @@ public class CreateSaladPiles implements ICreatePiles {
         pileManager.addPile(pile2);
         pileManager.addPile(pile3);
 
+        
     }
     
 

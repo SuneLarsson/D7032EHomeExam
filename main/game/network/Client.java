@@ -16,9 +16,13 @@ public class Client {
             nextMessage = (String) inFromServer.readObject();
             System.out.println(nextMessage);
             if (nextMessage.contains("Take") || nextMessage.contains("into")) {
-                Scanner in = new Scanner(System.in);
-                outToServer.writeObject(in.nextLine());
+                try (Scanner in = new Scanner(System.in)) {
+                    outToServer.writeObject(in.nextLine());
+                }
             }
         }
+        aSocket.close();
+        outToServer.close();
+        inFromServer.close();
     }
 }

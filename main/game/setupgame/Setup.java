@@ -6,7 +6,6 @@ import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.gamelogic.turnlogic.SaladTurnLogic;
 import main.game.piles.piles.CreateSaladPiles;
 import main.game.piles.piles.ICreatePiles;
-import main.game.players.actions.IPlayerActions;
 import main.game.score.ICriteria;
 import main.game.score.PointSaladCriteria;
 

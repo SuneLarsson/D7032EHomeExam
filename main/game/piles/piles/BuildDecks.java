@@ -12,14 +12,12 @@ import main.game.card.ICardFactory;
 import main.game.setupgame.GameState;
 
 public class BuildDecks {
-    private GameState gameState;
     private JSONArray cardsArray;
     private Map<String, ArrayList<Card>> decks;
     private ICardFactory ICardFactory;
     private ArrayList<String> cardTypes;
 
     public BuildDecks(GameState gameState, JSONArray cardsArray) {
-        this.gameState = gameState;
         this.cardsArray = cardsArray;
         this.decks = new HashMap<>();
         this.cardTypes = gameState.getSettings().getCardTypes();

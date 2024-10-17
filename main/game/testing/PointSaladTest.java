@@ -1,52 +1,142 @@
 package main.game.testing;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.game.PointGame;
 import main.game.gamelogic.PointSaladGame;
-import main.game.network.Server;
 import main.game.piles.PileManager;
 import main.game.piles.SetupPiles;
 import main.game.piles.pile.Pile;
-import main.game.piles.piles.ICreatePiles;
 import main.game.setupgame.CreatePlayers;
 import main.game.setupgame.GameState;
 import main.game.setupgame.SaladSettings;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.HashSet;
 import java.util.Set;
 
 class PointSaladTest {
-    private PointSaladGame game;
+    // private PointSaladGame game;
     private GameState gameState;
-    private ICreatePiles setPiles;
-    private Server server;
-    private PointSaladGame pointSaladGame;
+    // private ICreatePiles setPiles;
+    // private PointSaladGame pointSaladGame;
     private PileManager pileManager;
+
+
+
+    // @BeforeAll
+    // static void setUpBeforeClass() {
+    //     JsonReader jsonReader = new JsonReader();
+    //     cardsArray = jsonReader.jsonData("./src/PointSaladManifest.json");
+    // }
+
 
     @BeforeEach
     void setUp() {
         gameState = new GameState("PointSalad");
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
-        gameState.setNumberOfBots(1);
-        new SetupPiles(gameState);
-        // pileManager = gameState.getPileManager();
-        // setPiles.createPiles();
+        gameState.setNumberOfBots(5);
         try {
-            CreatePlayers createPlayers = new CreatePlayers(gameState);
-            // Server server = new Server(gameState);
-
+            new CreatePlayers(gameState);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        new SetupPiles(gameState);
         gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
-        pointSaladGame = new PointSaladGame(gameState);
+        new PointSaladGame(gameState);
         pileManager = gameState.getPileManager();
+    }
+
+    @AfterEach
+    void tearDown() {
+        gameState = null;
+        pileManager = null;
+    }
+
+    // Rule 1: There can be between 2 and 6 players.
+    // TODO: Implement test for Rule 1
+    @Test
+    void testRule1() {
+    }
+
+    // Rule 2: The deck consists of 108 cards (as specified in the PointSaladManifest.json file published in Canvas). A card
+    // has two sides, one with the criteria consisting of scoring rules, the other with one of six different vegetables
+    // (Pepper, Lettuce, Carrot, Cabbage, Onion, Tomato). There are 18 of each vegetable.
+  
+    @Test
+    void testRule2() {
+        // Check that there are 18 of each vegetable
+        int numPepper = 0;
+        int numLettuce = 0;
+        int numCarrot = 0;
+        int numCabbage = 0;
+        int numOnion = 0;
+        int numTomato = 0;
+        // int pileSize = pileManager.getPile(1).getPileSize();
+        for(Pile pile : pileManager.getPiles()) {
+            for(int i = 0; i < pile.getPileSize(); i++) {
+                    switch(pile.getCards().get(i).getResourceSide()) {
+                        case "PEPPER":
+                            numPepper++;
+                            break;
+                        case "LETTUCE":
+                            numLettuce++;
+                            break;
+                        case "CARROT":
+                            numCarrot++;
+                            break;
+                        case "CABBAGE":
+                            numCabbage++;
+                            break;
+                        case "ONION":
+                            numOnion++;
+                            break;
+                        case "TOMATO":
+                            numTomato++;
+                            break;
+                    }
+                
+            }
+        }
+
+        for(Pile pile : pileManager.getPiles()) {
+            for(int i = 0; i < 2; i++) {
+                switch(pile.getMarketCard(i).getResourceSide()) {
+                    case "PEPPER":
+                        numPepper++;
+                        break;
+                    case "LETTUCE":
+                        numLettuce++;
+                        break;
+                    case "CARROT":
+                        numCarrot++;
+                        break;
+                    case "CABBAGE":
+                        numCabbage++;
+                        break;
+                    case "ONION":
+                        numOnion++;
+                        break;
+                    case "TOMATO":
+                        numTomato++;
+                        break;
+                }
+            }
+        }
+
+
+
+        // assertEquals(18, pileSize);
+        assertEquals(18, numPepper);
+        assertEquals(18, numLettuce);
+        assertEquals(18, numCarrot);
+        assertEquals(18, numCabbage);
+        assertEquals(18, numOnion);
+        assertEquals(18, numTomato);
     }
 
     @Test

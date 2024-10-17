@@ -23,12 +23,16 @@ public class Server {
         }
     }
 
-    // todo implement close
-    // public void close() {
-    //     try {
-    //         aSocket.close();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
+    public void close() {
+        try {
+            aSocket.close();
+            for (Socket connectionSocket : connectionSockets) {
+                connectionSocket.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public ArrayList<Socket> getConnectionSockets() {
         return connectionSockets;

@@ -34,11 +34,10 @@ public class PointGame {
             System.out.println("Game mode: " + gameMode);
             selectPlayers(gameState);
             
-
             try {
-                CreatePlayers createPlayers = new CreatePlayers(gameState);
+                new CreatePlayers(gameState);
                 // Server server = new Server(gameState);
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -57,9 +56,9 @@ public class PointGame {
             //check if args[0] is a String (ip address) or an integer (number of players)
             // fixa så man direkt kan skriva in game mode och antal spelare och bots
 			if(args[0].matches("\\d+")) {
-                // gameMode = String.valueOf(args[0]);
-                // numberPlayers = Integer.parseInt(args[1]);
-				// numberOfBots = Integer.parseInt(args[2]);
+                // gameMode = String.valueOf(args[2]);
+                // numberPlayers = Integer.parseInt(args[0]);
+				// numberOfBots = Integer.parseInt(args[1]);
 			}
 			else {
                 try {
@@ -185,7 +184,7 @@ public class PointGame {
 
     public static void main(String[] args) {
         try {
-            PointGame game = new PointGame (args);
+            new PointGame (args);
             // game.play();
             // new PointGame (String[] args);
         } catch (Exception e) {

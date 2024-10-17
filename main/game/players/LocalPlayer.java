@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import main.game.card.Card;
-import main.game.gamelogic.turnlogic.ITurnLogic;
-import main.game.players.actions.IPlayerActions;
+
 import main.game.setupgame.GameState;
 
 public class LocalPlayer implements IHumanPlayer{

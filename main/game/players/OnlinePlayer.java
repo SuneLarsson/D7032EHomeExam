@@ -6,8 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-import main.game.display.SendMessage;
-import main.game.players.actions.IPlayerActions;
+
 import main.game.setupgame.GameState;
 
 public class OnlinePlayer implements IHumanPlayer {

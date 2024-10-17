@@ -1,8 +1,7 @@
 package main.game.players.actions;
 
 import main.game.display.HandDisplay;
-import main.game.display.IMarket;
-import main.game.display.SaladMarket;
+
 import main.game.piles.PileManager;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
@@ -13,7 +12,7 @@ public class SaladHumanActions implements IPlayerActions {
     private GameState gameState;
     private PileManager pileManager;
     private HandDisplay handDisplay;
-    private IMarket saladMarket;
+
 
 
     public SaladHumanActions(IPlayer thisPlayer, GameState gameState) {
@@ -21,7 +20,6 @@ public class SaladHumanActions implements IPlayerActions {
         this.humanPlayer = (IHumanPlayer) thisPlayer;
         this.pileManager = gameState.getPileManager();
         this.handDisplay = new HandDisplay();
-        this.saladMarket = new SaladMarket();
     }
 
     @Override
