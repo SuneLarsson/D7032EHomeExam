@@ -16,7 +16,6 @@ public class SaladSettings implements ISettings {
     public ArrayList<Integer> getAmountOfEachCardType(int numberPlayers) {
         ArrayList<Integer> amountPerType = new ArrayList<>();
         int amountOfEachVegetable = amountOfEachVegetablePerPlayer * numberPlayers;
-        System.out.println("Amount of each vegetable: " + amountOfEachVegetable);
         for (int i = 0; i < vegetableTypes.size(); i++) {
             amountPerType.add(amountOfEachVegetable);
         }
@@ -59,6 +58,11 @@ public class SaladSettings implements ISettings {
     @Override
     public String getJsonPath() {
         return jsonPath;
+    }
+
+    @Override
+    public int getTurnLimit() {
+        return -1;
     }
 
 

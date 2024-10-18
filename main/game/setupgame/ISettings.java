@@ -11,5 +11,6 @@ public interface ISettings {
     int startingPlayerRule(int numPlayers);
     ArrayList<Integer> getAmountOfEachCardType(int numberPlayers);
     String getJsonPath();
+    int getTurnLimit();
 
 }

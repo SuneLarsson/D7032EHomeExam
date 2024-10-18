@@ -49,8 +49,8 @@ public class SaladHumanActions implements IPlayerActions {
                 humanPlayer.sendMessage("\nYou can't take the same vegetable twice.\nTry again!\n");
                 return false;
             }
-     
         } 
+        
         boolean validChoice = false;
         for(int charIndex = 0; charIndex < pileChoice.length(); charIndex++) {
             if(Character.toUpperCase(pileChoice.charAt(charIndex)) < 'A' || Character.toUpperCase(pileChoice.charAt(charIndex)) > 'F') {
@@ -82,9 +82,7 @@ public class SaladHumanActions implements IPlayerActions {
     }
 
     // Rule 8: If the player has a criteria card in their hand, they can flip it to a veggie card
-    public boolean flipCriteriaCard(GameState gameState) {
-        humanPlayer.sendMessage("\n"+handDisplay.displayHand(humanPlayer.getHand(), gameState)+"\nWould you like to turn a criteria card into a veggie card? (Syntax example: n or 2)");
-        String choice = humanPlayer.readMessage();
+    public boolean flipCriteriaCard(String choice) {
         if(choice.matches("\\d")) {
             int cardIndex = Integer.parseInt(choice);
             if (!humanPlayer.getHand().get(cardIndex).isPointSideUp()) {

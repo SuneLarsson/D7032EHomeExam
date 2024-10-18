@@ -170,7 +170,7 @@ public class PointSalad {
 		ArrayList<Card> deckOnion = new ArrayList<>();
 		ArrayList<Card> deckTomato = new ArrayList<>();
 
-        try (InputStream fInputStream = new FileInputStream("./src/PointSaladManifest.json");
+        try (InputStream fInputStream = new FileInputStream("PointSaladManifest.json");
              Scanner scanner = new Scanner(fInputStream, "UTF-8").useDelimiter("\\A")) {
 
             // Read the entire JSON file into a String
@@ -494,7 +494,6 @@ public class PointSalad {
 	public PointSalad(String[] args) {
 		int numberPlayers = 0;
 		int numberOfBots = 0;
-
 		if(args.length == 0) {
 			System.out.println("Please enter the number of players (1-6): ");
 			Scanner in = new Scanner(System.in);

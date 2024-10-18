@@ -24,7 +24,9 @@ public class CreatePlayers {
     }
 
     private void createLocalPlayer() {
-        gameState.addPlayer(new LocalPlayer(0));
+        if (gameState.getNumPlayers() != 0) {
+            gameState.addPlayer(new LocalPlayer(0)); 
+        }
     }
 
     // todo error handling

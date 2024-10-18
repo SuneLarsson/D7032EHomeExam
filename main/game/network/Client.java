@@ -18,6 +18,7 @@ public class Client {
             if (nextMessage.contains("Take") || nextMessage.contains("into")) {
                 try (Scanner in = new Scanner(System.in)) {
                     outToServer.writeObject(in.nextLine());
+                    in.close();
                 }
             }
         }

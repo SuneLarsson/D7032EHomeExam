@@ -58,7 +58,7 @@ public class SaladPile extends Pile {
         Card aCard = veggieCards[index];
         if (getPileSize() <= 0) {
             int biggestPileIndex = pileManager.getBiggestPileIndex(pileIndex);
-            if (pileManager.getPile(biggestPileIndex).getPileSize() > 1) {
+            if (pileManager.getPile(biggestPileIndex).getPileSize() > 0) {
                 Card card = pileManager.removeCardFromPile(biggestPileIndex);
                 if (card instanceof Card) {  // Check if card is Card
                     addCard(card);

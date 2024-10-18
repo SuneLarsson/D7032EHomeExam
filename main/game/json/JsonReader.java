@@ -16,6 +16,7 @@ public class JsonReader {
     
             // Read the entire JSON file into a String
             String jsonString = scanner.hasNext() ? scanner.next() : "";
+            scanner.close();
     
             // Parse the JSON string into a JSONObject
             JSONObject jsonObject = new JSONObject(jsonString);

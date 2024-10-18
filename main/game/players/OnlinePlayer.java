@@ -47,7 +47,7 @@ public class OnlinePlayer implements IHumanPlayer {
         catch (Exception e) {}
     }
     @Override
-    public String readMessage() {
+    public String readMessage(GameState gameState) {
         try{
             message = (String) inFromClient.readObject();
         } 
@@ -71,21 +71,5 @@ public class OnlinePlayer implements IHumanPlayer {
         gameState.getSetup().getTurnLogic().takeTurn(gameState, this);
     }
 
-    
-    // public void setScore(int score) {
-    //     this.score = score;
-    // }
-    
-    // public void addScore(int score) {
-    //     this.score += score;
-    // }
-    
-    // public void resetScore() {
-    //     this.score = 0;
-    // }
-    
-    // public String toString() {
-    //     return name + " (" + score + ")";
-    // }
     
 }

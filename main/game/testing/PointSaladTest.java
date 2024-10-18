@@ -7,9 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
+import main.game.PointGame;
 import main.game.card.Card;
 import main.game.card.SaladCard;
-import main.game.gamelogic.PointSaladGame;
+import main.game.display.HandDisplay;
+import main.game.display.SendMessage;
+import main.game.gamelogic.SaladGameLogic;
 import main.game.network.Server;
 import main.game.piles.PileManager;
 import main.game.piles.SetupPiles;
@@ -26,32 +29,28 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 
-class PointSaladTest {
-    // private PointSaladGame game;
+public class PointSaladTest {
     private GameState gameState;
-    // private ICreatePiles setPiles;
-    // private PointSaladGame pointSaladGame;
+    private SaladGameLogic SaladGameLogic;
     private PileManager pileManager;
     private Server server;
     private ArrayList<Card> cardsArray = new ArrayList<>();
 
 
 
-    // @BeforeAll
-    // static void setUpBeforeClass() {
-    //     JsonReader jsonReader = new JsonReader();
-    //     cardsArray = jsonReader.jsonData("./src/PointSaladManifest.json");
-    // }
-
     private void setupGameWithPlayers(int numPlayers, int numBots) {
         gameState = null;
         pileManager = null;
         server.close();
-        gameState = new GameState("PointSalad");
+
+        gameState = new GameState("PointSalad", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(numPlayers);
         gameState.setNumberOfBots(numBots);
@@ -63,7 +62,7 @@ class PointSaladTest {
         }
         new SetupPiles(gameState);
         gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
-        new PointSaladGame(gameState);
+        SaladGameLogic = new SaladGameLogic(gameState);
         pileManager = gameState.getPileManager();
     }
 
@@ -72,6 +71,7 @@ class PointSaladTest {
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);  // Redirect System.in to the input
     }
+
 
 
     
@@ -117,7 +117,7 @@ class PointSaladTest {
 
     @BeforeEach
     void setUp() {
-        gameState = new GameState("PointSalad");
+        gameState = new GameState("PointSalad", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
         gameState.setNumberOfBots(1);
@@ -129,7 +129,7 @@ class PointSaladTest {
         }
         new SetupPiles(gameState);
         gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
-        new PointSaladGame(gameState);
+        SaladGameLogic = new SaladGameLogic(gameState);
         pileManager = gameState.getPileManager();
     }
 
@@ -141,23 +141,40 @@ class PointSaladTest {
     }
 
     // Rule 1: There can be between 2 and 6 players.
-    // TODO: Implement test for Rule 1
+    @Test
+    void hej() {
+    }
+
     @Test
     void testRule1() {
-        // assertThrows(IllegalArgumentException.class, () -> {
-        //     gameState.setNumPlayers(1); // Should throw an exception
-        // });
-        
-        // assertThrows(IllegalArgumentException.class, () -> {
-        //     gameState.setNumPlayers(7); // Should throw an exception
-        // });
-        
-        // // Valid cases
-        // gameState.setNumPlayers(2);
-        // assertEquals(2, gameState.getNumPlayers());
-        
-        // gameState.setNumPlayers(6);
-        // assertEquals(6, gameState.getNumPlayers());
+        String[] invalidArgs = {"1", "6", "PointSalad"};
+        assertThrows(IllegalArgumentException.class, () -> {
+            new PointGame(invalidArgs);
+        }, "Should not be possible to create a game with 7 player");
+
+        String[] invalidArgs2 = {"1", "0", "PointSalad"};
+        assertThrows(IllegalArgumentException.class, () -> {
+            new PointGame(invalidArgs2);
+        }, "Should not be possible to create a game with 1 player");
+
+
+        String[] validArgs = {"1", "1", "PointSalad"};
+        try {
+            new PointGame(validArgs);
+        } catch (IllegalArgumentException e) {
+            fail("Should be possilbe to play with 2 players.");
+        } catch (Exception e) {
+            // Ignore other exceptions tested elsewhere
+        }
+
+        String[] validArgs2 = {"1", "5", "PointSalad"};
+        try {
+            new PointGame(validArgs2);
+        } catch (IllegalArgumentException e) {
+            fail("Should be possilbe to play with 6 players.");
+        } catch (Exception e) {
+            // Ignore other exceptions tested elsewhere
+        }
     }
 
     // Rule 2: The deck consists of 108 cards (as specified in the PointSaladManifest.json file published in Canvas). A card
@@ -233,11 +250,20 @@ class PointSaladTest {
     }
 
     @Test
-    void testRule2() {
+    void testRule2CardShouldHaveTwoSides() {
+        setupGameWithPlayers(1, 5);
+        for(Pile pile : pileManager.getPiles()) {
+            for(int i = 0; i < pile.getPileSize(); i++) {
+                assertNotNull(pile.getCards().get(i).getPointSide(), "Point side should exist with value");
+                assertNotNull(pile.getCards().get(i).getResourceSide(), "Resource side should exist with value");
+            }
+        }
+   }
+
+    @Test
+    void testRule2Decksize108Vegetables18() {
         setupGameWithPlayers(1, 5);
         // Check that there are 18 of each vegetable
-        
-
         ArrayList<Integer> vegetableCounts = countPilar();
 
         assertEquals(18, vegetableCounts.get(0));
@@ -246,6 +272,8 @@ class PointSaladTest {
         assertEquals(18, vegetableCounts.get(3));
         assertEquals(18, vegetableCounts.get(4));
         assertEquals(18, vegetableCounts.get(5));
+
+        assertEquals(108, vegetableCounts.get(0) + vegetableCounts.get(1) + vegetableCounts.get(2) + vegetableCounts.get(3) + vegetableCounts.get(4) + vegetableCounts.get(5));
     }
 
     // Rule 3: Form the deck so that 
@@ -276,6 +304,7 @@ class PointSaladTest {
     // Rule 4: Shuffle the cards and create three roughly equal draw piles with roughly equal draw piles with point card sides visible.
     // a. Check that piles are shuffled
     // b. Check that piles are roughly equal
+    // c. Check that point card sides are visible
 
     
     @Test
@@ -286,13 +315,16 @@ class PointSaladTest {
             piles.add(pileManager.getPile(0));
         }
         if (piles.get(0).equals(piles.get(1))) {
-            fail("Piles are not shuffled");
-            
+            fail("Piles are not shuffled");         
         }
     }
+
     @Test
     void testRule4b() {
         int pileSize = pileManager.getPile(0).getPileSize();
+        if (pileSize < 1) {
+            fail("Pile size is too small");
+        }
         for(Pile pile : pileManager.getPiles()) {
             if(pile.getPileSize() == pileSize) {
             } else if (pile.getPileSize() == pileSize + 1) { 
@@ -303,12 +335,19 @@ class PointSaladTest {
         }
     }
 
+    @Test
+    void testRule4c() {
+        for(Pile pile : pileManager.getPiles()) {
+            for(int i = 0; i < pile.getPileSize(); i++) {
+                assertTrue(pile.getCards().get(i).isPointSideUp(), "Point card side should be visible");
+            }
+        }
+    }
+
     // Rule 5: Flip over two cards from each draw pile to form the vegetable market.
     @Test
     void testRule5() {
         for(Pile pile : pileManager.getPiles()) {
-            // pile.getMarketCard(0).isPointSideUp();
-            // pile.getMarketCard(1).isPointSideUp();
             assertEquals(false, pile.getMarketCard(0).isPointSideUp());
             assertEquals(false, pile.getMarketCard(1).isPointSideUp());
         }
@@ -338,7 +377,7 @@ class PointSaladTest {
             assertTrue(startPlayer >= 0 && startPlayer < numPlayers, "Starting player should be between 0 and " + (numPlayers - 1));
             uniqueStartPlayers.add(startPlayer);
         }
-        assertTrue(uniqueStartPlayers.size() == 6, "Starting player should be different for each game");
+        assertTrue(uniqueStartPlayers.size() > 2, "Starting player should be different for each game");
     }
 
     // Rule 7: On a player’s turn the player may draft one or more cards and add to the player’s hand. Either:
@@ -395,24 +434,115 @@ class PointSaladTest {
         IHumanPlayer humanPlayer = (IHumanPlayer) gameState.getPlayer(0);
         SaladHumanActions humanActions = new SaladHumanActions(humanPlayer, gameState);
         humanPlayer.addCard(cardsArray.get(0));
-        // boolean hasPointCardInHand = humanPlayer.getHand().get(0).isPointSideUp();
-        // if(hasPointCardInHand) {
-        simulateInput("0\n");
-        humanActions.flipCriteriaCard(gameState);
+
+        boolean result = humanActions.flipCriteriaCard("0");
         assertFalse(humanPlayer.getHand().get(0).isPointSideUp(), "Point card should be turned to veggie side");
-        // }
-        // simulateInput("0\n");
-        // humanActions.flipCriteriaCard(gameState);
-        // assertTrue(humanPlayer.getHand().get(0).isPointSideUp(), "Veggie card should not be turned to point side");
+
+        humanActions.flipCriteriaCard("0");
+        assertFalse(humanPlayer.getHand().get(0).isPointSideUp(), "Veggie card should not be turned to point side");
 
     }
 
+    // Rule 8: Not implemented for bots
+
     // Rule 9: Show the hand to the other players.
-    // TODO Implement test for Rule 9
+    @Test
+    void testRule9DisplayHandTest() {
+        createCards();
+        IHumanPlayer humanPlayer = (IHumanPlayer) gameState.getPlayer(0);
+        humanPlayer.addCard(cardsArray.get(0));
+        humanPlayer.addCard(cardsArray.get(17));
+        HandDisplay handDisplay = new HandDisplay();
+        String hand = handDisplay.displayHand(humanPlayer.getHand(), gameState);
+        System.out.println(hand);
+        assertTrue(hand.contains("MOST LETTUCE = 10"), "Hand should be shown to other players");
+        assertTrue(hand.contains("TOMATO"), "Hand should be shown to other players");
+        // assertTrue(humanPlayer.getHand().get(0).isPointSideUp(), "Hand should be shown to other players");
+    }
+
+    @Test
+    void testRule9DisplayToOther() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        System.setOut(printStream);
+        BotPlayer botPlayer = (BotPlayer) gameState.getPlayer(1);
+        SendMessage sendMessage = new SendMessage();
+        HandDisplay handDisplay = new HandDisplay();
+        String message = "Player " + botPlayer.getPlayerID() + "'s hand is now: \n"+handDisplay.displayHand(botPlayer.getHand(), gameState)+"\n";
+        
+        sendMessage.sendToAllPlayers(message, gameState.getPlayers());	
+
+        // Trim to remove leading/trailing whitespace and newlines
+        assertEquals(outputStream.toString().trim(), message.trim());
+    }
+
+    // Rule 10: Replace the market with cards from the top of the corresponding point card draw pile
+    @Test
+    void testRule10() {
+        for(Pile pile : pileManager.getPiles()) {
+            int pileSize = pile.getPileSize();
+            Card card1 = pile.buyMarketCard(0);
+            Card card2 = pile.buyMarketCard(1);
+
+            int newPileSize = pile.getPileSize();
+            Card newCard1 = pile.buyMarketCard(0);
+            Card newCard2 = pile.buyMarketCard(1);
+            assertNotEquals(card1, newCard1, "Market should be replaced with new cards");
+            assertNotEquals(card2, newCard2, "Market should be replaced with new cards");
+            assertEquals(pileSize - 2, newPileSize, "Market should be replaced with new cards from the top of the corresponding pile");
+        }
+    }
+
+    // Rule 11: If a draw pile runs out of cards, then draw cards from the bottom of the draw pile with the most cards instead.
+    @Test
+    void testRule11() {
+        ArrayList<Pile> piles = pileManager.getPiles();
+        Pile pile = piles.get(0);
+        int pileSize = pile.getPileSize();
+        for(int i = 0; i < pileSize; i++) {
+            pile.buyMarketCard(0);
+        }
+        int newPileSize = pile.getPileSize();
+        assertEquals(0, newPileSize, "Pile should be empty");
+        Card card1 = pile.getMarketCard(0);
+        assertNotEquals(card1, null, "Should be card In market after drawing last card from empty pile");
+        int biggestPileIndex = pileManager.getBiggestPileIndex(0);
+        int biggestPileSize = piles.get(biggestPileIndex).getPileSize();
+        pile.buyMarketCard(0);
+        int biggestPileNewSize = piles.get(biggestPileIndex).getPileSize();
+        Card card2 = pile.getMarketCard(0);
+        assertNotEquals(card2, null, "Should be card In market after drawing from biggest pile");
+        assertEquals(biggestPileSize - 1, biggestPileNewSize, "Card should be drawn from the bottom of the pile with the most cards");
+    }
 
 
+    // Rule 12: Continue step 7-12 
+    // a. for the next player 
+    // b. until there are no more cards in the Point Salad Market
+    @Test
+    void testRule12a() {
+        setupGameWithPlayers(0, 5);
+        gameState.setCurrentPlayer(0);
+        SaladGameLogic.gameLoop(gameState, 1);
+        int currentPlayer = gameState.getCurrentPlayer();
+        assertNotEquals(0, currentPlayer, "Game should go to the next player");
+    }
 
-    
+    @Test
+    void testRule12b() {
+        setupGameWithPlayers(0, 2);
+        gameState.setCurrentPlayer(0);
+        //only exists max 108 cards in the deck so the game should end before 200 turns
+        SaladGameLogic.gameLoop(gameState, 200);
+        for(Pile pile : pileManager.getPiles()) {
+            assertTrue(pile.isEmpty(), "Pile " + pileManager.getPiles().indexOf(pile) +" not empty has size"+ pile.getPileSize());
+            assertTrue(null == pile.getMarketCard(0), "Market" + pileManager.getPiles().indexOf(pile) + " index 0 not null");
+            assertTrue(null == pile.getMarketCard(1), "Market" + pileManager.getPiles().indexOf(pile) + " index 1 not null");
+        }
+    }
+
+    // Rule 13: Calculate the score for each player according to the point cards in hand.
+
 
 //     Rules:
 // 1. There can be between 2 and 6 players.

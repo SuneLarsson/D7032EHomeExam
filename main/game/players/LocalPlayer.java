@@ -11,44 +11,32 @@ public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
-    private Scanner scanner;
+    // private Scanner scanner;
     // private IPlayerActions playerActions;
     
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
         this.hand = new ArrayList<Card>();
-        this.scanner = new Scanner(System.in);
+        // this.scanner = new Scanner(System.in);
         // this.playerActions = gameState.getSetup().getHumanActions();
     }
     @Override
     public void sendMessage(Object message) {
         System.out.println(message);
     }
-    // @Override
-    // public String readMessage() {
-    //     String message = "";
-    //     try (Scanner scanner = new Scanner(System.in)) {
-    //         message =  scanner.nextLine();
-    //     }catch(Exception e){}
-    //     return message;
-    // }
+
 
     @Override
-    public String readMessage() {
+    public String readMessage(GameState gameState) {
         String message = "";
         try {
-            message = scanner.nextLine();
+            message = gameState.getScanner().nextLine();
         } catch (Exception e) {
             System.err.println("Error reading input: " + e.getMessage());
         }
         return message;
     }
-
-    // @Override
-    // public String readMessage() {
-    //     return scanner.nextLine();
-    // }
     
     @Override
     public int getPlayerID() {
@@ -76,22 +64,5 @@ public class LocalPlayer implements IHumanPlayer{
         gameState.getSetup().getTurnLogic().takeTurn(gameState, this);
     }
 
-    // @Override
-    // public IPlayerActions getActions(GameState gameState) {
-    //     return gameState.getSetup().getHumanActions();
-    // }
-    // public void addCard(Card card) {
-    //     hand.add(card);
-    // }
-    
-    // public void removeCard(Card card) {
-    //     hand.remove(card);
-    // }
-    
-    // public void flipCard(Card card) {
-    //     card.flip();
-    // }
-    
-    // public void playCard(Card card) {
     
 }

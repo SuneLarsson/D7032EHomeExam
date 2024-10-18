@@ -1,10 +1,9 @@
 package main.game.gamelogic;
 
+import main.game.setupgame.GameState;
+
 public interface IGameLogic {
-    void initializeGame();
-    void startGame();
-    void endGame();
-    void makeMove(int playerId, int move);
-    boolean isGameOver();
-    int getWinner();
+    void gameLoop(GameState gameState, Integer turnlimit);
+    void endGame(GameState gameState);
+
 }

@@ -43,8 +43,14 @@ public class PointSaladCriteria implements ICriteria {
         for(int i = 0; i < parts.length; i++) {
             if (parts[i].indexOf("TOTAL")>=0 || parts[i].indexOf("TYPE")>=0 || parts[i].indexOf("SET")>=0) {
                 ID18(hand, parts[i], players, playerID, vegetableTypes);
-            } else if((parts[i].indexOf("MOST")>=0) || (parts[i].indexOf("FEWEST")>=0)) {
-                ID1_2(hand, parts[i], players, playerID);
+            // } else if(parts[i].contains("MOST") || parts[i].contains("FEWEST")) {
+            //     // parts[i].indexOf("MOST")>=0 ||parts[i].indexOf("FEWEST")>=0) {
+                // ID1_2(hand, parts[i], players, playerID);
+            } else if(parts[i].indexOf("MOST")>=0) {
+                ID1(hand, parts[i], players, playerID);
+            } else if(parts[i].indexOf("FEWEST")>=0) {
+                System.out.println("ID2: "+parts[i]);
+                ID2(hand, parts[i], players, playerID);
             } else if(parts.length > 1 || parts[i].indexOf("+")>=0 || parts[i].indexOf("/")>=0) {
                 if (parts[i].indexOf("+")>=0) {
                     ID5(hand, parts[i], players, playerID, vegetableTypes);
@@ -62,28 +68,51 @@ public class PointSaladCriteria implements ICriteria {
         return totalScore;
     }
 
-    private void ID1_2(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
-
-        int vegIndex = criteria.indexOf("MOST")>=0 ? criteria.indexOf("MOST")+5 : criteria.indexOf("FEWEST")+7;
+    private void ID1(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
+        int vegIndex = criteria.indexOf("MOST") + 5;
         String veg = criteria.substring(vegIndex, criteria.indexOf("=")).trim();
         int countVeg = countResources.countResource(hand, veg);
         int nrVeg = countVeg;
-        for(IPlayer p : players) {
-            if(p.getPlayerID() != playerID) {
+    
+        for (IPlayer p : players) {
+            if (p.getPlayerID() != playerID) {
                 int playerVeg = countResources.countResource(p.getHand(), veg);
-                if((criteria.indexOf("MOST")>=0) && (playerVeg > nrVeg)) {
-                    nrVeg = countResources.countResource(p.getHand(), veg);
-                }
-                if((criteria.indexOf("FEWEST")>=0) && (playerVeg < nrVeg)) {
-                    nrVeg = countResources.countResource(p.getHand(), veg);
+                if (playerVeg > nrVeg) {
+                    nrVeg = playerVeg;
                 }
             }
         }
-        if(nrVeg == countVeg) {
-            System.out.print("ID1/ID2: "+Integer.parseInt(criteria.substring(criteria.indexOf("=")+1).trim()) + " ");
-            this.totalScore += Integer.parseInt(criteria.substring(criteria.indexOf("=")+1).trim());
+    
+        // If the current player has the most vegetables, update the score
+        if (nrVeg == countVeg) {
+            this.totalScore += Integer.parseInt(criteria.substring(criteria.indexOf("=") + 1).trim());
         }
     }
+
+    private void ID2(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
+        int vegIndex = criteria.indexOf("FEWEST") + 7;
+        System.out.println("ID2 vegIndex: "+vegIndex);
+        String veg = criteria.substring(vegIndex, criteria.indexOf("=")).trim();
+        int countVeg = countResources.countResource(hand, veg);
+        System.out.println("ID2 countVeg: "+countVeg);
+        int nrVeg = Integer.MAX_VALUE;
+
+    
+        for (IPlayer p : players) {
+            int playerVeg = countResources.countResource(p.getHand(), veg);
+            if (playerVeg < nrVeg) {
+                nrVeg = playerVeg;
+            }
+        }
+        System.out.println("ID2 nrVeg: "+nrVeg);
+        System.out.println("ID2 poäng grejen: "+ Integer.parseInt(criteria.substring(criteria.indexOf("=") + 1).trim()));
+        // If the current player has the fewest vegetables, update the score
+        if (nrVeg == countVeg) {
+            System.out.println("ID2 Inne i : ");
+            this.totalScore += Integer.parseInt(criteria.substring(criteria.indexOf("=") + 1).trim());
+        }
+    }
+
 
     // ID5, ID6, ID7, ID11, ID12, ID13
     private void ID5(ArrayList<Card> hand, String criteria,  ArrayList<IPlayer> players, int playerID, ArrayList<String> vegetableTypes) {
@@ -97,9 +126,7 @@ public class PointSaladCriteria implements ICriteria {
             }
         }
         if(countSameKind > 1) {
-            System.out.print("ID5/ID11: "+ (countResources.countResource(hand, vegs[0].trim()) /countSameKind) * Integer.parseInt(criteria.split("=")[1].trim()) + " ");
             this.totalScore +=  ((int)countResources.countResource(hand, vegs[0].trim()) /countSameKind) * Integer.parseInt(criteria.split("=")[1].trim());
-            // totalScore +=  ((int)countResources.countResource(hand, SaladCard.Vegetable.valueOf(vegs[0].trim()))/countSameKind) * Integer.parseInt(criteria.split("=")[1].trim());
         } else {
             for(int i = 0; i < vegs.length; i++) {
                 nrVeg[i] = countResources.countResource(hand, vegs[i].trim());
@@ -111,7 +138,6 @@ public class PointSaladCriteria implements ICriteria {
                     min = nrVeg[x];
                 }
             }
-            System.out.print("ID6/ID7/ID12/ID13: "+min * Integer.parseInt(criteria.split("=")[1].trim()) + " ");
             this.totalScore += min * Integer.parseInt(criteria.split("=")[1].trim());
         }
     }
@@ -121,23 +147,14 @@ public class PointSaladCriteria implements ICriteria {
         System.out.println("ID3: "+ criteria);
         String veg = criteria.substring(0, criteria.indexOf(":"));
         int countVeg = countResources.countResource(hand, veg);
-        //System.out.print("ID3: "+((countVeg%2==0)?7:3) + " ");
         //todo lägg till if sats för att kolla om det är 0
         this.totalScore += (countVeg%2==0)?7:3;
     }
 
     // ID4, ID8, ID9, ID10, ID14, ID15, ID16, ID17
     private void ID4(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
-        // for(int i = 0; i < parts.length; i++) {
-            String[] veg = criteria.split("/");
-            // System.out.println("ID4: VEG0 "+veg[0] + " VEG1 "+veg[1]);
-            // System.out.println("ID4 count: " + countResources.countResource(hand, veg[1].trim()) + " ");
-            // System.out.println("ID4 parseInt: " + Integer.parseInt(veg[0].trim()) + " ");
-            System.out.println("ID4 criteria: " + criteria + " VEG0 "+veg[0] + " VEG1 "+veg[1]);
-
-            System.out.print("ID4/ID8/ID9/ID10/ID14/ID15/ID16/ID17: " + Integer.parseInt(veg[0].trim()) * countResources.countResource(hand, veg[1].trim()) + " ");
-            this.totalScore += Integer.parseInt(veg[0].trim()) * countResources.countResource(hand, veg[1].trim());
-        // }
+        String[] veg = criteria.split("/");
+        this.totalScore += Integer.parseInt(veg[0].trim()) * countResources.countResource(hand, veg[1].trim());
     }
 
 

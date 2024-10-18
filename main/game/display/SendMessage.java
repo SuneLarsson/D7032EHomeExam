@@ -14,15 +14,6 @@ public class SendMessage {
                 IHumanPlayer humanPlayer = (IHumanPlayer) player;
                 humanPlayer.sendMessage(message);
             }
-            // else if (player instanceof OnlinePlayer) {
-            //     // Handle online player actions
-            //     OnlinePlayer onlinePlayer = (OnlinePlayer) player;
-            //     onlinePlayer.sendMessage(message);
-            // } else   {
-            //     // Handle local player actions
-            //     LocalPlayer localPlayer = (LocalPlayer) player;
-            //     localPlayer.sendMessage(message);
-            // }
 		}
 	}
 }

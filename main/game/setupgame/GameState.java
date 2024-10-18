@@ -1,6 +1,7 @@
 package main.game.setupgame;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 // import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.piles.PileManager;
@@ -15,18 +16,22 @@ public class GameState {
     private PileManager pileManager;
     private ISettings settings;
     private Setup setup;
+    private Scanner scanner;
     // private ITurnLogic turnLogic;
     
 
-    public GameState(String gameMode) {
-
+    public GameState(String gameMode, Scanner in) {
         this.players = new ArrayList<IPlayer>();
         this.currentPlayer = 0;
         this.pileManager = new PileManager();
         this.gameMode = gameMode;
         this.setup = new Setup(this);
+        this.scanner = in;
     }
 
+    public Scanner getScanner() {
+        return scanner;
+    }
     public void setSettings(ISettings settings) {
         this.settings = settings;
     }

@@ -3,6 +3,7 @@ package main.game.gamelogic.turnlogic;
 import main.game.display.HandDisplay;
 import main.game.display.IMarket;
 import main.game.display.SaladMarket;
+import main.game.display.SendMessage;
 import main.game.piles.PileManager;
 import main.game.players.BotPlayer;
 import main.game.players.IHumanPlayer;
@@ -18,6 +19,7 @@ public class SaladTurnLogic implements ITurnLogic {
     private PileManager pileManager;
     private HandDisplay handDisplay;
     private IMarket saladMarket;
+    private SendMessage sendMessage;
     // private IPlayerActions playerActions;
 
     public SaladTurnLogic() {
@@ -33,6 +35,7 @@ public class SaladTurnLogic implements ITurnLogic {
         this.pileManager = gameState.getPileManager();
         this.handDisplay = new HandDisplay();
         this.saladMarket = new SaladMarket();
+        this.sendMessage = new SendMessage();
         if (thisPlayer instanceof IHumanPlayer) {
             SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);
             takeHumanTurn(playerActions);
@@ -55,7 +58,7 @@ public class SaladTurnLogic implements ITurnLogic {
                 syntaxString = "A";
             }
             humanPlayer.sendMessage("\nWould you like to draw a card from a pile or take " + vegetableString + " from the market? (Syntax example: 0 or " + syntaxString + ")\n");
-            String choice = humanPlayer.readMessage();
+            String choice = humanPlayer.readMessage(gameState);
             if(choice.matches("\\d")) {
                 int pileIndex = Integer.parseInt(choice);
                 validChoice = playerActions.drawCardFromPile(pileIndex);
@@ -64,7 +67,9 @@ public class SaladTurnLogic implements ITurnLogic {
             }
         }
         if (hasCriteriaCardInHand()) {
-            playerActions.flipCriteriaCard(gameState);
+            humanPlayer.sendMessage("\n"+handDisplay.displayHand(humanPlayer.getHand(), gameState)+"\nWould you like to turn a criteria card into a veggie card? (Syntax example: n or 2)");
+            String choice = humanPlayer.readMessage(gameState);
+            playerActions.flipCriteriaCard(choice);
         }
         endTurnPrint();
     }
@@ -81,6 +86,8 @@ public class SaladTurnLogic implements ITurnLogic {
                 validChoice = botActions.takeFromMarket("");
             }
         }
+
+        endTurnPrint();
         // if (hasCriteriaCardInHand()) {
         //     playerActions.flipCriteriaCard();
         // }
@@ -108,8 +115,18 @@ public class SaladTurnLogic implements ITurnLogic {
 
     @Override
     public void endTurnPrint() {
-        IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
-        humanPlayer.sendMessage("\nYour turn is completed\n****************************************************************\n\n");
+        if (thisPlayer instanceof BotPlayer) {
+            sendPlayerHandToAllPlayers(thisPlayer, gameState);            
+        }else{
+            IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
+            humanPlayer.sendMessage("\nYour turn is completed\n****************************************************************\n\n");
+            sendPlayerHandToAllPlayers(thisPlayer, gameState);
+        }   
     }
     
+	private void sendPlayerHandToAllPlayers(IPlayer player, GameState gameState) {
+		String handMessage = "Player " + player.getPlayerID() + "'s hand is now: \n" + handDisplay.displayHand(player.getHand(), gameState) + "\n";
+		sendMessage.sendToAllPlayers(handMessage, gameState.getPlayers());
+	}
+
 }
