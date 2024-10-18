@@ -171,6 +171,7 @@ public class PointGame {
                     System.out.println("Need atleast 2 players. Please select atleast 1 bot.");
                 } else {
                     gameState.setNumberOfBots(numberOfBots);
+                    in.nextLine();
                     break;
                 } 
 

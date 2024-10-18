@@ -83,7 +83,7 @@ public class SaladHumanActions implements IPlayerActions {
 
     // Rule 8: If the player has a criteria card in their hand, they can flip it to a veggie card
     public boolean flipCriteriaCard(String choice) {
-        if(choice.matches("\\d")) {
+        if(choice.matches("\\d+")) {
             int cardIndex = Integer.parseInt(choice);
             if (!humanPlayer.getHand().get(cardIndex).isPointSideUp()) {
                 humanPlayer.sendMessage("\nYou can't flip a veggie card to a criteria card.\n");
