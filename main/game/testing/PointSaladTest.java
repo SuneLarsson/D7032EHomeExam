@@ -50,7 +50,7 @@ public class PointSaladTest {
         pileManager = null;
         server.close();
 
-        gameState = new GameState("PointSalad", new Scanner(System.in));
+        gameState = new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(numPlayers);
         gameState.setNumberOfBots(numBots);
@@ -61,7 +61,7 @@ public class PointSaladTest {
             e.printStackTrace();
         }
         new SetupPiles(gameState);
-        gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
+        gameState.setStartPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
         SaladGameLogic = new SaladGameLogic(gameState);
         pileManager = gameState.getPileManager();
     }
@@ -117,7 +117,7 @@ public class PointSaladTest {
 
     @BeforeEach
     void setUp() {
-        gameState = new GameState("PointSalad", new Scanner(System.in));
+        gameState = new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
         gameState.setNumberOfBots(1);
@@ -128,7 +128,7 @@ public class PointSaladTest {
             e.printStackTrace();
         }
         new SetupPiles(gameState);
-        gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
+        gameState.setStartPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
         SaladGameLogic = new SaladGameLogic(gameState);
         pileManager = gameState.getPileManager();
     }
@@ -141,9 +141,6 @@ public class PointSaladTest {
     }
 
     // Rule 1: There can be between 2 and 6 players.
-    @Test
-    void hej() {
-    }
 
     @Test
     void testRule1() {
@@ -364,7 +361,8 @@ public class PointSaladTest {
         numPlayers = 2;
         Set<Integer> uniqueStart2Players = new HashSet<Integer>();
         for (int i = 0; i < 1000; i++) {
-            startPlayer = gameState.getSettings().startingPlayerRule(numPlayers);
+            setupGameWithPlayers(0, 2);
+            startPlayer = gameState.getStartPlayer();
             assertTrue(startPlayer >= 0 && startPlayer < numPlayers, "Starting player should be between 0 and " + (numPlayers - 1));
             uniqueStart2Players.add(startPlayer);
         }
@@ -373,7 +371,8 @@ public class PointSaladTest {
         numPlayers = 6;
         uniqueStartPlayers = new HashSet<Integer>();
         for (int i = 0; i < 1000; i++) {
-            startPlayer = gameState.getSettings().startingPlayerRule(numPlayers);
+            setupGameWithPlayers(0, 6);
+            startPlayer = gameState.getStartPlayer();
             assertTrue(startPlayer >= 0 && startPlayer < numPlayers, "Starting player should be between 0 and " + (numPlayers - 1));
             uniqueStartPlayers.add(startPlayer);
         }
@@ -453,10 +452,10 @@ public class PointSaladTest {
         humanPlayer.addCard(cardsArray.get(0));
         humanPlayer.addCard(cardsArray.get(17));
         HandDisplay handDisplay = new HandDisplay();
-        String hand = handDisplay.displayHand(humanPlayer.getHand(), gameState);
-        System.out.println(hand);
-        assertTrue(hand.contains("MOST LETTUCE = 10"), "Hand should be shown to other players");
-        assertTrue(hand.contains("TOMATO"), "Hand should be shown to other players");
+        String displayHand = handDisplay.displayHand(humanPlayer.getHand(), gameState);
+        // System.out.println(hand);
+        assertTrue(displayHand.contains("MOST LETTUCE = 10"), "Hand should be shown to other players");
+        assertTrue(displayHand.contains("TOMATO"), "Hand should be shown to other players");
         // assertTrue(humanPlayer.getHand().get(0).isPointSideUp(), "Hand should be shown to other players");
     }
 

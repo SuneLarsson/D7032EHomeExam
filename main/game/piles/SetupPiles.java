@@ -20,7 +20,7 @@ public class SetupPiles {
         this.jsonReader = new JsonReader();
         this.cardsArray = jsonReader.jsonData(gameState.getSettings().getJsonPath());
         this.buildDecks = new BuildDecks(gameState, cardsArray);       
-        this.pilesCreator = gameState.getSetup().getCreatePiles();
+        this.pilesCreator = gameState.getSetup().getPilesFactory();
 
         pilesCreator.createPiles(gameState, buildDecks.getDecks());
 

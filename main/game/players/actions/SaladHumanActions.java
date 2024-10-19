@@ -6,12 +6,12 @@ import main.game.piles.PileManager;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
 import main.game.setupgame.GameState;
+import java.util.ArrayList;
 
 public class SaladHumanActions implements IPlayerActions {
     private IHumanPlayer humanPlayer;
     private GameState gameState;
     private PileManager pileManager;
-    private HandDisplay handDisplay;
 
 
 
@@ -19,7 +19,6 @@ public class SaladHumanActions implements IPlayerActions {
         this.gameState = gameState;
         this.humanPlayer = (IHumanPlayer) thisPlayer;
         this.pileManager = gameState.getPileManager();
-        this.handDisplay = new HandDisplay();
     }
 
     @Override
@@ -52,6 +51,8 @@ public class SaladHumanActions implements IPlayerActions {
         } 
         
         boolean validChoice = false;
+        ArrayList<Integer> marketIndexes = new ArrayList<>();
+        ArrayList<Integer> veggieIndexes = new ArrayList<>();
         for(int charIndex = 0; charIndex < pileChoice.length(); charIndex++) {
             if(Character.toUpperCase(pileChoice.charAt(charIndex)) < 'A' || Character.toUpperCase(pileChoice.charAt(charIndex)) > 'F') {
                 humanPlayer.sendMessage("\nInvalid choice ("  +pileChoice.charAt(charIndex) + "). Please choose up to two veggie cards from the market.\n");
@@ -68,13 +69,18 @@ public class SaladHumanActions implements IPlayerActions {
                 if(takenVeggies == 2) {
                     return true;
                 } else {
-                    humanPlayer.addCard(pileManager.getPile(marketIndex).buyMarketCard(veggieIndex));
+                    marketIndexes.add(marketIndex);
+                    veggieIndexes.add(veggieIndex);
+                    // humanPlayer.addCard(pileManager.getPile(marketIndex).buyMarketCard(veggieIndex));
                     takenVeggies++;
                     validChoice = true;
 
                     //thisPlayer.sendMessage("\nYou took a card from pile " + (pileIndex) + " and added it to your hand.\n");
                 }
             }
+        }
+        for(int i = 0; i < marketIndexes.size(); i++) {
+            humanPlayer.addCard(pileManager.getPile(marketIndexes.get(i)).buyMarketCard(veggieIndexes.get(i)));
         }
 
         return validChoice;

@@ -12,10 +12,12 @@ public class CalculatePoints {
         ArrayList<IPlayer> players = gameState.getPlayers();
         ICriteria ScoreCriteria;
         for (IPlayer player : players) {
-            if (gameState.getGameMode().equals("PointSalad")) {
-                ScoreCriteria = new PointSaladCriteria();
-                player.setScore(ScoreCriteria.calculateScore(player, players, cardTypes, null));
-            }
+            // if (gameState.getGameMode().equals("PointSalad")) {
+            //     ScoreCriteria = new PointSaladCriteria();
+            //     player.setScore(ScoreCriteria.calculateScore(player, players, cardTypes, null));
+            // }
+            ScoreCriteria = gameState.getSetup().getScoreFactory();
+            player.setScore(ScoreCriteria.calculateScore(player, players, cardTypes, null));
         }
     }
 }

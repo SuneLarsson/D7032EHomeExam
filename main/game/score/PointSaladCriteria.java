@@ -49,7 +49,6 @@ public class PointSaladCriteria implements ICriteria {
             } else if(parts[i].indexOf("MOST")>=0) {
                 ID1(hand, parts[i], players, playerID);
             } else if(parts[i].indexOf("FEWEST")>=0) {
-                System.out.println("ID2: "+parts[i]);
                 ID2(hand, parts[i], players, playerID);
             } else if(parts.length > 1 || parts[i].indexOf("+")>=0 || parts[i].indexOf("/")>=0) {
                 if (parts[i].indexOf("+")>=0) {
@@ -91,10 +90,8 @@ public class PointSaladCriteria implements ICriteria {
 
     private void ID2(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
         int vegIndex = criteria.indexOf("FEWEST") + 7;
-        System.out.println("ID2 vegIndex: "+vegIndex);
         String veg = criteria.substring(vegIndex, criteria.indexOf("=")).trim();
         int countVeg = countResources.countResource(hand, veg);
-        System.out.println("ID2 countVeg: "+countVeg);
         int nrVeg = Integer.MAX_VALUE;
 
     
@@ -104,11 +101,8 @@ public class PointSaladCriteria implements ICriteria {
                 nrVeg = playerVeg;
             }
         }
-        System.out.println("ID2 nrVeg: "+nrVeg);
-        System.out.println("ID2 poäng grejen: "+ Integer.parseInt(criteria.substring(criteria.indexOf("=") + 1).trim()));
         // If the current player has the fewest vegetables, update the score
         if (nrVeg == countVeg) {
-            System.out.println("ID2 Inne i : ");
             this.totalScore += Integer.parseInt(criteria.substring(criteria.indexOf("=") + 1).trim());
         }
     }
@@ -144,7 +138,6 @@ public class PointSaladCriteria implements ICriteria {
     
     // ID3
     private void ID3(ArrayList<Card> hand, String criteria, ArrayList<IPlayer> players, int playerID) {
-        System.out.println("ID3: "+ criteria);
         String veg = criteria.substring(0, criteria.indexOf(":"));
         int countVeg = countResources.countResource(hand, veg);
         //todo lägg till if sats för att kolla om det är 0

@@ -68,7 +68,7 @@ public class OnlinePlayer implements IHumanPlayer {
 
     @Override
     public void takeTurn(GameState gameState) {
-        gameState.getSetup().getTurnLogic().takeTurn(gameState, this);
+        gameState.getSetup().getTurnFactory().takeTurn(gameState, this);
     }
 
     

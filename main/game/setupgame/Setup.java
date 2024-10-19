@@ -1,13 +1,14 @@
 package main.game.setupgame;
 
+import main.game.card.CardFactory;
 import main.game.card.ICardFactory;
-import main.game.card.SaladCardFactory;
 import main.game.gamelogic.turnlogic.ITurnLogic;
-import main.game.gamelogic.turnlogic.SaladTurnLogic;
-import main.game.piles.piles.CreateSaladPiles;
+import main.game.gamelogic.turnlogic.TurnFactory;
 import main.game.piles.piles.ICreatePiles;
+import main.game.piles.piles.PilesFactory;
+import main.game.score.CriteriaFactory;
 import main.game.score.ICriteria;
-import main.game.score.PointSaladCriteria;
+
 
 public class Setup {    
     private GameState gameState;
@@ -17,42 +18,20 @@ public class Setup {
     }
 
     public ICardFactory getCardFactory() {
-        if (gameState.getGameMode().equals("PointSalad")) {
-            return new SaladCardFactory();
-        } else {
-            System.out.println("Error: Game mode not recognized");
-            return null;
-        }
+        return CardFactory.createCardFactory(gameState);
     }
 
-    public ICriteria getScoreCriteria() {
-        if (gameState.getGameMode().equals("PointSalad")) {
-            return new PointSaladCriteria();
-        } else {
-            System.out.println("Error: Game mode not recognized");
-            return null;
-        }
+    public ICriteria getScoreFactory() {
+        return CriteriaFactory.createCriteria(gameState.getGameMode());
     }
 
-
-    public ITurnLogic getTurnLogic() {
-        if (gameState.getGameMode().equals("PointSalad")) {
-            return new SaladTurnLogic();
-        } else {
-            System.out.println("Error: Game mode not recognized");
-            return null;
-        }
+    public ITurnLogic getTurnFactory() {
+        return TurnFactory.createTurnLogic(gameState.getGameMode());
     }
 
-    public ICreatePiles getCreatePiles() {
-        if (gameState.getGameMode().equals("PointSalad")) {
-            return new CreateSaladPiles();
-        } else {
-            System.out.println("Error: Game mode not recognized");
-            return null;
-        }
+    public ICreatePiles getPilesFactory() {
+        return PilesFactory.createPilesFactory(gameState.getGameMode());
     }
-
 
      
 }

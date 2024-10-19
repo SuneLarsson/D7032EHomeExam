@@ -53,7 +53,7 @@ public class PointGame {
             // fixa så man direkt kan skriva in game mode och antal spelare och bots
 			if(args[0].matches("\\d+")) {
                 System.out.println("Args");
-                gameMode = String.valueOf(args[2]);
+                gameMode = String.valueOf(args[2]).toUpperCase();
                 gameState = new GameState(gameMode, in);
                 gameState.setSettings(selectSettings(gameState));
                 gameState.setNumPlayers(Integer.parseInt(args[0]));
@@ -87,7 +87,7 @@ public class PointGame {
             e.printStackTrace();
         }
         new SetupPiles(gameState);
-        gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
+        gameState.setStartPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
         IGameLogic game = new SaladGameLogic(gameState);
         game.gameLoop(gameState, gameState.getSettings().getTurnLimit());
         game.endGame(gameState);
@@ -106,7 +106,7 @@ public class PointGame {
     }
 
     private ISettings selectSettings(GameState gameState) {
-        if (gameState.getGameMode().equals("PointSalad")) {
+        if (gameState.getGameMode().equals("POINTSALAD")) {
             return new SaladSettings();
         } else {
             System.out.println("Invalid game mode. Please try again.");
@@ -124,7 +124,7 @@ public class PointGame {
             //     mode = in.nextLine();
             // }
             if (mode.equals("1")) {
-                return "PointSalad";
+                return "POINTSALAD";
             } else if (mode.equals("E")) {
                 System.exit(0);
             } else {

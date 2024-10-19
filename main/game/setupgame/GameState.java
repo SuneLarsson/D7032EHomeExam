@@ -12,6 +12,7 @@ public class GameState {
     private int numPlayers;
     private int numberOfBots;
     private ArrayList<IPlayer> players;
+    private int startPlayer;
     private int currentPlayer;
     private PileManager pileManager;
     private ISettings settings;
@@ -60,6 +61,14 @@ public class GameState {
 
     public void addPlayer(IPlayer player) {
         players.add(player);
+    }
+
+    public int getStartPlayer() {
+        return startPlayer;
+    }
+    public void setStartPlayer(int startPlayer) {
+        this.startPlayer = startPlayer;
+        setCurrentPlayer(startPlayer);
     }
 
     public int getCurrentPlayer() {

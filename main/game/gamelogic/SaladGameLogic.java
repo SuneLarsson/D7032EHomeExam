@@ -72,22 +72,54 @@ public class SaladGameLogic implements IGameLogic {
 		}
 
 		int maxScore = 0;
-		int playerID = 0;
+		// int playerID = 0;
+		ArrayList<IPlayer> tiedPlayers = new ArrayList<>();
 		for(IPlayer player : players) {
 			if(player.getScore() > maxScore) {
 				maxScore = player.getScore();
-				playerID = player.getPlayerID();
+				tiedPlayers.clear();
+				tiedPlayers.add(player);
+				// playerID = player.getPlayerID();
+			} else if(player.getScore() == maxScore) {
+				tiedPlayers.add(player);
 			}
 		}
+
+		// If there are ties, determine the winner based on turn order
+		int winnerID = -1;
+		if (tiedPlayers.size() > 1) {
+			int startingPlayerID = gameState.getStartPlayer();
+
+			// Track the last player in the tied group
+			winnerID = -1;
+
+			// Iterate through players to find the last one who played among tied players
+			for (int i = startingPlayerID; i < players.size()+startingPlayerID; i++) {
+				int playerToCheck = i;
+				if (i >= players.size()) {
+					playerToCheck = i - players.size();
+				}
+				if (tiedPlayers.contains(players.get(playerToCheck))) {
+					winnerID = players.get(playerToCheck).getPlayerID();
+				}
+	
+			}
+		} else {
+			winnerID = tiedPlayers.get(0).getPlayerID(); // No ties, the one with the max score is the winner
+		}
+
+
+
+
 		for(IPlayer player : players) {
-			if(player.getPlayerID() == playerID ) {
-                String winnerMessage = "\\nCongratulations! You are the winner with a score of " + maxScore;
+			if(player.getPlayerID() == winnerID ) {
+                String winnerMessage = "\nCongratulations! You are the winner with a score of " + maxScore;
                 if (player instanceof IHumanPlayer) {
                     IHumanPlayer humanPlayer = (IHumanPlayer) player;
                     humanPlayer.sendMessage(winnerMessage);   
                 }
 			} else {
-                String looserMessage = "\nSorry, you lost. The winner is player " + playerID + " with a score of " + maxScore;
+                String looserMessage = "\nSorry, you lost. The winner is player " + winnerID + " with a score of " + maxScore;
                 if (player instanceof IHumanPlayer) {
                     IHumanPlayer humanPlayer = (IHumanPlayer) player;
                     humanPlayer.sendMessage(looserMessage);   
