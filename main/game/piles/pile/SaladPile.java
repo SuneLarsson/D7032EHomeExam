@@ -51,8 +51,6 @@ public class SaladPile extends Pile {
         return veggieCards[index];
     }
     
-    
-
     @Override
     public Card buyMarketCard(int index){
         Card aCard = veggieCards[index];
@@ -66,7 +64,7 @@ public class SaladPile extends Pile {
                     if (veggieCards[index].isPointSideUp()) {
                         veggieCards[index].flip();
                     }
-            }
+                }
             } else {
                 veggieCards[index] = null; 
             }

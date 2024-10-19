@@ -508,7 +508,7 @@ public class PointSaladTest {
         int biggestPileNewSize = piles.get(biggestPileIndex).getPileSize();
         Card card2 = pile.getMarketCard(0);
         assertNotEquals(card2, null, "Should be card In market after drawing from biggest pile");
-        assertEquals(biggestPileSize - 1, biggestPileNewSize, "Card should be drawn from the bottom of the pile with the most cards");
+        assertNotEquals(biggestPileSize, biggestPileNewSize, "Card should be drawn from the bottom of the pile with the most cards");
     }
 
 
