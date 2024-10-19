@@ -1,27 +1,19 @@
 package main.game.testing;
 
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
-import main.game.PointGame;
 import main.game.card.Card;
 import main.game.card.SaladCard;
 import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
 import main.game.gamelogic.SaladGameLogic;
 import main.game.network.Server;
-import main.game.piles.PileManager;
 import main.game.piles.SetupPiles;
-import main.game.piles.pile.Pile;
 import main.game.players.BotPlayer;
-import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
-import main.game.players.actions.SaladBotActions;
-import main.game.players.actions.SaladHumanActions;
 import main.game.setupgame.CreatePlayers;
 import main.game.setupgame.GameState;
 import main.game.setupgame.SaladSettings;
@@ -30,17 +22,17 @@ import main.game.score.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+
+// 13. Calculate the score for each player according to the point cards in hand.
+// 14. Announce the winner with the highest score
 
 public class PointSaladScoreTest {
     private GameState gameState;
     private SaladGameLogic saladGameLogic;
-    private PileManager pileManager;
     private Server server;
     private ArrayList<Card> pointCards = new ArrayList<>();
     private ArrayList<Card> vegetableCards = new ArrayList<>();
@@ -88,7 +80,6 @@ public class PointSaladScoreTest {
 
     }
 
-
     @BeforeEach
     private void createVegetableCards(){
         vegetableCards.add(new SaladCard("PEPPER", "MOST ONION = 10", false)); //0
@@ -98,9 +89,6 @@ public class PointSaladScoreTest {
         vegetableCards.add(new SaladCard("ONION", "MOST ONION = 10", false)); //4
         vegetableCards.add(new SaladCard("TOMATO", "MOST ONION = 10", false)); //5
     }
-
-// 13. Calculate the score for each player according to the point cards in hand.
-// 14. Announce the winner with the highest score
         
 
     @BeforeEach
@@ -117,8 +105,7 @@ public class PointSaladScoreTest {
         }
         new SetupPiles(gameState);
         gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
-        saladGameLogic = new SaladGameLogic(gameState);
-        pileManager = gameState.getPileManager();        
+        saladGameLogic = new SaladGameLogic(gameState);  
         scoreCriteria = new PointSaladCriteria();
         tempHand = new ArrayList<>();
         player0 = gameState.getPlayers().get(0);
@@ -127,7 +114,6 @@ public class PointSaladScoreTest {
 
     private void setupGameWithPlayers(int numPlayers, int numBots) {
         gameState = null;
-        pileManager = null;
         scoreCriteria = null;
         tempHand = null;
         player0 = null;
@@ -147,7 +133,6 @@ public class PointSaladScoreTest {
         new SetupPiles(gameState);
         gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getNumPlayers()));
         saladGameLogic = new SaladGameLogic(gameState);
-        pileManager = gameState.getPileManager();
         scoreCriteria = new PointSaladCriteria();
         tempHand = new ArrayList<>();
         player0 = gameState.getPlayers().get(0);
@@ -157,7 +142,6 @@ public class PointSaladScoreTest {
     @AfterEach
     void tearDown() {
         gameState = null;
-        pileManager = null;
         pointCards = null;
         vegetableCards = null;
         scoreCriteria = null;
@@ -170,7 +154,6 @@ public class PointSaladScoreTest {
 
     // If two players are tied for a scoring condition on a card (e.g., most onions), then the player with
     // the point card scores the victory points. 
-    // todo check if someone else can get points from this card
     @Test
     void scoreCriteriaID1(){
         // Player 0 has 2 LETTUCE cards and 1 score card for most LETTUCE = 10

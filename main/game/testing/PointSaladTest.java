@@ -1,8 +1,6 @@
 package main.game.testing;
 
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -66,11 +63,11 @@ public class PointSaladTest {
         pileManager = gameState.getPileManager();
     }
 
-    // Utility method to simulate user input
-    private void simulateInput(String input) {
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);  // Redirect System.in to the input
-    }
+    // // Utility method to simulate user input
+    // private void simulateInput(String input) {
+    //     ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+    //     System.setIn(in);  // Redirect System.in to the input
+    // }
 
 
 
@@ -434,7 +431,7 @@ public class PointSaladTest {
         SaladHumanActions humanActions = new SaladHumanActions(humanPlayer, gameState);
         humanPlayer.addCard(cardsArray.get(0));
 
-        boolean result = humanActions.flipCriteriaCard("0");
+        humanActions.flipCriteriaCard("0");
         assertFalse(humanPlayer.getHand().get(0).isPointSideUp(), "Point card should be turned to veggie side");
 
         humanActions.flipCriteriaCard("0");
@@ -540,7 +537,6 @@ public class PointSaladTest {
         }
     }
 
-    // Rule 13: Calculate the score for each player according to the point cards in hand.
 
 
 //     Rules:

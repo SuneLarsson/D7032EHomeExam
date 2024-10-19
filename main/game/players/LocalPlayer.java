@@ -1,7 +1,6 @@
 package main.game.players;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import main.game.card.Card;
 
