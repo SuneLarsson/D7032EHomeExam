@@ -1,15 +1,17 @@
 package main.game.score;
 
 import java.util.ArrayList;
-
 import main.game.card.Card;
 import main.game.players.IPlayer;
 
+/**
+ * Class that calculate the scoring criteria for the Point Salad game mode.
+ */
 public class PointSaladCriteria implements ICriteria {
     private int totalScore;
     private CountResources countResources;
     
-
+    
     public PointSaladCriteria() {
         this.countResources = new CountResources();
     }
@@ -20,7 +22,6 @@ public class PointSaladCriteria implements ICriteria {
         this.totalScore = 0;
         int playerID = player.getPlayerID();
         ArrayList<Card> hand;
-        // countResources.countAllResource(hand);
         if (temphand == null) {
             hand = player.getHand();
         } else {
@@ -28,7 +29,6 @@ public class PointSaladCriteria implements ICriteria {
         }
         String criteria = "";
         String[] parts = new String[0]; 
-        // ArrayList<String> vegetableTypes = vegetableTypes;
         for (Card criteriaCard : hand) {
             if (criteriaCard.isPointSideUp()) {
                 criteria = criteriaCard.getPointSide();
@@ -43,9 +43,6 @@ public class PointSaladCriteria implements ICriteria {
         for(int i = 0; i < parts.length; i++) {
             if (parts[i].indexOf("TOTAL")>=0 || parts[i].indexOf("TYPE")>=0 || parts[i].indexOf("SET")>=0) {
                 ID18(hand, parts[i], players, playerID, vegetableTypes);
-            // } else if(parts[i].contains("MOST") || parts[i].contains("FEWEST")) {
-            //     // parts[i].indexOf("MOST")>=0 ||parts[i].indexOf("FEWEST")>=0) {
-                // ID1_2(hand, parts[i], players, playerID);
             } else if(parts[i].indexOf("MOST")>=0) {
                 ID1(hand, parts[i], players, playerID);
             } else if(parts[i].indexOf("FEWEST")>=0) {

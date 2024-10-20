@@ -3,20 +3,27 @@ package main.game.piles.piles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import main.game.card.Card;
 import main.game.card.ICardFactory;
 import main.game.setupgame.GameState;
 
+/**
+ * Builds the decks of cards for the game.
+ * Where a deck is a list of cards of a certain type.
+ */
 public class BuildDecks {
     private JSONArray cardsArray;
     private Map<String, ArrayList<Card>> decks;
     private ICardFactory ICardFactory;
     private ArrayList<String> cardTypes;
 
+    /**
+     * Creates the decks of cards.
+     * @param gameState The current game state.
+     * @param cardsArray The JSON array of cards.
+     */
     public BuildDecks(GameState gameState, JSONArray cardsArray) {
         this.cardsArray = cardsArray;
         this.decks = new HashMap<>();
@@ -45,6 +52,10 @@ public class BuildDecks {
 
     }
 
+    /**
+     * Get the decks of cards.
+     * @return Map<String, ArrayList<Card>> The decks of cards.
+     */
     public Map<String, ArrayList<Card>> getDecks() {
         return decks;
     }

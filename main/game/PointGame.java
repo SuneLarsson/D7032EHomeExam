@@ -12,6 +12,10 @@ import main.game.setupgame.GameState;
 import main.game.setupgame.ISettings;
 import main.game.setupgame.SaladSettings;
 
+/**
+ * Class that starts the game and sets up the game mode, settings, and players.
+ */
+
 public class PointGame {
     private Scanner in;
 
@@ -34,13 +38,11 @@ public class PointGame {
             } else if (args.length == 1) { 
                 try {
                     Client client = new Client(args[0]);
-                    // Client.connectToServer(args[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }    
             } else if (args.length == 3) {
                 //check if args[0] is a String (ip address) or an integer (number of players)
-                // fixa så man direkt kan skriva in game mode och antal spelare och bots
                 if(args[0].matches("\\d+")) {
                     gameMode = String.valueOf(args[2]).toUpperCase();
                     gameState = new GameState(gameMode, in);
@@ -60,20 +62,14 @@ public class PointGame {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             // e.printStackTrace();
+            throw e;
         }
-        
-
     }
 
     private void initGame(GameState gameState) {
         try {
-            System.out.println("Init game");
             Server server = new Server(gameState);
-            System.out.println("Server created");
             new CreatePlayers(gameState, server);
-            System.out.println("Players created");
-            // Server server = new Server(gameState);
-            
         } catch (Exception e) {
             System.out.println("Error in initGame");
             e.printStackTrace();
@@ -112,9 +108,6 @@ public class PointGame {
             System.out.println("Game modes implemented:\n 1. PointSalad \n E. Exit\n");
             System.out.println("Please enter the game mode: ");
             mode = in.nextLine();
-            // try (Scanner in = new Scanner(System.in)) {
-            //     mode = in.nextLine();
-            // }
             if (mode.equals("1")) {
                 return "POINTSALAD";
             } else if (mode.equals("E")) {
@@ -133,9 +126,7 @@ public class PointGame {
         int numberOfBots = 0;
         int maxNumberOfPlayers = gameState.getSettings().getMaxPlayers();
         int minNumberOfPlayers = gameState.getSettings().getMinPlayers();
-        
-        // try (Scanner in = new Scanner(System.in)) {
-        
+     
         while (true) {
             System.out.println("Please enter the number of players (1-" + maxNumberOfPlayers + "): ");
             numberPlayers = in.nextInt();
@@ -178,8 +169,6 @@ public class PointGame {
     public static void main(String[] args) {
         try {
             new PointGame(args);
-             // game.play();
-            // new PointGame (String[] args);
         } catch (Exception e) {
             e.printStackTrace();
         }

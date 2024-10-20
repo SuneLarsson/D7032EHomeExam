@@ -9,7 +9,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Reads a JSON file and returns the data as a JSONArray.
+ */
+
 public class JsonReader {
+
+    /**
+     * Reads a JSON file and returns the data as a JSONArray.
+     * 
+     * @param filePath The path to the JSON file.
+     * @return The data from the JSON file as a JSONArray.
+     */
     public JSONArray jsonData(String filePath) {
         try (InputStream fInputStream = new FileInputStream(filePath);
             Scanner scanner = new Scanner(fInputStream, "UTF-8").useDelimiter("\\A")) {

@@ -7,12 +7,9 @@ import java.util.ArrayList;
 
 import main.game.card.Card;
 import main.game.card.SaladCard;
-import main.game.display.HandDisplay;
-import main.game.display.SendMessage;
 import main.game.gamelogic.SaladGameLogic;
 import main.game.network.Server;
 import main.game.piles.SetupPiles;
-import main.game.players.BotPlayer;
 import main.game.players.IPlayer;
 import main.game.setupgame.CreatePlayers;
 import main.game.setupgame.GameState;
@@ -26,9 +23,12 @@ import java.util.Scanner;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Test class for the Point Salad scoring criteria.
+ * Rule 13: Calculate the score for each player according to the point cards in hand.
+ * Rule 14: Announce the winner with the highest score.
+ */
 
-// 13. Calculate the score for each player according to the point cards in hand.
-// 14. Announce the winner with the highest score
 
 public class PointSaladScoreTest {
     private GameState gameState;
@@ -557,23 +557,4 @@ public class PointSaladScoreTest {
     }
 
 
-
-
-
-    
-    @Test
-    void testRule9DisplayToOther() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(outputStream);
-        System.setOut(printStream);
-        BotPlayer botPlayer = (BotPlayer) gameState.getPlayer(1);
-        SendMessage sendMessage = new SendMessage();
-        HandDisplay handDisplay = new HandDisplay();
-        String message = "Player " + botPlayer.getPlayerID() + "'s hand is now: \n"+handDisplay.displayHand(botPlayer.getHand(), gameState)+"\n";
-        
-        sendMessage.sendToAllPlayers(message, gameState.getPlayers());	
-
-        // Trim to remove leading/trailing whitespace and newlines
-        assertEquals(outputStream.toString().trim(), message.trim());
-    }
 }

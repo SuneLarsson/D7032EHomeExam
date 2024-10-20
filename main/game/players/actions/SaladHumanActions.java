@@ -6,13 +6,21 @@ import main.game.players.IPlayer;
 import main.game.setupgame.GameState;
 import java.util.ArrayList;
 
+
+/**
+ * Class for the actions of a human player for PointSalad game
+ */
 public class SaladHumanActions implements IPlayerActions {
     private IHumanPlayer humanPlayer;
     private GameState gameState;
     private PileManager pileManager;
 
 
-
+    /**
+     * Constructor for SaladHumanActions
+     * @param thisPlayer the human player
+     * @param gameState the current game state
+     */
     public SaladHumanActions(IPlayer thisPlayer, GameState gameState) {
         this.gameState = gameState;
         this.humanPlayer = (IHumanPlayer) thisPlayer;
@@ -86,6 +94,11 @@ public class SaladHumanActions implements IPlayerActions {
     }
 
     // Rule 8: If the player has a criteria card in their hand, they can flip it to a veggie card
+    /**
+     * Flips a criteria card to a veggie card
+     * @param choice the index of the card to flip
+     * @return boolean true if the card was flipped, false if the input was invalid
+     */
     public boolean flipCriteriaCard(String choice) {
         if(choice.matches("\\d+")) {
             int cardIndex = Integer.parseInt(choice);

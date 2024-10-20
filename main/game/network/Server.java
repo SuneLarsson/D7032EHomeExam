@@ -9,28 +9,27 @@ import java.net.Socket;
 import main.game.setupgame.GameState;
 import java.util.ArrayList;
 
+
+/**
+ * Server class that creates a server socket and accepts connections from clients.
+ */
 public class Server {
     private ServerSocket aSocket;
     private ArrayList<Socket> connectionSockets = new ArrayList<Socket>();
 
-
+    /**
+     * Creates a new server that accepts connections from clients.
+     * Creates connection sockets for each online player.
+     * @param gamestate The game state.
+     * @throws Exception If there is an error creating the server socket or accepting connections.
+     */
     public Server(GameState gamestate) throws Exception {
-        // int numberPlayers = gamestate.getNumPlayers() - 1;
-        // aSocket = new ServerSocket(2048);
-        // // todo error handling
-        // for (int i = 0; i < numberPlayers; i++) {
-        //     Socket connectionSocket = aSocket.accept();
-        //     connectionSockets.add(connectionSocket);
-        // }
         try {
             int numberPlayers = gamestate.getNumPlayers() - 1;
             System.out.println("Server socket");
             aSocket = new ServerSocket(2048);
-            // todo error handling
             for (int i = 0; i < numberPlayers; i++) {
-                System.out.println("Accepting connections");
                 Socket connectionSocket = aSocket.accept();
-                System.out.println("Connection accepted");
                 connectionSockets.add(connectionSocket);
             }
         } catch (IOException e) {
@@ -39,7 +38,9 @@ public class Server {
         }
     }
 
-
+    /**
+     * Closes the server socket and all connection sockets.
+     */
     public void close() {
         try {
             aSocket.close();
@@ -54,9 +55,11 @@ public class Server {
         }
     }
 
+    /**
+     * Returns the connection sockets.
+     * @return ArrayList<Socket> The connection sockets.
+     */
     public ArrayList<Socket> getConnectionSockets() {
         return connectionSockets;
     }
-
-
 }

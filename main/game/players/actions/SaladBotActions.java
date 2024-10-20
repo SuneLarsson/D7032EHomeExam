@@ -12,6 +12,10 @@ import main.game.players.IPlayer;
 import main.game.score.PointSaladCriteria;
 import main.game.setupgame.GameState;
 
+/**
+ * Class for the actions of a bot player for PointSalad game
+ */
+
 public class SaladBotActions implements IPlayerActions {
 
     private BotPlayer botPlayer;
@@ -20,7 +24,11 @@ public class SaladBotActions implements IPlayerActions {
     private PointSaladCriteria pointSaladCriteria;
     private ArrayList<String> cardTypes;
 
-
+    /**
+     * Constructor for SaladBotActions
+     * @param thisPlayer the bot player
+     * @param gameState the current game state
+     */
     public SaladBotActions(IPlayer thisPlayer, GameState gameState) {
         this.gameState = gameState;
         this.botPlayer = (BotPlayer) thisPlayer;

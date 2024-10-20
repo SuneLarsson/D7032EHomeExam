@@ -9,17 +9,26 @@ import main.game.setupgame.GameState;
 import java.util.Map;
 import java.util.Collections;
 
+/**
+ * Creates the piles for the PointSalad game.
+ * Selects the amount of each card type based on the number of players.
+ * Shuffles the deck and divides it into 3 piles.
+ * Shuffles the piles.
+ * Adds the piles to the pile manager.
+ */
+
 public class CreateSaladPiles implements ICreatePiles {
 
 
     public CreateSaladPiles() {
     }
+
+
     @Override
     public void createPiles(GameState gameState, Map<String, ArrayList<Card>> decks) {
         shufflePiles(decks);
         ArrayList<Card> combineDeck = new ArrayList<>();
         int numberOfPlayers = gameState.getPlayers().size();
-        // System.out.println("Number of players: " + numberOfPlayers);
         for (ArrayList<Card> deck : decks.values()) {
             int j = 0;
             for (int i = 0; i < gameState.getSettings().getAmountOfEachCardType(numberOfPlayers).get(j); i++) {

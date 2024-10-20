@@ -3,23 +3,28 @@ package main.game.players;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-import main.game.gamelogic.turnlogic.ITurnLogic;
+
 import main.game.setupgame.GameState;
+
+/**
+ * Class for local players
+ * Holds methods for local players
+ */
 
 public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
-    private ITurnLogic turnLogic;
-    // private Scanner scanner;
-    // private IPlayerActions playerActions;
-    
+
+    /**
+     * Constructor for local player
+     * @param playerID The player's ID
+     */
     public LocalPlayer(int playerID) {
         this.playerID = playerID;
         this.score = 0;
         this.hand = new ArrayList<Card>();
-        // this.scanner = new Scanner(System.in);
-        // this.playerActions = gameState.getSetup().getHumanActions();
+
     }
     @Override
     public void sendMessage(Object message) {

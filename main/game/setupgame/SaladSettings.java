@@ -3,6 +3,10 @@ package main.game.setupgame;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Class that defines the specific settings for the PointSalad game
+ * Such as the maximum number of players, the card types, the point name, the resource name, the amount of each vegetable per player, and the json path
+ */
 public class SaladSettings implements ISettings {
     private int maxPlayers = 6;
     private ArrayList<String> vegetableTypes = new ArrayList<>(Arrays.asList("PEPPER", "LETTUCE", "CARROT", "CABBAGE", "ONION", "TOMATO"));
@@ -19,7 +23,6 @@ public class SaladSettings implements ISettings {
         for (int i = 0; i < vegetableTypes.size(); i++) {
             amountPerType.add(amountOfEachVegetable);
         }
-        // amountPerType.add(amountOfEachVegetablePerPlayer);
         return amountPerType;
 
     }

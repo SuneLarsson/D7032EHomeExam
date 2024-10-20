@@ -4,11 +4,19 @@ import main.game.setupgame.GameState;
 
 import java.util.ArrayList;
 
+/**
+ * Class for bot players
+ * Holds methods for bot players
+ */
 public class BotPlayer implements IPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
 
+    /**
+     * Constructor for bot player
+     * @param playerID The player's ID
+     */
     public BotPlayer(int playerID){
         this.playerID = playerID;
         this.hand = new ArrayList<Card>();

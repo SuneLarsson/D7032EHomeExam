@@ -1,8 +1,8 @@
 package main.game.gamelogic.turnlogic;
 
 import main.game.display.HandDisplay;
-import main.game.display.IMarket;
-import main.game.display.SaladMarket;
+import main.game.display.IGameField;
+import main.game.display.SaladGameField;
 import main.game.display.SendMessage;
 import main.game.piles.PileManager;
 import main.game.players.BotPlayer;
@@ -12,29 +12,35 @@ import main.game.players.actions.SaladBotActions;
 import main.game.players.actions.SaladHumanActions;
 import main.game.setupgame.GameState;
 
+/**
+ * Class that handles the turn logic for the PointSalad game.
+ */
+
 public class SaladTurnLogic implements ITurnLogic {
 
     private IPlayer thisPlayer;
     private GameState gameState;
     private PileManager pileManager;
     private HandDisplay handDisplay;
-    private IMarket saladMarket;
+    private IGameField saladGameField;
     private SendMessage sendMessage;
-    // private IPlayerActions playerActions;
 
     public SaladTurnLogic() {
     }
 
 
-
-
+    /**
+     * Setups the takeTurn selection for the player. If the player is a human player, they will be prompted to make a choice. If the player is a bot, a random choice will be made. 
+     * @param gameState The current game state.
+     * @param thisPlayer The player whose turn it is.
+     */
     @Override
     public void takeTurn(GameState gameState, IPlayer thisPlayer) {
         this.gameState = gameState;
         this.thisPlayer = thisPlayer;
         this.pileManager = gameState.getPileManager();
         this.handDisplay = new HandDisplay();
-        this.saladMarket = new SaladMarket();
+        this.saladGameField = new SaladGameField();
         this.sendMessage = new SendMessage();
         if (thisPlayer instanceof IHumanPlayer) {
             SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);
@@ -104,15 +110,22 @@ public class SaladTurnLogic implements ITurnLogic {
         return false;
     }
 
+
+    /**
+     * Prints the start of the turn message for the player.
+     */
     @Override
     public void startTurnPrint() {
         IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
         humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
         humanPlayer.sendMessage(handDisplay.displayHand(humanPlayer.getHand(), gameState));
         humanPlayer.sendMessage("\nThe piles are: ");
-        humanPlayer.sendMessage(saladMarket.printMarket(pileManager));
+        humanPlayer.sendMessage(saladGameField.printGameField(pileManager));
     }
 
+    /**
+     * Prints the end of the turn message for the player.
+     */
     @Override
     public void endTurnPrint() {
         if (thisPlayer instanceof BotPlayer) {

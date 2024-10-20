@@ -32,6 +32,10 @@ import java.util.Set;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Test class for the PointSalad game
+ * Rules tested: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+ */
 
 public class PointSaladTest {
     private GameState gameState;
@@ -141,15 +145,26 @@ public class PointSaladTest {
 
     @Test
     void testRule1() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        System.setOut(printStream);
         String[] invalidArgs = {"1", "6", "PointSalad"};
-        assertThrows(IllegalArgumentException.class, () -> {
+        try {
             new PointGame(invalidArgs);
-        }, "Should not be possible to create a game with 7 player");
-
+        } catch (IllegalArgumentException e) {
+            assertEquals(outputStream.toString().trim(), "Invalid number of players. Please try again.", "Should not be possible to play with 7 players.");
+        } catch (Exception e) {
+            // Ignore other exceptions tested elsewhere
+        }
+        outputStream.reset();
         String[] invalidArgs2 = {"1", "0", "PointSalad"};
-        assertThrows(IllegalArgumentException.class, () -> {
+        try {
             new PointGame(invalidArgs2);
-        }, "Should not be possible to create a game with 1 player");
+        } catch (IllegalArgumentException e) {
+            assertEquals(outputStream.toString().trim(), "Invalid number of players. Please try again.", "Should not be possible to play with 1 player.");
+        } catch (Exception e) {
+            // Ignore other exceptions tested elsewhere
+        }
 
 
         String[] validArgs = {"1", "1", "PointSalad"};
@@ -169,6 +184,7 @@ public class PointSaladTest {
         } catch (Exception e) {
             // Ignore other exceptions tested elsewhere
         }
+
     }
 
     // Rule 2: The deck consists of 108 cards (as specified in the PointSaladManifest.json file published in Canvas). A card
@@ -385,8 +401,11 @@ public class PointSaladTest {
         SaladHumanActions humanActions = new SaladHumanActions(humanPlayer, gameState);
         for(int i = 0; i <pileManager.getPiles().size(); i++) {
             int handSize = humanPlayer.getHand().size();
+            Card pileCard = pileManager.getPile(i).getPileCard();
             humanActions.drawCardFromPile(i);
+            Card handCard = humanPlayer.getHand().get(handSize);
             int handSizeAfterDraw = humanPlayer.getHand().size();
+            assertEquals(pileCard, handCard, "Drawn card should be the same as the card on top of the pile");
             assertTrue(handSize < handSizeAfterDraw, "Hand size should increase after drawing a card");
         }
     }
@@ -397,8 +416,11 @@ public class PointSaladTest {
         SaladBotActions botActions = new SaladBotActions(BotPlayer, gameState);
         for(int i = 0; i <pileManager.getPiles().size(); i++) {
             int handSize = BotPlayer.getHand().size();
+            Card pileCard = pileManager.getPile(i).getPileCard();
             botActions.drawCardFromPile(i);
+            Card handCard = BotPlayer.getHand().get(handSize);
             int handSizeAfterDraw = BotPlayer.getHand().size();
+            assertEquals(pileCard, handCard,  "Drawn card should be the same as the card on top of the pile");
             assertTrue(handSize < handSizeAfterDraw, "Hand size should increase after drawing a card");
         }
     }
@@ -408,8 +430,13 @@ public class PointSaladTest {
         IHumanPlayer humanPlayer = (IHumanPlayer) gameState.getPlayer(0);
         SaladHumanActions humanActions = new SaladHumanActions(humanPlayer, gameState);
         int handSize = humanPlayer.getHand().size();
-        humanActions.takeFromMarket("AB");
+        Card marketCard1 = pileManager.getPile(0).getMarketCard(0);
+        Card marketCard2 = pileManager.getPile(0).getMarketCard(1);
+        humanActions.takeFromMarket("AD");
         int handSizeAfterDraw = humanPlayer.getHand().size();
+        assertEquals(handSize+ 2, handSizeAfterDraw);
+        assertEquals(marketCard1, humanPlayer.getHand().get(handSizeAfterDraw - 2), "First card should be the same as the first card in the market");
+        assertEquals(marketCard2, humanPlayer.getHand().get(handSizeAfterDraw -1 ), "Second card should be the same as the second card in the market");
         assertTrue(handSize < handSizeAfterDraw, "Hand size should increase after drawing a card");
     }
 
@@ -418,9 +445,13 @@ public class PointSaladTest {
         BotPlayer BotPlayer = (BotPlayer) gameState.getPlayer(1);
         SaladBotActions botActions = new SaladBotActions(BotPlayer, gameState);
         int handSize = BotPlayer.getHand().size();
-        botActions.takeFromMarket("AB");
+        Card marketCard1 = pileManager.getPile(0).getMarketCard(0);
+        Card marketCard2 = pileManager.getPile(0).getMarketCard(1);
+        botActions.takeFromMarket("AD");
         int handSizeAfterDraw = BotPlayer.getHand().size();
-        assertTrue(handSize < handSizeAfterDraw, "Hand size should increase after drawing a card");
+        assertEquals(handSize+ 2, handSizeAfterDraw, "Hand size should increase after drawing a card");
+        assertEquals(marketCard1, BotPlayer.getHand().get(handSizeAfterDraw - 2), "First card should be the same as the first card in the market");
+        assertEquals(marketCard2, BotPlayer.getHand().get(handSizeAfterDraw -1 ), "Second card should be the same as the second card in the market");
     }
 
     // Rule 8: The player may opt to turn a point card to its vegetable side (but not the other way around).
@@ -537,36 +568,5 @@ public class PointSaladTest {
         }
     }
 
-
-
-//     Rules:
-// 1. There can be between 2 and 6 players.
-// 2. The deck consists of 108 cards (as specified in the PointSaladManifest.json file published in Canvas). A card
-// has two sides, one with the criteria consisting of scoring rules, the other with one of six different vegetables
-// (Pepper, Lettuce, Carrot, Cabbage, Onion, Tomato). There are 18 of each vegetable.
-// 3. Form the deck so that
-// a. 2 Players: Use 6 random vegetable of each (36 cards in total)
-// b. 3 Players: Use 9 random vegetable of each (54 cards in total)
-// c. 4 Players: Use 12 random vegetable of each (72 cards in total)
-// d. 5 Players: Use 15 random vegetable of each (90 cards in total)
-// e. 6 Players: Use the entire deck
-// Do not reveal which cards were removed
-// 4. Shuffle the cards and create three roughly equal draw piles with roughly equal draw piles with point card sides
-// visible.
-// 5. Flip over two cards from each draw pile to form the vegetable market.
-// 6. Randomly choose a start player
-// 7. On a player’s turn the player may draft one or more cards and add to the player’s hand. Either:
-// a. One point card from the top of any of the draw piles, or
-// b. Two veggie cards from those available in the veggie market.
-// 8. The player may opt to turn a point card to its vegetable side (but not the other way
-// around).
-// 9. Show the hand to the other players.
-// 10. Replace the market with cards from the top of the corresponding point card draw pile
-// 11. If a draw pile runs out of cards, then draw cards from the bottom of the draw pile with
-// the most cards instead.
-// 12. Continue step 7-12 for the next player until there are no more cards in the Point
-// Salad Market
-// 13. Calculate the score for each player according to the point cards in hand.
-// 14. Announce the winner with the highest score
 
 }

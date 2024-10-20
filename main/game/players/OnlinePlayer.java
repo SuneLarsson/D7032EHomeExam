@@ -4,10 +4,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import main.game.card.Card;
-
 import main.game.setupgame.GameState;
+
+/**
+ * Class for online players
+ * Holds methods for online players
+ */
 
 public class OnlinePlayer implements IHumanPlayer {
     private int playerID;
@@ -18,6 +21,13 @@ public class OnlinePlayer implements IHumanPlayer {
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
     
+    /**
+     * Constructor for online player
+     * @param playerID The player's ID
+     * @param connection The player's connection
+     * @param inFromClient The input stream from the client
+     * @param outToClient The output stream to the client
+     */
     public OnlinePlayer(int playerID, Socket connection, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
         this.playerID = playerID;
         this.score = 0;

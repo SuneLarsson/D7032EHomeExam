@@ -11,18 +11,25 @@ import main.game.players.IPlayer;
 import main.game.score.CalculatePoints;
 import main.game.setupgame.GameState;
 
+/**
+ * Class that implements the game logic for the game PointSalad
+ * Contains the game loop and the end game method
+ * 
+ */
 
 public class SaladGameLogic implements IGameLogic {
 	private PileManager pileManager;
-	// private SendMessage sendMessage;
-	// private HandDisplay handDisplay;
+
 
 	public SaladGameLogic(GameState gameState) {
 		this.pileManager = gameState.getPileManager();
-		// this.sendMessage = new SendMessage();
-		// this.handDisplay = new HandDisplay();
 	}
 
+	/**
+	 * Method that runs the game loop
+	 * @param gameState the current game state
+	 * @param turnlimit the max number of turns to play
+	 */
     public void gameLoop(GameState gameState, Integer turnlimit) {
         boolean keepPlaying = true;
 		int i = 0;
@@ -43,10 +50,6 @@ public class SaladGameLogic implements IGameLogic {
 
 			thisPlayer.takeTurn(gameState);
 			
-			// //Rule 9 - Display the player's hand to all players
-			// sendPlayerHandToAllPlayers(thisPlayer, gameState);
-            // // SendMessage.sendToAllPlayers("Player " + thisPlayer.getPlayerID() + "'s hand is now: \n"+HandDisplay.displayHand(thisPlayer.getHand(), gameState)+"\n", gameState.getPlayers());	
-
 			
 			if(gameState.getCurrentPlayer() == gameState.getPlayers().size()-1) {
 				gameState.setCurrentPlayer(0);
@@ -57,7 +60,10 @@ public class SaladGameLogic implements IGameLogic {
 		}
     }
 
-
+	/**
+	 * Method that ends the game and calculates the scores
+	 * @param gameState the current game state
+	 */
 	public void endGame(GameState gameState) {
         SendMessage sendToAll = new SendMessage();
         HandDisplay handDisplay = new HandDisplay();
@@ -72,7 +78,6 @@ public class SaladGameLogic implements IGameLogic {
 		}
 
 		int maxScore = 0;
-		// int playerID = 0;
 		ArrayList<IPlayer> tiedPlayers = new ArrayList<>();
 		for(IPlayer player : players) {
 			if(player.getScore() > maxScore) {
@@ -86,6 +91,7 @@ public class SaladGameLogic implements IGameLogic {
 		}
 
 		// If there are ties, determine the winner based on turn order
+		// TODO split to helper function
 		int winnerID = -1;
 		if (tiedPlayers.size() > 1) {
 			int startingPlayerID = gameState.getStartPlayer();
@@ -110,7 +116,7 @@ public class SaladGameLogic implements IGameLogic {
 
 
 
-
+		// TODO splitt to helper function
 		for(IPlayer player : players) {
 			if(player.getPlayerID() == winnerID ) {
                 String winnerMessage = "\nCongratulations! You are the winner with a score of " + maxScore;
