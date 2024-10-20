@@ -32,16 +32,18 @@ public class CreatePlayers {
     // todo error handling
     private void createOnlinePlayers() throws Exception {
         ArrayList<Socket> connectionSockets = server.getConnectionSockets();
+        System.out.println("Create online players");
         for (int i = 1; i < gameState.getNumPlayers(); i++) {
             Socket connectionSocket = connectionSockets.get(i - 1);
-            ObjectInputStream inFromClient = new ObjectInputStream(connectionSocket.getInputStream());
             ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
+            ObjectInputStream inFromClient = new ObjectInputStream(connectionSocket.getInputStream());
             gameState.getPlayers().add(new OnlinePlayer(i, connectionSocket, inFromClient, outToClient));
             System.out.println("Connected to player " + i);
             outToClient.writeObject("You connected to the server as player " + i + "\n");
         }
     }
-    
+
+  
     private void createBotPlayers() {
         for (int i = gameState.getNumPlayers(); i < gameState.getNumberOfBots()+gameState.getNumPlayers(); i++) {
             gameState.addPlayer(new BotPlayer(i));

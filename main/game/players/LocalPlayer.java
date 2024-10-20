@@ -3,13 +3,14 @@ package main.game.players;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-
+import main.game.gamelogic.turnlogic.ITurnLogic;
 import main.game.setupgame.GameState;
 
 public class LocalPlayer implements IHumanPlayer{
     private int playerID;
     private ArrayList<Card> hand;
     private int score;
+    private ITurnLogic turnLogic;
     // private Scanner scanner;
     // private IPlayerActions playerActions;
     

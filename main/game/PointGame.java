@@ -23,67 +23,59 @@ public class PointGame {
         } catch (Exception s) {
             s.printStackTrace();
         }
-        if (args.length == 0) {
-            gameMode = gameMode();
-            gameState = new GameState(gameMode, in);
-            gameState.setSettings(selectSettings(gameState));
-            System.out.println("Game mode: " + gameMode);
-            selectPlayers(gameState);
-            initGame(gameState);
-            
-            // try {
-            //     Server server = new Server(gameState);
-            //     new CreatePlayers(gameState, server);
-            //     // Server server = new Server(gameState);
-                
-            // } catch (Exception e) {
-            //     e.printStackTrace();
-            // }
-            // new SetupPiles(gameState);
-            // //set Starting player
-            // // gameState.setCurrentPlayer((int) (Math.random() * (gameState.getPlayers().size())));
-            // gameState.setCurrentPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
-            // PointSaladGame game = new PointSaladGame(gameState);
-            // game.gameLoop(gameState, gameState.getSettings().getTurnLimit());
-            // endGame(gameState);
-
-
-        } else {
-            //check if args[0] is a String (ip address) or an integer (number of players)
-            // fixa så man direkt kan skriva in game mode och antal spelare och bots
-			if(args[0].matches("\\d+")) {
-                System.out.println("Args");
-                gameMode = String.valueOf(args[2]).toUpperCase();
+        try {
+            if (args.length == 0) {
+                gameMode = gameMode();
                 gameState = new GameState(gameMode, in);
                 gameState.setSettings(selectSettings(gameState));
-                gameState.setNumPlayers(Integer.parseInt(args[0]));
-                gameState.setNumberOfBots(Integer.parseInt(args[1]));
-
-                if (!checkAmountOfPlayers(gameState)){
-                    throw new IllegalArgumentException("Invalid number of players. Please try again.");
-                } else {
-                    initGame(gameState);
-                }
-			}
-			else {
+                System.out.println("Game mode: " + gameMode);
+                selectPlayers(gameState);
+                initGame(gameState);
+            } else if (args.length == 1) { 
                 try {
-                    Client.connectToServer(args[0]);
-				} catch (Exception e) {
+                    Client client = new Client(args[0]);
+                    // Client.connectToServer(args[0]);
+                } catch (Exception e) {
                     e.printStackTrace();
-				}
-			}
-		}
+                }    
+            } else if (args.length == 3) {
+                //check if args[0] is a String (ip address) or an integer (number of players)
+                // fixa så man direkt kan skriva in game mode och antal spelare och bots
+                if(args[0].matches("\\d+")) {
+                    gameMode = String.valueOf(args[2]).toUpperCase();
+                    gameState = new GameState(gameMode, in);
+                    gameState.setSettings(selectSettings(gameState));
+                    gameState.setNumPlayers(Integer.parseInt(args[0]));
+                    gameState.setNumberOfBots(Integer.parseInt(args[1]));
+
+                    if (!checkAmountOfPlayers(gameState)){
+                        throw new IllegalArgumentException("Invalid number of players. Please try again.");
+                    } else {
+                        initGame(gameState);
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid setup parameters. Please try again.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            // e.printStackTrace();
+        }
         
 
     }
 
     private void initGame(GameState gameState) {
         try {
+            System.out.println("Init game");
             Server server = new Server(gameState);
+            System.out.println("Server created");
             new CreatePlayers(gameState, server);
+            System.out.println("Players created");
             // Server server = new Server(gameState);
             
         } catch (Exception e) {
+            System.out.println("Error in initGame");
             e.printStackTrace();
         }
         new SetupPiles(gameState);
@@ -185,8 +177,8 @@ public class PointGame {
 
     public static void main(String[] args) {
         try {
-            new PointGame (args);
-            // game.play();
+            new PointGame(args);
+             // game.play();
             // new PointGame (String[] args);
         } catch (Exception e) {
             e.printStackTrace();
