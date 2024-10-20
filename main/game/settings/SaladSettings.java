@@ -1,4 +1,4 @@
-package main.game.setupgame;
+package main.game.settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class SaladSettings implements ISettings {
     private String pointName = "Criteria";
     private String resourceName = "Vegetable";
     private int amountOfEachVegetablePerPlayer = 3;
-    private String jsonPath = "./src/PointSaladManifest.json";
+    private String jsonPath = "./main/game/PointSaladManifest.json";
 
 
     @Override

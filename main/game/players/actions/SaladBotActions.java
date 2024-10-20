@@ -3,14 +3,13 @@ package main.game.players.actions;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-
+import main.game.game.gameState.GameState;
+import main.game.game.score.PointSaladCriteria;
 import main.game.piles.PileManager;
 import main.game.piles.pile.Pile;
 import main.game.players.BotPlayer;
 
 import main.game.players.IPlayer;
-import main.game.score.PointSaladCriteria;
-import main.game.setupgame.GameState;
 
 /**
  * Class for the actions of a bot player for PointSalad game

@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import main.game.card.Card;
 import main.game.card.ICardFactory;
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * Builds the decks of cards for the game.

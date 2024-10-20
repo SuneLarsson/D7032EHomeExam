@@ -2,15 +2,16 @@ package main.game;
 
 import java.util.Scanner;
 
-import main.game.gamelogic.IGameLogic;
-import main.game.gamelogic.SaladGameLogic;
+import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.GameLogicFactory;
+import main.game.game.gamelogic.IGameLogic;
+import main.game.game.gamelogic.SaladGameLogic;
+import main.game.game.setupgame.CreatePlayers;
 import main.game.network.Client;
 import main.game.network.Server;
 import main.game.piles.SetupPiles;
-import main.game.setupgame.CreatePlayers;
-import main.game.setupgame.GameState;
-import main.game.setupgame.ISettings;
-import main.game.setupgame.SaladSettings;
+import main.game.settings.ISettings;
+import main.game.settings.SaladSettings;
 
 /**
  * Class that starts the game and sets up the game mode, settings, and players.
@@ -18,6 +19,7 @@ import main.game.setupgame.SaladSettings;
 
 public class PointGame {
     private Scanner in;
+
 
     public PointGame(String[] args) {
         String gameMode = "";
@@ -76,7 +78,8 @@ public class PointGame {
         }
         new SetupPiles(gameState);
         gameState.setStartPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
-        IGameLogic game = new SaladGameLogic(gameState);
+        IGameLogic game = GameLogicFactory.createGameLogic(gameState); 
+        // new SaladGameLogic(gameState);
         game.gameLoop(gameState, gameState.getSettings().getTurnLimit());
         game.endGame(gameState);
         in.close();

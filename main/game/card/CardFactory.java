@@ -1,6 +1,6 @@
 package main.game.card;
 
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * CardFactory is a factory class that creates a card factory based on the game mode.

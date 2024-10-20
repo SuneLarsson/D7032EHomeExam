@@ -1,9 +1,8 @@
 package main.game.display;
 
 import main.game.card.Card;
-
-import main.game.score.CountResources;
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
+import main.game.game.score.CountResources;
 
 import java.util.ArrayList;
 

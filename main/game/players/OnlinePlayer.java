@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import main.game.card.Card;
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * Class for online players

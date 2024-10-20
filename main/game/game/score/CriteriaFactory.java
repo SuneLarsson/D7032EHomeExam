@@ -1,4 +1,4 @@
-package main.game.score;
+package main.game.game.score;
 
 /**
  * Factory class that creates the criteria based on the game mode.

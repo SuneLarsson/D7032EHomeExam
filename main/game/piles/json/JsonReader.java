@@ -1,4 +1,4 @@
-package main.game.json;
+package main.game.piles.json;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 import main.game.card.Card;
 import main.game.card.SaladCard;
-import main.game.gamelogic.SaladGameLogic;
+import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.SaladGameLogic;
+import main.game.game.score.*;
+import main.game.game.setupgame.CreatePlayers;
 import main.game.network.Server;
 import main.game.piles.SetupPiles;
 import main.game.players.IPlayer;
-import main.game.setupgame.CreatePlayers;
-import main.game.setupgame.GameState;
-import main.game.setupgame.SaladSettings;
-import main.game.score.*;
+import main.game.settings.SaladSettings;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,6 +158,7 @@ public class PointSaladScoreTest {
     void scoreCriteriaID1(){
         // Player 0 has 2 LETTUCE cards and 1 score card for most LETTUCE = 10
         player0.addCard(pointCards.get(0));
+        assertEquals(10, scoreCriteria.calculateScore(player0, gameState.getPlayers(), gameState.getSettings().getCardTypes(), null), "Player 0 has 0 LETTUCE cards and 1 score card for most LETTUCE = 10, Player 1-5 have 0 LETTUCE cards");
         player0.addCard(vegetableCards.get(1));
         player0.addCard(vegetableCards.get(1));
         // PLAYER 2 has 1 LETTUCE card

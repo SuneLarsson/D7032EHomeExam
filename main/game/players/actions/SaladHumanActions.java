@@ -1,9 +1,10 @@
 package main.game.players.actions;
 
+import main.game.game.gameState.GameState;
 import main.game.piles.PileManager;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
-import main.game.setupgame.GameState;
+
 import java.util.ArrayList;
 
 

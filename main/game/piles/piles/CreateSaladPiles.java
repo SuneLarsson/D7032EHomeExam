@@ -2,10 +2,11 @@ package main.game.piles.piles;
 
 import java.util.ArrayList;
 import main.game.card.Card;
+import main.game.game.gameState.GameState;
 import main.game.piles.PileManager;
 import main.game.piles.pile.Pile;
 import main.game.piles.pile.SaladPile;
-import main.game.setupgame.GameState;
+
 import java.util.Map;
 import java.util.Collections;
 

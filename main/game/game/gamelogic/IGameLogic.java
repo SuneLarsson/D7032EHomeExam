@@ -1,6 +1,6 @@
-package main.game.gamelogic;
+package main.game.game.gamelogic;
 
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * Interface for the GameLogic class

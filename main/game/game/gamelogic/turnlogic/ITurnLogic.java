@@ -1,7 +1,7 @@
-package main.game.gamelogic.turnlogic;
+package main.game.game.gamelogic.turnlogic;
 
+import main.game.game.gameState.GameState;
 import main.game.players.IPlayer;
-import main.game.setupgame.GameState;
 
 /**
  * Interface representing the turn logic for a game.

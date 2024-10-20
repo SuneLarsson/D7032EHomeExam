@@ -1,4 +1,4 @@
-package main.game.setupgame;
+package main.game.settings;
 
 import java.util.ArrayList;
 

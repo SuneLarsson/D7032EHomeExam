@@ -1,9 +1,9 @@
-package main.game.score;
+package main.game.game.score;
 
 import java.util.ArrayList;
 
+import main.game.game.gameState.GameState;
 import main.game.players.IPlayer;
-import main.game.setupgame.GameState;
 
 /**
  * Class that calculates the points of the players based on the game mode and the cards they have.

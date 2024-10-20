@@ -1,4 +1,4 @@
-package main.game.score;
+package main.game.game.score;
 
 import java.util.ArrayList;
 import main.game.card.Card;

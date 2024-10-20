@@ -1,4 +1,4 @@
-package main.game.gamelogic.turnlogic;
+package main.game.game.gamelogic.turnlogic;
 
 /**
  * TurnFactory is a factory class that creates a TurnLogic based on the game mode.

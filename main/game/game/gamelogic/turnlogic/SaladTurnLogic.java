@@ -1,16 +1,16 @@
-package main.game.gamelogic.turnlogic;
+package main.game.game.gamelogic.turnlogic;
 
 import main.game.display.HandDisplay;
 import main.game.display.IGameField;
 import main.game.display.SaladGameField;
 import main.game.display.SendMessage;
+import main.game.game.gameState.GameState;
 import main.game.piles.PileManager;
 import main.game.players.BotPlayer;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
 import main.game.players.actions.SaladBotActions;
 import main.game.players.actions.SaladHumanActions;
-import main.game.setupgame.GameState;
 
 /**
  * Class that handles the turn logic for the PointSalad game.
@@ -122,6 +122,7 @@ public class SaladTurnLogic implements ITurnLogic {
         humanPlayer.sendMessage("\nThe piles are: ");
         humanPlayer.sendMessage(saladGameField.printGameField(pileManager));
     }
+    
 
     /**
      * Prints the end of the turn message for the player.

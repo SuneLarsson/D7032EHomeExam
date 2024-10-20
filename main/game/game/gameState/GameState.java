@@ -1,9 +1,12 @@
-package main.game.setupgame;
+package main.game.game.gameState;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import main.game.game.setupgame.FactorySetup;
 import main.game.piles.PileManager;
 import main.game.players.IPlayer;
+import main.game.settings.ISettings;
 
 
 /**

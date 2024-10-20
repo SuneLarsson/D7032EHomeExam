@@ -10,7 +10,9 @@ import main.game.card.Card;
 import main.game.card.SaladCard;
 import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
-import main.game.gamelogic.SaladGameLogic;
+import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.SaladGameLogic;
+import main.game.game.setupgame.CreatePlayers;
 import main.game.network.Server;
 import main.game.piles.PileManager;
 import main.game.piles.SetupPiles;
@@ -19,9 +21,7 @@ import main.game.players.BotPlayer;
 import main.game.players.IHumanPlayer;
 import main.game.players.actions.SaladBotActions;
 import main.game.players.actions.SaladHumanActions;
-import main.game.setupgame.CreatePlayers;
-import main.game.setupgame.GameState;
-import main.game.setupgame.SaladSettings;
+import main.game.settings.SaladSettings;
 
 import static org.junit.jupiter.api.Assertions.*;
 

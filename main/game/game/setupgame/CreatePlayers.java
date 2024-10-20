@@ -1,5 +1,6 @@
-package main.game.setupgame;
+package main.game.game.setupgame;
 
+import main.game.game.gameState.GameState;
 import main.game.network.Server;
 import main.game.players.BotPlayer;
 import main.game.players.LocalPlayer;

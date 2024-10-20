@@ -1,22 +1,20 @@
-package main.game.gamelogic;
+package main.game.game.gamelogic;
 
 import java.util.ArrayList;
 
 import main.game.display.HandDisplay;
 import main.game.display.SendMessage;
+import main.game.game.gameState.GameState;
+import main.game.game.score.CalculatePoints;
 import main.game.piles.PileManager;
 import main.game.piles.pile.Pile;
 import main.game.players.IHumanPlayer;
 import main.game.players.IPlayer;
-import main.game.score.CalculatePoints;
-import main.game.setupgame.GameState;
 
 /**
  * Class that implements the game logic for the game PointSalad
  * Contains the game loop and the end game method
- * 
  */
-
 public class SaladGameLogic implements IGameLogic {
 	private PileManager pileManager;
 
@@ -91,7 +89,7 @@ public class SaladGameLogic implements IGameLogic {
 		}
 
 		// If there are ties, determine the winner based on turn order
-		// TODO split to helper function
+		// TODO splitt to helper function
 		int winnerID = -1;
 		if (tiedPlayers.size() > 1) {
 			int startingPlayerID = gameState.getStartPlayer();

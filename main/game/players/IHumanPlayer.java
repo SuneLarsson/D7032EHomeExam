@@ -1,6 +1,6 @@
 package main.game.players;
 
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * Interface for human players

@@ -1,13 +1,14 @@
-package main.game.setupgame;
+package main.game.game.setupgame;
 
 import main.game.card.CardFactory;
 import main.game.card.ICardFactory;
-import main.game.gamelogic.turnlogic.ITurnLogic;
-import main.game.gamelogic.turnlogic.TurnFactory;
+import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.turnlogic.ITurnLogic;
+import main.game.game.gamelogic.turnlogic.TurnFactory;
+import main.game.game.score.CriteriaFactory;
+import main.game.game.score.ICriteria;
 import main.game.piles.piles.ICreatePiles;
 import main.game.piles.piles.PilesFactory;
-import main.game.score.CriteriaFactory;
-import main.game.score.ICriteria;
 
 /**
  * Factory class that select the factories for the game.

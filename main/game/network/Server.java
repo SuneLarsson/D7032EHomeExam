@@ -4,10 +4,9 @@ package main.game.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-
-import main.game.setupgame.GameState;
 import java.util.ArrayList;
+
+import main.game.game.gameState.GameState;
 
 
 /**
@@ -59,6 +58,7 @@ public class Server {
      * Returns the connection sockets.
      * @return ArrayList<Socket> The connection sockets.
      */
+    
     public ArrayList<Socket> getConnectionSockets() {
         return connectionSockets;
     }

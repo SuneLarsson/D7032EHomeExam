@@ -1,11 +1,12 @@
 package main.game.piles;
 
 import org.json.JSONArray;
-import main.game.json.JsonReader;
+
+import main.game.game.gameState.GameState;
+import main.game.piles.json.JsonReader;
 import main.game.piles.pile.Pile;
 import main.game.piles.piles.BuildDecks;
 import main.game.piles.piles.ICreatePiles;
-import main.game.setupgame.GameState;
 
 /**
  * Sets up the piles for the game.

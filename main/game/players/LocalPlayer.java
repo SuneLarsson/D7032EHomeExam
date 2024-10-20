@@ -3,8 +3,7 @@ package main.game.players;
 import java.util.ArrayList;
 
 import main.game.card.Card;
-
-import main.game.setupgame.GameState;
+import main.game.game.gameState.GameState;
 
 /**
  * Class for local players
