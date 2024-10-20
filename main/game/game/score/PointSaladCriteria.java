@@ -182,8 +182,6 @@ public class PointSaladCriteria implements ICriteria {
                         missing++;
                     }
                 }
-                //int aScore = missing * addScore;
-                //System.out.print("ID18 TYPE MISSING: "+aScore + " ");
                 this.totalScore += missing * addScore;
             }
             else {
@@ -195,8 +193,6 @@ public class PointSaladCriteria implements ICriteria {
                         totalType++;
                     }
                 }
-                //int aScore = totalType * addScore;
-                //System.out.print("ID18 TYPE >=: "+aScore + " ");
                 this.totalScore += totalType * addScore;
             }
         }

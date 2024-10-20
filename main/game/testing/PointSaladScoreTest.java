@@ -385,9 +385,11 @@ public class PointSaladScoreTest {
         // Player 0 has score card for 5 / VEGETABLE TYPE >=3
         player0.addCard(pointCards.get(13));
         assertEquals(0, scoreCriteria.calculateScore(player0, gameState.getPlayers(), gameState.getSettings().getCardTypes(), null), "Player 0 has 0 vegetable cards and 1 score card for 5 / VEGETABLE TYPE >=3");
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 2; i++){
             player0.addCard(vegetableCards.get(0));
         }
+        assertEquals(0, scoreCriteria.calculateScore(player0, gameState.getPlayers(), gameState.getSettings().getCardTypes(), null), "Player 0 has 2 vegetable cards and 1 score card for 5 / VEGETABLE TYPE >=3");
+        player0.addCard(vegetableCards.get(0));
         assertEquals(5, scoreCriteria.calculateScore(player0, gameState.getPlayers(), gameState.getSettings().getCardTypes(), null), "Player 0 has 3 peppers and 1 score card for 5 / VEGETABLE TYPE >=3");
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){

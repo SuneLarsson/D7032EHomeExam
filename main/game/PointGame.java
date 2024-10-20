@@ -5,7 +5,6 @@ import java.util.Scanner;
 import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.GameLogicFactory;
 import main.game.game.gamelogic.IGameLogic;
-import main.game.game.gamelogic.SaladGameLogic;
 import main.game.game.setupgame.CreatePlayers;
 import main.game.network.Client;
 import main.game.network.Server;
