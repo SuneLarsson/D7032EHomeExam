@@ -26,12 +26,18 @@ public class BuildDecks {
      * @param cardsArray The JSON array of cards.
      */
     public BuildDecks(GameState gameState, JSONArray cardsArray) {
-        this.cardsArray = cardsArray;
-        this.decks = new HashMap<>();
-        this.cardTypes = gameState.getSettings().getCardTypes();
-        this.ICardFactory = CardFactory.createCardFactory(gameState);
-        initializeDecks();
-        populateDecks();       
+        try {
+            this.cardsArray = cardsArray;
+            this.decks = new HashMap<>();
+            this.cardTypes = gameState.getSettings().getCardTypes();
+            this.ICardFactory = CardFactory.createCardFactory(gameState);
+            initializeDecks();
+            populateDecks();           
+        } catch (Exception e) {
+            System.out.println("Error building decks: " + e);
+            throw new IllegalArgumentException("Error building decks: " + e);
+        }
+     
     }
 
     private void initializeDecks() {

@@ -29,10 +29,11 @@ public class PointGame {
         try {
             if (args.length == 0) {
                 gameMode = gameMode();
+                System.out.println("Game selected: " + gameMode);
+                gameMode = gameMode.toUpperCase();
                 gameState = GameState.getInstance(gameMode, in);
                 // gameState = new GameState(gameMode, in);
                 gameState.setSettings(SettingsFactory.selectSettings(gameState));
-                System.out.println("Game mode: " + gameMode);
                 selectPlayers(gameState);
                 initGame(gameState);
             } else if (args.length == 1) { 
@@ -46,7 +47,6 @@ public class PointGame {
                 if(args[0].matches("\\d+")) {
                     gameMode = String.valueOf(args[2]).toUpperCase();
                     gameState = GameState.getInstance(gameMode, in);
-                    // gameState = new GameState(gameMode, in);
                     gameState.setSettings(SettingsFactory.selectSettings(gameState));
                     gameState.setNumPlayers(Integer.parseInt(args[0]));
                     gameState.setNumberOfBots(Integer.parseInt(args[1]));
@@ -86,11 +86,12 @@ public class PointGame {
     private String gameMode() {
         while (true) {
             String mode = "";
-            System.out.println("Game modes implemented:\n 1. PointSalad \n E. Exit\n");
+            System.out.println("Games implemented:\n 1. PointSalad \n E. Exit\n");
             System.out.println("Please enter the game mode: ");
             mode = in.nextLine();
+            mode = mode.toUpperCase();
             if (mode.equals("1")) {
-                return "POINTSALAD";
+                return "PointSalad";
             } else if (mode.equals("E")) {
                 System.exit(0);
             } else {

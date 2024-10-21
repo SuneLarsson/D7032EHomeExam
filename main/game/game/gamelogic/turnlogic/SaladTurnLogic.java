@@ -37,67 +37,84 @@ public class SaladTurnLogic implements ITurnLogic {
      */
     @Override
     public void takeTurn(GameState gameState, IPlayer thisPlayer) {
-        this.gameState = gameState;
-        this.thisPlayer = thisPlayer;
-        this.pileManager = gameState.getPileManager();
-        this.handDisplay = HandDisplayFactory.createCardFactory(gameState);
-        this.saladGameField = GameFieldFactory.getGameField(gameState);
-        this.sendMessage =gameState.getSendMessageToAll();
-        if (thisPlayer instanceof IHumanPlayer) {
-            SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);
-            takeHumanTurn(playerActions);
-        } else {
-            BotPlayer botPlayer = (BotPlayer) thisPlayer;
-            SaladBotActions botActions = new SaladBotActions(botPlayer, gameState);
-            takeBotTurn(botActions);
+        try {
+            this.gameState = gameState;
+            this.thisPlayer = thisPlayer;
+            this.pileManager = gameState.getPileManager();
+            this.handDisplay = HandDisplayFactory.createCardFactory(gameState);
+            this.saladGameField = GameFieldFactory.getGameField(gameState);
+            this.sendMessage =gameState.getSendMessageToAll();
+            if (thisPlayer instanceof IHumanPlayer) {
+                SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);
+                takeHumanTurn(playerActions);
+            } else {
+                BotPlayer botPlayer = (BotPlayer) thisPlayer;
+                SaladBotActions botActions = new SaladBotActions(botPlayer, gameState);
+                takeBotTurn(botActions);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in takeTurn: " + e);
+            throw new RuntimeException(e);
         }
+
       }
 
     private void takeHumanTurn(SaladHumanActions playerActions) {  
-        boolean validChoice = false;
-        IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
-        startTurnPrint();
-        while(!validChoice) {
-            String vegetableString = "two vegetables";
-            String syntaxString = "AC";
-            if (availableMarketCards() == 1){
-                vegetableString = "a vegetable";
-                syntaxString = "A";
+        try {
+            boolean validChoice = false;
+            IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
+            startTurnPrint();
+            while(!validChoice) {
+                String vegetableString = "two vegetables";
+                String syntaxString = "AC";
+                if (availableMarketCards() == 1){
+                    vegetableString = "a vegetable";
+                    syntaxString = "A";
+                }
+                humanPlayer.sendMessage("\nWould you like to draw a card from a pile or take " + vegetableString + " from the market? (Syntax example: 0 or " + syntaxString + ")\n");
+                String choice = humanPlayer.readMessage(gameState);
+                if(choice.matches("\\d")) {
+                    int pileIndex = Integer.parseInt(choice);
+                    validChoice = playerActions.drawCardFromPile(pileIndex);
+                } else {
+                    validChoice = playerActions.takeFromMarket(choice);
+                }
             }
-            humanPlayer.sendMessage("\nWould you like to draw a card from a pile or take " + vegetableString + " from the market? (Syntax example: 0 or " + syntaxString + ")\n");
-            String choice = humanPlayer.readMessage(gameState);
-            if(choice.matches("\\d")) {
-                int pileIndex = Integer.parseInt(choice);
-                validChoice = playerActions.drawCardFromPile(pileIndex);
-            } else {
-                validChoice = playerActions.takeFromMarket(choice);
+            if (hasCriteriaCardInHand()) {
+                humanPlayer.sendMessage("\n"+handDisplay.displayHand(humanPlayer.getHand(), gameState)+"\nWould you like to turn a criteria card into a veggie card? (Syntax example: n or 2)");
+                String choice = humanPlayer.readMessage(gameState);
+                playerActions.flipCriteriaCard(choice);
             }
+            endTurnPrint();
+        } catch (Exception e) {
+            System.out.println("Error in takeHumanTurn: " + e);
+            throw new RuntimeException(e);
         }
-        if (hasCriteriaCardInHand()) {
-            humanPlayer.sendMessage("\n"+handDisplay.displayHand(humanPlayer.getHand(), gameState)+"\nWould you like to turn a criteria card into a veggie card? (Syntax example: n or 2)");
-            String choice = humanPlayer.readMessage(gameState);
-            playerActions.flipCriteriaCard(choice);
-        }
-        endTurnPrint();
+
     }
 
     private void takeBotTurn(SaladBotActions botActions) {
-        boolean validChoice = false;
-        while(!validChoice) {
-            // Random choice: 
-            int choice = (int) (Math.random() * 2);
-            if(choice == 0) {
-                validChoice = botActions.drawCardFromPile(0);
-            } 
-            if (choice == 1 || !validChoice) {
-                validChoice = botActions.takeFromMarket("");
+        try {
+            boolean validChoice = false;
+            while(!validChoice) {
+                // Random choice: 
+                int choice = (int) (Math.random() * 2);
+                if(choice == 0) {
+                    validChoice = botActions.drawCardFromPile(0);
+                } 
+                if (choice == 1 || !validChoice) {
+                    validChoice = botActions.takeFromMarket("");
+                }
             }
+    
+            endTurnPrint();
+            // if (hasCriteriaCardInHand()) {
+            //     playerActions.flipCriteriaCard();
+            // }
+        } catch (Exception e) {
+            System.out.println("Error in takeBotTurn: " + e);
+            throw new RuntimeException(e);
         }
-
-        endTurnPrint();
-        // if (hasCriteriaCardInHand()) {
-        //     playerActions.flipCriteriaCard();
-        // }
     }
 
     // Rule 8: If the player has a criteria card in their hand, they can flip it to a veggie card
@@ -124,22 +141,32 @@ public class SaladTurnLogic implements ITurnLogic {
 
     @Override
     public void startTurnPrint() {
-        IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
-        humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
-        humanPlayer.sendMessage(handDisplay.displayHand(humanPlayer.getHand(), gameState));
-        humanPlayer.sendMessage("\nThe piles are: ");
-        humanPlayer.sendMessage(saladGameField.printGameField(pileManager));
+        try {     
+            IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
+            humanPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
+            humanPlayer.sendMessage(handDisplay.displayHand(humanPlayer.getHand(), gameState));
+            humanPlayer.sendMessage("\nThe piles are: ");
+            humanPlayer.sendMessage(saladGameField.printGameField(pileManager));
+        } catch (Exception e) {
+            System.out.println("Error in startTurnPrint: " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void endTurnPrint() {
-        if (thisPlayer instanceof BotPlayer) {
-            sendPlayerHandToAllPlayers(thisPlayer, gameState);            
-        }else{
-            IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
-            humanPlayer.sendMessage("\nYour turn is completed\n****************************************************************\n\n");
-            sendPlayerHandToAllPlayers(thisPlayer, gameState);
-        }   
+        try {            
+            if (thisPlayer instanceof BotPlayer) {
+                sendPlayerHandToAllPlayers(thisPlayer, gameState);            
+            }else{
+                IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
+                humanPlayer.sendMessage("\nYour turn is completed\n****************************************************************\n\n");
+                sendPlayerHandToAllPlayers(thisPlayer, gameState);
+            }   
+        } catch (Exception e) {
+            System.out.println("Error in endTurnPrint: " + e);
+            throw new RuntimeException(e);
+        }
     }
     
 	private void sendPlayerHandToAllPlayers(IPlayer player, GameState gameState) {

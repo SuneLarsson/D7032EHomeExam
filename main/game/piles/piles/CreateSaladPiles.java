@@ -20,44 +20,45 @@ import java.util.Collections;
 
 public class CreateSaladPiles implements ICreatePiles {
 
-
-    public CreateSaladPiles() {
-    }
-
-
     @Override
     public void createPiles(GameState gameState, Map<String, ArrayList<Card>> decks) {
-        shufflePiles(decks);
-        ArrayList<Card> combineDeck = new ArrayList<>();
-        int numberOfPlayers = gameState.getPlayers().size();
-        for (ArrayList<Card> deck : decks.values()) {
-            int j = 0;
-            for (int i = 0; i < gameState.getSettings().getAmountOfEachCardType(numberOfPlayers).get(j); i++) {
-                combineDeck.add(deck.remove(0));
+        try {
+            shufflePiles(decks);
+            ArrayList<Card> combineDeck = new ArrayList<>();
+            int numberOfPlayers = gameState.getPlayers().size();
+            for (ArrayList<Card> deck : decks.values()) {
+                int j = 0;
+                for (int i = 0; i < gameState.getSettings().getAmountOfEachCardType(numberOfPlayers).get(j); i++) {
+                    combineDeck.add(deck.remove(0));
+                }
             }
-        }
-        shuffleDeck(combineDeck);
-        
-        //divide the deck into 3 piles
-        PileManager pileManager = gameState.getPileManager();
-        Pile pile1 = new SaladPile(pileManager, 0);
-        Pile pile2 = new SaladPile(pileManager, 1);
-        Pile pile3 = new SaladPile(pileManager, 2);
-;
-        for (int i = 0; i < combineDeck.size(); i++) {
-            if (i % 3 == 0) {
-                pile1.addCard(combineDeck.get(i));
-            } else if (i % 3 == 1) {
-                pile2.addCard(combineDeck.get(i));
-            } else {
-                pile3.addCard(combineDeck.get(i));
+            shuffleDeck(combineDeck);
+            
+            //divide the deck into 3 piles
+            PileManager pileManager = gameState.getPileManager();
+            Pile pile1 = new SaladPile(pileManager, 0);
+            Pile pile2 = new SaladPile(pileManager, 1);
+            Pile pile3 = new SaladPile(pileManager, 2);
+    ;
+            for (int i = 0; i < combineDeck.size(); i++) {
+                if (i % 3 == 0) {
+                    pile1.addCard(combineDeck.get(i));
+                } else if (i % 3 == 1) {
+                    pile2.addCard(combineDeck.get(i));
+                } else {
+                    pile3.addCard(combineDeck.get(i));
+                }
             }
+    
+            pileManager.addPile(pile1);
+            pileManager.addPile(pile2);
+            pileManager.addPile(pile3);
+    
+        } catch (Exception e) {
+            System.out.println("Error in createPiles");
+            throw new IllegalArgumentException("Error in createPiles");
         }
-
-        pileManager.addPile(pile1);
-        pileManager.addPile(pile2);
-        pileManager.addPile(pile3);
-
+ 
     }
 
     private void shufflePiles(Map<String, ArrayList<Card>> decks) {

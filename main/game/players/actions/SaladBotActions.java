@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import main.game.card.Card;
 import main.game.game.gameState.GameState;
+import main.game.game.score.CriteriaFactory;
+import main.game.game.score.ICriteria;
 import main.game.game.score.PointSaladCriteria;
 import main.game.piles.PileManager;
 import main.game.piles.pile.Pile;
@@ -20,7 +22,7 @@ public class SaladBotActions implements IPlayerActions {
     private BotPlayer botPlayer;
     private GameState gameState;
     private PileManager pileManager;
-    private PointSaladCriteria pointSaladCriteria;
+    private ICriteria pointSaladCriteria;
     private ArrayList<String> cardTypes;
 
     /**
@@ -32,7 +34,7 @@ public class SaladBotActions implements IPlayerActions {
         this.gameState = gameState;
         this.botPlayer = (BotPlayer) thisPlayer;
         this.pileManager = gameState.getPileManager();
-        this.pointSaladCriteria = new PointSaladCriteria();
+        this.pointSaladCriteria = CriteriaFactory.createCriteria(gameState);
         this.cardTypes = gameState.getSettings().getCardTypes();
     }
 

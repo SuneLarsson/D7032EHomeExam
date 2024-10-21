@@ -31,32 +31,37 @@ public class SaladGameLogic implements IGameLogic {
 	 */
 	@Override
     public void gameLoop(GameState gameState, Integer turnlimit) {
-        boolean keepPlaying = true;
-		int i = 0;
-		while(keepPlaying && (i < turnlimit || turnlimit == -1)) {
-			IPlayer thisPlayer = gameState.getPlayer(gameState.getCurrentPlayer());
-			boolean stillAvailableCards = false;
-			for(Pile p: pileManager.getPiles()) {
-				if(!p.isEmpty()) {
-					
-					stillAvailableCards = true;
+		try {		
+			boolean keepPlaying = true;
+			int i = 0;
+			while(keepPlaying && (i < turnlimit || turnlimit == -1)) {
+				IPlayer thisPlayer = gameState.getPlayer(gameState.getCurrentPlayer());
+				boolean stillAvailableCards = false;
+				for(Pile p: pileManager.getPiles()) {
+					if(!p.isEmpty()) {
+						
+						stillAvailableCards = true;
+						break;
+					}
+				}
+				if(!stillAvailableCards) {
+					keepPlaying = false;
 					break;
 				}
+	
+				thisPlayer.takeTurn(gameState);
+				
+				
+				if(gameState.getCurrentPlayer() == gameState.getPlayers().size()-1) {
+					gameState.setCurrentPlayer(0);
+				} else {
+					gameState.setCurrentPlayer(gameState.getCurrentPlayer()+1);
+				}
+				i++;
 			}
-			if(!stillAvailableCards) {
-				keepPlaying = false;
-				break;
-			}
-
-			thisPlayer.takeTurn(gameState);
-			
-			
-			if(gameState.getCurrentPlayer() == gameState.getPlayers().size()-1) {
-				gameState.setCurrentPlayer(0);
-			} else {
-                gameState.setCurrentPlayer(gameState.getCurrentPlayer()+1);
-			}
-			i++;
+		} catch (Exception e) {
+			System.out.println("Error in gameLoop");
+            throw new RuntimeException(e);
 		}
     }
 
