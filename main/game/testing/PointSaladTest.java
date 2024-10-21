@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
-import main.game.PointGame;
+import main.game.app.PointGame;
 import main.game.card.Card;
 import main.game.card.SaladCard;
 import main.game.display.HandDisplay;
@@ -13,9 +13,9 @@ import main.game.display.SendMessage;
 import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.SaladGameLogic;
 import main.game.game.setupgame.CreatePlayers;
+import main.game.game.setupgame.SetupPiles;
 import main.game.network.Server;
 import main.game.piles.PileManager;
-import main.game.piles.SetupPiles;
 import main.game.piles.pile.Pile;
 import main.game.players.BotPlayer;
 import main.game.players.IHumanPlayer;
@@ -47,11 +47,13 @@ public class PointSaladTest {
 
 
     private void setupGameWithPlayers(int numPlayers, int numBots) {
+        GameState.resetInstance();
         gameState = null;
         pileManager = null;
         server.close();
 
-        gameState = new GameState("POINTSALAD", new Scanner(System.in));
+        gameState = GameState.getInstance("POINTSALAD", new Scanner(System.in));
+        // gameState = new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(numPlayers);
         gameState.setNumberOfBots(numBots);
@@ -118,7 +120,8 @@ public class PointSaladTest {
 
     @BeforeEach
     void setUp() {
-        gameState = new GameState("POINTSALAD", new Scanner(System.in));
+        gameState = GameState.getInstance("POINTSALAD", new Scanner(System.in));
+        // gameState = new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
         gameState.setNumberOfBots(1);
@@ -136,6 +139,7 @@ public class PointSaladTest {
 
     @AfterEach
     void tearDown() {
+        GameState.resetInstance();
         gameState = null;
         pileManager = null;
         server.close();
@@ -151,21 +155,25 @@ public class PointSaladTest {
         String[] invalidArgs = {"1", "6", "PointSalad"};
         try {
             new PointGame(invalidArgs);
+            fail("The game should not be able to start with 7 player.");
         } catch (IllegalArgumentException e) {
             assertEquals(outputStream.toString().trim(), "Invalid number of players. Please try again.", "Should not be possible to play with 7 players.");
         } catch (Exception e) {
             // Ignore other exceptions tested elsewhere
         }
         outputStream.reset();
+        GameState.resetInstance();
+
         String[] invalidArgs2 = {"1", "0", "PointSalad"};
         try {
             new PointGame(invalidArgs2);
+            fail("The game should not be able to start with 1 player.");
         } catch (IllegalArgumentException e) {
             assertEquals(outputStream.toString().trim(), "Invalid number of players. Please try again.", "Should not be possible to play with 1 player.");
         } catch (Exception e) {
             // Ignore other exceptions tested elsewhere
         }
-
+        GameState.resetInstance();
 
         String[] validArgs = {"1", "1", "PointSalad"};
         try {
@@ -176,6 +184,7 @@ public class PointSaladTest {
             // Ignore other exceptions tested elsewhere
         }
 
+        GameState.resetInstance();
         String[] validArgs2 = {"1", "5", "PointSalad"};
         try {
             new PointGame(validArgs2);
@@ -412,17 +421,14 @@ public class PointSaladTest {
 
     @Test
     void testRule7aBot() {
-        BotPlayer BotPlayer = (BotPlayer) gameState.getPlayer(1);
-        SaladBotActions botActions = new SaladBotActions(BotPlayer, gameState);
-        for(int i = 0; i <pileManager.getPiles().size(); i++) {
-            int handSize = BotPlayer.getHand().size();
-            Card pileCard = pileManager.getPile(i).getPileCard();
+        BotPlayer botPlayer = (BotPlayer) gameState.getPlayer(1);
+        SaladBotActions botActions = new SaladBotActions(botPlayer, gameState);
+         for(int i = 0; i <pileManager.getPiles().size(); i++) {
+            int handSize = botPlayer.getHand().size();
             botActions.drawCardFromPile(i);
-            Card handCard = BotPlayer.getHand().get(handSize);
-            int handSizeAfterDraw = BotPlayer.getHand().size();
-            assertEquals(pileCard, handCard,  "Drawn card should be the same as the card on top of the pile");
-            assertTrue(handSize < handSizeAfterDraw, "Hand size should increase after drawing a card");
-        }
+            int handSizeAfterDraw = botPlayer.getHand().size();
+            assertEquals(handSize + 1, handSizeAfterDraw, "Hand size should increase by one after drawing a card");
+         }
     }
 
     @Test

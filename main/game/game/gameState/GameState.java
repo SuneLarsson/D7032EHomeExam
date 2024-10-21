@@ -15,6 +15,8 @@ import main.game.settings.ISettings;
  * settings, setup, and scanner for input.
  */
 public class GameState {
+    private static GameState instance;
+
     private String gameMode;
     private int numPlayers;
     private int numberOfBots;
@@ -32,7 +34,7 @@ public class GameState {
      * @param gameMode The game mode of the game.
      * @param in The scanner to read input from the console.
      */
-    public GameState(String gameMode, Scanner in) {
+    private GameState(String gameMode, Scanner in) {
         this.players = new ArrayList<IPlayer>();
         this.currentPlayer = 0;
         this.pileManager = new PileManager();
@@ -41,6 +43,27 @@ public class GameState {
         this.scanner = in;
     }
 
+    /**
+     * Gets the instance of the GameState.
+     * @param gameMode The game mode of the game.
+     * @param in The scanner to read input from the console.
+     * @return The instance of the GameState.
+     */
+    public static GameState getInstance(String gameMode, Scanner in) {
+        if (instance == null) {
+            instance = new GameState(gameMode, in);
+        }
+        return instance;
+    }
+
+    /**
+     * Reset instance of the GameState.
+     * @return The instance of the GameState.
+     */
+    public static void resetInstance() {
+        instance = null;
+    }
+    
     /**
      * Gets the scanner used for input.
      * @return The scanner used for input.

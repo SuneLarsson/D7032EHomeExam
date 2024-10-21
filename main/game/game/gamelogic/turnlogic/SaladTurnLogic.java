@@ -1,5 +1,6 @@
 package main.game.game.gamelogic.turnlogic;
 
+import main.game.display.GameFieldFactory;
 import main.game.display.HandDisplay;
 import main.game.display.IGameField;
 import main.game.display.SaladGameField;
@@ -25,8 +26,8 @@ public class SaladTurnLogic implements ITurnLogic {
     private IGameField saladGameField;
     private SendMessage sendMessage;
 
-    public SaladTurnLogic() {
-    }
+    // public SaladTurnLogic() {
+    // }
 
 
     /**
@@ -40,7 +41,7 @@ public class SaladTurnLogic implements ITurnLogic {
         this.thisPlayer = thisPlayer;
         this.pileManager = gameState.getPileManager();
         this.handDisplay = new HandDisplay();
-        this.saladGameField = new SaladGameField();
+        this.saladGameField = GameFieldFactory.getGameField(gameState);
         this.sendMessage = new SendMessage();
         if (thisPlayer instanceof IHumanPlayer) {
             SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);

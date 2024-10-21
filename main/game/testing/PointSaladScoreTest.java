@@ -11,8 +11,8 @@ import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.SaladGameLogic;
 import main.game.game.score.*;
 import main.game.game.setupgame.CreatePlayers;
+import main.game.game.setupgame.SetupPiles;
 import main.game.network.Server;
-import main.game.piles.SetupPiles;
 import main.game.players.IPlayer;
 import main.game.settings.SaladSettings;
 
@@ -93,7 +93,8 @@ public class PointSaladScoreTest {
 
     @BeforeEach
     void setUp() {
-        gameState = new GameState("POINTSALAD", new Scanner(System.in));
+        gameState = GameState.getInstance("POINTSALAD", new Scanner(System.in));
+        // gameState = new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(1);
         gameState.setNumberOfBots(5);
@@ -113,6 +114,7 @@ public class PointSaladScoreTest {
     }
 
     private void setupGameWithPlayers(int numPlayers, int numBots) {
+        GameState.resetInstance();
         gameState = null;
         scoreCriteria = null;
         tempHand = null;
@@ -120,7 +122,8 @@ public class PointSaladScoreTest {
         player1 = null;
         server.close();
 
-        gameState = new GameState("POINTSALAD", new Scanner(System.in));
+        gameState = GameState.getInstance("POINTSALAD", new Scanner(System.in));
+        // new GameState("POINTSALAD", new Scanner(System.in));
         gameState.setSettings(new SaladSettings());
         gameState.setNumPlayers(numPlayers);
         gameState.setNumberOfBots(numBots);
@@ -141,6 +144,7 @@ public class PointSaladScoreTest {
 
     @AfterEach
     void tearDown() {
+        GameState.resetInstance();
         gameState = null;
         pointCards = null;
         vegetableCards = null;
@@ -549,13 +553,11 @@ public class PointSaladScoreTest {
 
         saladGameLogic.endGame(gameState);
         String expectedLoserMessage = "Sorry, you lost. The winner is player 1 with a score of 14";
-        // assertEquals(outputStream.toString(), expectedLoserMessage);
         assertTrue(outputStream.toString().contains(expectedLoserMessage));
 
         gameState.setStartPlayer(1);
         saladGameLogic.endGame(gameState);
         String expectedWinnerMessage = "Congratulations! You are the winner with a score of 14";
-        // assertEquals(outputStream.toString(), expectedWinnerMessage);
         assertTrue(outputStream.toString().contains(expectedWinnerMessage));
     }
 

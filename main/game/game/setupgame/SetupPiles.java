@@ -1,4 +1,4 @@
-package main.game.piles;
+package main.game.game.setupgame;
 
 import org.json.JSONArray;
 

@@ -6,6 +6,8 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -172,7 +174,7 @@ public class PointSalad {
 		ArrayList<Card> deckOnion = new ArrayList<>();
 		ArrayList<Card> deckTomato = new ArrayList<>();
 
-        try (InputStream fInputStream = new FileInputStream("./src/PointSaladManifest.json");
+        try (InputStream fInputStream = new FileInputStream("./main/game/resources/PointSaladManifest.json");
              Scanner scanner = new Scanner(fInputStream, "UTF-8").useDelimiter("\\A")) {
 
             // Read the entire JSON file into a String
@@ -546,7 +548,7 @@ public class PointSalad {
 			if(!thisPlayer.isBot) {
 				thisPlayer.sendMessage("\n\n****************************************************************\nIt's your turn! Your hand is:\n");
 				thisPlayer.sendMessage(displayHand(thisPlayer.hand));
-				thisPlayer.sendMessage("\nThe piles are: ");
+				thisPlayer.sendMessage("\nThe piles are: " + piles.get(0).cards.size() + " 		 " + piles.get(1).cards.size() + " 		 " + piles.get(2).cards.size() + "\n");
 			
 				thisPlayer.sendMessage(printMarket());
 				boolean validChoice = false;
@@ -716,7 +718,9 @@ public class PointSalad {
 	}
 
 	public static void main(String[] args) {
+		
 		PointSalad game = new PointSalad(args);
 
 	}
 }
+

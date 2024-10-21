@@ -36,8 +36,6 @@ public class CreateSaladPiles implements ICreatePiles {
                 combineDeck.add(deck.remove(0));
             }
         }
-
-        System.out.println("Deck size: " + combineDeck.size());
         shuffleDeck(combineDeck);
         
         //divide the deck into 3 piles
@@ -60,9 +58,7 @@ public class CreateSaladPiles implements ICreatePiles {
         pileManager.addPile(pile2);
         pileManager.addPile(pile3);
 
-        
     }
-    
 
     private void shufflePiles(Map<String, ArrayList<Card>> decks) {
         for (ArrayList<Card> deck : decks.values()) {

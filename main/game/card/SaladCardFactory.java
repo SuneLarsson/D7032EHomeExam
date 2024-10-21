@@ -6,8 +6,8 @@ package main.game.card;
  */
 public class SaladCardFactory implements ICardFactory {
 
-    public SaladCardFactory() {
-    }
+    // public SaladCardFactory() {
+    // }
     
     /**
      * Creates a SaladCard object based on the vegetable type and criteria.

@@ -19,6 +19,5 @@ public interface IHumanPlayer extends IPlayer {
      * @return String The message read
      */
     String readMessage(GameState gameState);
-    
-    // IPlayerActions getActions(GameState gameState, IPlayer player);
+
 }

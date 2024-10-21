@@ -47,7 +47,6 @@ public class CreatePlayers {
      */
     private void createOnlinePlayers() throws Exception {
         ArrayList<Socket> connectionSockets = server.getConnectionSockets();
-        System.out.println("Create online players");
         for (int i = 1; i < gameState.getNumPlayers(); i++) {
             Socket connectionSocket = connectionSockets.get(i - 1);
             ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());

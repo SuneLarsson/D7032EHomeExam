@@ -28,6 +28,7 @@ public class SaladGameLogic implements IGameLogic {
 	 * @param gameState the current game state
 	 * @param turnlimit the max number of turns to play
 	 */
+	@Override
     public void gameLoop(GameState gameState, Integer turnlimit) {
         boolean keepPlaying = true;
 		int i = 0;
@@ -62,6 +63,7 @@ public class SaladGameLogic implements IGameLogic {
 	 * Method that ends the game and calculates the scores
 	 * @param gameState the current game state
 	 */
+	@Override
 	public void endGame(GameState gameState) {
         SendMessage sendToAll = new SendMessage();
         HandDisplay handDisplay = new HandDisplay();
@@ -74,47 +76,17 @@ public class SaladGameLogic implements IGameLogic {
 			sendToAll.sendToAllPlayers("Player " + player.getPlayerID() + "'s hand is: \n"+ handDisplay.displayHand(player.getHand(), gameState), players);
 			sendToAll.sendToAllPlayers("\nPlayer " + player.getPlayerID() + "'s score is: " + player.getScore(), players);
 		}
+		
+		ArrayList<Integer> winnerArray = checkWinnerTie(gameState);
+		int winnerID = winnerArray.get(0);
+		int maxScore = winnerArray.get(1);
 
-		int maxScore = 0;
-		ArrayList<IPlayer> tiedPlayers = new ArrayList<>();
-		for(IPlayer player : players) {
-			if(player.getScore() > maxScore) {
-				maxScore = player.getScore();
-				tiedPlayers.clear();
-				tiedPlayers.add(player);
-				// playerID = player.getPlayerID();
-			} else if(player.getScore() == maxScore) {
-				tiedPlayers.add(player);
-			}
-		}
+		sendWinningLosingMessage(gameState, winnerID, maxScore);
+		
+    }
 
-		// If there are ties, determine the winner based on turn order
-		// TODO splitt to helper function
-		int winnerID = -1;
-		if (tiedPlayers.size() > 1) {
-			int startingPlayerID = gameState.getStartPlayer();
-
-			// Track the last player in the tied group
-			winnerID = -1;
-
-			// Iterate through players to find the last one who played among tied players
-			for (int i = startingPlayerID; i < players.size()+startingPlayerID; i++) {
-				int playerToCheck = i;
-				if (i >= players.size()) {
-					playerToCheck = i - players.size();
-				}
-				if (tiedPlayers.contains(players.get(playerToCheck))) {
-					winnerID = players.get(playerToCheck).getPlayerID();
-				}
-	
-			}
-		} else {
-			winnerID = tiedPlayers.get(0).getPlayerID(); // No ties, the one with the max score is the winner
-		}
-
-
-
-		// TODO splitt to helper function
+	private void sendWinningLosingMessage(GameState gameState, int winnerID, int maxScore) {
+		ArrayList<IPlayer> players = gameState.getPlayers();
 		for(IPlayer player : players) {
 			if(player.getPlayerID() == winnerID ) {
                 String winnerMessage = "\nCongratulations! You are the winner with a score of " + maxScore;
@@ -130,5 +102,41 @@ public class SaladGameLogic implements IGameLogic {
                 }
 			}
 		}
-    }
+	}
+
+	private ArrayList<Integer> checkWinnerTie(GameState gameState) {
+		ArrayList<IPlayer> players = gameState.getPlayers();
+		int maxScore = 0;
+		ArrayList<IPlayer> tiedPlayers = new ArrayList<>();
+		for(IPlayer player : players) {
+			if(player.getScore() > maxScore) {
+				maxScore = player.getScore();
+				tiedPlayers.clear();
+				tiedPlayers.add(player);
+				// playerID = player.getPlayerID();
+			} else if(player.getScore() == maxScore) {
+				tiedPlayers.add(player);
+			}
+		}
+		int winnerID = -1;
+		if (tiedPlayers.size() > 1) {
+			int startingPlayerID = gameState.getStartPlayer();
+			winnerID = -1;
+			for (int i = startingPlayerID; i < players.size()+startingPlayerID; i++) {
+				int playerToCheck = i;
+				if (i >= players.size()) {
+					playerToCheck = i - players.size();
+				}
+				if (tiedPlayers.contains(players.get(playerToCheck))) {
+					winnerID = players.get(playerToCheck).getPlayerID();
+				}
+			}
+		} else {
+			winnerID = tiedPlayers.get(0).getPlayerID(); // No ties, the one with the max score is the winner
+		}
+		ArrayList<Integer> winnerArray = new ArrayList<>();;
+		winnerArray.add(winnerID);
+		winnerArray.add(maxScore);
+		return winnerArray;
+	}
 }

@@ -49,11 +49,3 @@ public class BotPlayer implements IPlayer{
     }
 
 }
-
-// public void performPlayerAction(IPlayer player) {
-//     if (player instanceof OnlinePlayer) {
-//         // Handle online player actions
-//     } else if (player instanceof LocalPlayer) {
-//         // Handle local player actions
-//     }
-// }

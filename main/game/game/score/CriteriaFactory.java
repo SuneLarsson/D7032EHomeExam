@@ -8,7 +8,8 @@ public class CriteriaFactory {
     /**
      * Method that creates the criteria based on the game mode.
      * @param gameMode The game mode.
-     * @return ICriteria The criteria based on the game mode.
+     * @return ICriteria The criteria for the game.
+     * @throws IllegalArgumentException If the game mode is not recognized.
      */
     public static ICriteria createCriteria(String gameMode) {
         if (gameMode.equals("POINTSALAD")) {

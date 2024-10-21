@@ -1,4 +1,4 @@
-package main.game;
+package main.game.app;
 
 import java.util.Scanner;
 
@@ -6,11 +6,10 @@ import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.GameLogicFactory;
 import main.game.game.gamelogic.IGameLogic;
 import main.game.game.setupgame.CreatePlayers;
+import main.game.game.setupgame.SetupPiles;
 import main.game.network.Client;
 import main.game.network.Server;
-import main.game.piles.SetupPiles;
-import main.game.settings.ISettings;
-import main.game.settings.SaladSettings;
+import main.game.settings.SettingsFactory;
 
 /**
  * Class that starts the game and sets up the game mode, settings, and players.
@@ -18,7 +17,6 @@ import main.game.settings.SaladSettings;
 
 public class PointGame {
     private Scanner in;
-
 
     public PointGame(String[] args) {
         String gameMode = "";
@@ -31,14 +29,15 @@ public class PointGame {
         try {
             if (args.length == 0) {
                 gameMode = gameMode();
-                gameState = new GameState(gameMode, in);
-                gameState.setSettings(selectSettings(gameState));
+                gameState = GameState.getInstance(gameMode, in);
+                // gameState = new GameState(gameMode, in);
+                gameState.setSettings(SettingsFactory.selectSettings(gameState));
                 System.out.println("Game mode: " + gameMode);
                 selectPlayers(gameState);
                 initGame(gameState);
             } else if (args.length == 1) { 
                 try {
-                    Client client = new Client(args[0]);
+                    new Client(args[0]);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }    
@@ -46,8 +45,9 @@ public class PointGame {
                 //check if args[0] is a String (ip address) or an integer (number of players)
                 if(args[0].matches("\\d+")) {
                     gameMode = String.valueOf(args[2]).toUpperCase();
-                    gameState = new GameState(gameMode, in);
-                    gameState.setSettings(selectSettings(gameState));
+                    gameState = GameState.getInstance(gameMode, in);
+                    // gameState = new GameState(gameMode, in);
+                    gameState.setSettings(SettingsFactory.selectSettings(gameState));
                     gameState.setNumPlayers(Integer.parseInt(args[0]));
                     gameState.setNumberOfBots(Integer.parseInt(args[1]));
 
@@ -78,30 +78,9 @@ public class PointGame {
         new SetupPiles(gameState);
         gameState.setStartPlayer(gameState.getSettings().startingPlayerRule(gameState.getPlayers().size()));
         IGameLogic game = GameLogicFactory.createGameLogic(gameState); 
-        // new SaladGameLogic(gameState);
         game.gameLoop(gameState, gameState.getSettings().getTurnLimit());
         game.endGame(gameState);
         in.close();
-    }
-
-    private boolean checkAmountOfPlayers(GameState gameState) {
-        int numberPlayers = gameState.getNumPlayers();
-        int numberOfBots = gameState.getNumberOfBots();
-        if (numberPlayers + numberOfBots > gameState.getSettings().getMaxPlayers()) {
-            return false;
-        } else if (numberPlayers + numberOfBots < gameState.getSettings().getMinPlayers()) {
-            return false;
-        }
-        return true;
-    }
-
-    private ISettings selectSettings(GameState gameState) {
-        if (gameState.getGameMode().equals("POINTSALAD")) {
-            return new SaladSettings();
-        } else {
-            System.out.println("Invalid game mode. Please try again.");
-        }
-        return null;
     }
 
     private String gameMode() {
@@ -120,8 +99,6 @@ public class PointGame {
 
         }
     }
-
-
 
     private void selectPlayers(GameState gameState) {
         int numberPlayers = 0;
@@ -166,6 +143,17 @@ public class PointGame {
         if(!checkAmountOfPlayers(gameState)) {
             throw new IllegalArgumentException("Invalid number of players. Please try again.");
         } 
+    }
+
+    private boolean checkAmountOfPlayers(GameState gameState) {
+        int numberPlayers = gameState.getNumPlayers();
+        int numberOfBots = gameState.getNumberOfBots();
+        if (numberPlayers + numberOfBots > gameState.getSettings().getMaxPlayers()) {
+            return false;
+        } else if (numberPlayers + numberOfBots < gameState.getSettings().getMinPlayers()) {
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {

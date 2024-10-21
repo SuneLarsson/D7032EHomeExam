@@ -13,7 +13,7 @@ public class SaladSettings implements ISettings {
     private String pointName = "Criteria";
     private String resourceName = "Vegetable";
     private int amountOfEachVegetablePerPlayer = 3;
-    private String jsonPath = "./main/game/PointSaladManifest.json";
+    private String jsonPath = "./main/game/resources/PointSaladManifest.json";
 
 
     @Override

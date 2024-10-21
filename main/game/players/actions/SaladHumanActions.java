@@ -46,6 +46,9 @@ public class SaladHumanActions implements IPlayerActions {
     public boolean takeFromMarket(String pileChoice){
         int takenVeggies = 0;
         int availableVeggies = gameState.availableMarketCards();
+        if (pileChoice.length() > 2){
+            pileChoice = pileChoice.substring(0, 2);
+        }
         if (availableVeggies > 1 && pileChoice.length() < 2) {
             humanPlayer.sendMessage("\nYou need to take two vegetables from the market.\nTry again!\n");
             return false;

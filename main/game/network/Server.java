@@ -25,7 +25,6 @@ public class Server {
     public Server(GameState gamestate) throws Exception {
         try {
             int numberPlayers = gamestate.getNumPlayers() - 1;
-            System.out.println("Server socket");
             aSocket = new ServerSocket(2048);
             for (int i = 0; i < numberPlayers; i++) {
                 Socket connectionSocket = aSocket.accept();

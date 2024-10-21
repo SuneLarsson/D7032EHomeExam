@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="json">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/main/game/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/main/game/libs/json.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
