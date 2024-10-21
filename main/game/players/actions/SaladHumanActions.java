@@ -45,7 +45,7 @@ public class SaladHumanActions implements IPlayerActions {
     @Override
     public boolean takeFromMarket(String pileChoice){
         int takenVeggies = 0;
-        int availableVeggies = gameState.availableMarketCards();
+        int availableVeggies = availableMarketCards();
         if (pileChoice.length() > 2){
             pileChoice = pileChoice.substring(0, 2);
         }
@@ -119,6 +119,18 @@ public class SaladHumanActions implements IPlayerActions {
             return true;
        }
 
+    }
+    
+    private int availableMarketCards(){
+        int marketCards = 0;
+        for (int i = 0; i < pileManager.getPiles().size(); i++) {
+            for (int j = 0; j < 2; j++) {
+                if (pileManager.getPile(i).getMarketCard(j) != null) {
+                    marketCards++;
+                }
+            }
+        }
+        return marketCards;
     }
 
 

@@ -3,7 +3,7 @@ package main.game.game.gamelogic;
 import java.util.ArrayList;
 
 import main.game.display.HandDisplay;
-import main.game.display.SendMessage;
+import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.game.score.CalculatePoints;
 import main.game.piles.PileManager;
@@ -65,7 +65,7 @@ public class SaladGameLogic implements IGameLogic {
 	 */
 	@Override
 	public void endGame(GameState gameState) {
-        SendMessage sendToAll = new SendMessage();
+        SendMessageToAll sendToAll = new SendMessageToAll();
         HandDisplay handDisplay = new HandDisplay();
         ArrayList<IPlayer> players = gameState.getPlayers();
         CalculatePoints calculatePoints = new CalculatePoints();

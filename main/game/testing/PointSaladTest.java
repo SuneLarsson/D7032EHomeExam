@@ -9,7 +9,7 @@ import main.game.app.PointGame;
 import main.game.card.Card;
 import main.game.card.SaladCard;
 import main.game.display.HandDisplay;
-import main.game.display.SendMessage;
+import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.SaladGameLogic;
 import main.game.game.setupgame.CreatePlayers;
@@ -499,7 +499,7 @@ public class PointSaladTest {
         PrintStream printStream = new PrintStream(outputStream);
         System.setOut(printStream);
         BotPlayer botPlayer = (BotPlayer) gameState.getPlayer(1);
-        SendMessage sendMessage = new SendMessage();
+        SendMessageToAll sendMessage = new SendMessageToAll();
         HandDisplay handDisplay = new HandDisplay();
         String message = "Player " + botPlayer.getPlayerID() + "'s hand is now: \n"+handDisplay.displayHand(botPlayer.getHand(), gameState)+"\n";
         

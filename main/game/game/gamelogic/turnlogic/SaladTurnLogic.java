@@ -4,7 +4,7 @@ import main.game.display.GameFieldFactory;
 import main.game.display.HandDisplay;
 import main.game.display.IGameField;
 import main.game.display.SaladGameField;
-import main.game.display.SendMessage;
+import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.piles.PileManager;
 import main.game.players.BotPlayer;
@@ -24,7 +24,7 @@ public class SaladTurnLogic implements ITurnLogic {
     private PileManager pileManager;
     private HandDisplay handDisplay;
     private IGameField saladGameField;
-    private SendMessage sendMessage;
+    private SendMessageToAll sendMessage;
 
     // public SaladTurnLogic() {
     // }
@@ -40,9 +40,9 @@ public class SaladTurnLogic implements ITurnLogic {
         this.gameState = gameState;
         this.thisPlayer = thisPlayer;
         this.pileManager = gameState.getPileManager();
-        this.handDisplay = new HandDisplay();
+        this.handDisplay = gameState.getHandDisplay();
         this.saladGameField = GameFieldFactory.getGameField(gameState);
-        this.sendMessage = new SendMessage();
+        this.sendMessage =gameState.getSendMessageToAll();
         if (thisPlayer instanceof IHumanPlayer) {
             SaladHumanActions playerActions = new SaladHumanActions(thisPlayer, gameState);
             takeHumanTurn(playerActions);
@@ -60,7 +60,7 @@ public class SaladTurnLogic implements ITurnLogic {
         while(!validChoice) {
             String vegetableString = "two vegetables";
             String syntaxString = "AC";
-            if (gameState.availableMarketCards() == 1){
+            if (availableMarketCards() == 1){
                 vegetableString = "a vegetable";
                 syntaxString = "A";
             }
@@ -112,9 +112,19 @@ public class SaladTurnLogic implements ITurnLogic {
     }
 
 
-    /**
-     * Prints the start of the turn message for the player.
-     */
+    private int availableMarketCards(){
+        int marketCards = 0;
+        for (int i = 0; i < pileManager.getPiles().size(); i++) {
+            for (int j = 0; j < 2; j++) {
+                if (pileManager.getPile(i).getMarketCard(j) != null) {
+                    marketCards++;
+                }
+            }
+        }
+        return marketCards;
+    }
+
+
     @Override
     public void startTurnPrint() {
         IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
@@ -125,9 +135,7 @@ public class SaladTurnLogic implements ITurnLogic {
     }
     
 
-    /**
-     * Prints the end of the turn message for the player.
-     */
+
     @Override
     public void endTurnPrint() {
         if (thisPlayer instanceof BotPlayer) {

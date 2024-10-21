@@ -9,7 +9,7 @@ import main.game.players.IPlayer;
  * Class that sends a message to all players.
  */
 
-public class SendMessage {
+public class SendMessageToAll {
 
     /**
      * Sends a message to all players.

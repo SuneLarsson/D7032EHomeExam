@@ -3,6 +3,8 @@ package main.game.game.gameState;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import main.game.display.HandDisplay;
+import main.game.display.SendMessageToAll;
 import main.game.game.setupgame.FactorySetup;
 import main.game.piles.PileManager;
 import main.game.players.IPlayer;
@@ -27,7 +29,8 @@ public class GameState {
     private ISettings settings;
     private FactorySetup setup;
     private Scanner scanner;
-    // private ITurnLogic turnLogic;
+    private HandDisplay handDisplay;
+    private SendMessageToAll sendMessageToAll;
     
     /**
      * Constructor that creates the current state of the game.
@@ -40,6 +43,8 @@ public class GameState {
         this.pileManager = new PileManager();
         this.gameMode = gameMode;
         this.setup = new FactorySetup(this);
+        this.handDisplay = new HandDisplay();
+        this.sendMessageToAll = new SendMessageToAll();
         this.scanner = in;
     }
 
@@ -189,7 +194,7 @@ public class GameState {
 
     /**
      * Gets the game settings.
-     * @return The game settings.
+     * @return ISettings The game settings.
      */
     public ISettings getSettings() {
         return settings;
@@ -197,27 +202,26 @@ public class GameState {
 
     /**
      * Gets the setup of the game.
-     * @return The setup.
+     * @return FactorySetup The setup of the game.
      */
     public FactorySetup getSetup() {
         return setup;
     }
+    
+    /**
+     * Gets the hand display of the game.
+     * @return HandDisplay The hand display of the game.
+     */
+    public HandDisplay getHandDisplay() {
+        return handDisplay;
+    }
 
     /**
-     * Calculates the number of available market cards.
-     * @return The number of available market cards.
-     */    
-    public int availableMarketCards(){
-        int marketCards = 0;
-        for (int i = 0; i < pileManager.getPiles().size(); i++) {
-            for (int j = 0; j < 2; j++) {
-                if (pileManager.getPile(i).getMarketCard(j) != null) {
-                    marketCards++;
-                }
-            }
-        }
-        return marketCards;
+     * Gets the send message to all of the game.
+     * @return SendMessageToAll The send message to all of the game.
+     */
+    public SendMessageToAll getSendMessageToAll() {
+        return sendMessageToAll;
     }
-    
 
 }
