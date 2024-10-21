@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import main.game.card.Card;
+import main.game.card.CardFactory;
 import main.game.card.ICardFactory;
 import main.game.game.gameState.GameState;
 
@@ -28,7 +29,7 @@ public class BuildDecks {
         this.cardsArray = cardsArray;
         this.decks = new HashMap<>();
         this.cardTypes = gameState.getSettings().getCardTypes();
-        this.ICardFactory = gameState.getSetup().getCardFactory();
+        this.ICardFactory = CardFactory.createCardFactory(gameState);
         initializeDecks();
         populateDecks();       
     }

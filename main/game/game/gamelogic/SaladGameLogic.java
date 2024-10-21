@@ -2,7 +2,8 @@ package main.game.game.gamelogic;
 
 import java.util.ArrayList;
 
-import main.game.display.HandDisplay;
+import main.game.display.HandDisplayFactory;
+import main.game.display.IHandDisplay;
 import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.game.score.CalculatePoints;
@@ -66,7 +67,7 @@ public class SaladGameLogic implements IGameLogic {
 	@Override
 	public void endGame(GameState gameState) {
         SendMessageToAll sendToAll = new SendMessageToAll();
-        HandDisplay handDisplay = new HandDisplay();
+        IHandDisplay handDisplay = HandDisplayFactory.createCardFactory(gameState);
         ArrayList<IPlayer> players = gameState.getPlayers();
         CalculatePoints calculatePoints = new CalculatePoints();
 		sendToAll.sendToAllPlayers(("\n-------------------------------------- CALCULATING SCORES --------------------------------------\n"), players);

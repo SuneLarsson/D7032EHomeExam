@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import main.game.app.PointGame;
 import main.game.card.Card;
 import main.game.card.SaladCard;
-import main.game.display.HandDisplay;
+import main.game.display.SaladHandDisplay;
 import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.game.gamelogic.SaladGameLogic;
@@ -485,7 +485,7 @@ public class PointSaladTest {
         IHumanPlayer humanPlayer = (IHumanPlayer) gameState.getPlayer(0);
         humanPlayer.addCard(cardsArray.get(0));
         humanPlayer.addCard(cardsArray.get(17));
-        HandDisplay handDisplay = new HandDisplay();
+        SaladHandDisplay handDisplay = new SaladHandDisplay();
         String displayHand = handDisplay.displayHand(humanPlayer.getHand(), gameState);
         // System.out.println(hand);
         assertTrue(displayHand.contains("MOST LETTUCE = 10"), "Hand should be shown to other players");
@@ -500,7 +500,7 @@ public class PointSaladTest {
         System.setOut(printStream);
         BotPlayer botPlayer = (BotPlayer) gameState.getPlayer(1);
         SendMessageToAll sendMessage = new SendMessageToAll();
-        HandDisplay handDisplay = new HandDisplay();
+        SaladHandDisplay handDisplay = new SaladHandDisplay();
         String message = "Player " + botPlayer.getPlayerID() + "'s hand is now: \n"+handDisplay.displayHand(botPlayer.getHand(), gameState)+"\n";
         
         sendMessage.sendToAllPlayers(message, gameState.getPlayers());	

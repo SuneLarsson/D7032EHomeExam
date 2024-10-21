@@ -1,9 +1,9 @@
 package main.game.game.gamelogic.turnlogic;
 
 import main.game.display.GameFieldFactory;
-import main.game.display.HandDisplay;
+import main.game.display.HandDisplayFactory;
 import main.game.display.IGameField;
-import main.game.display.SaladGameField;
+import main.game.display.IHandDisplay;
 import main.game.display.SendMessageToAll;
 import main.game.game.gameState.GameState;
 import main.game.piles.PileManager;
@@ -22,7 +22,7 @@ public class SaladTurnLogic implements ITurnLogic {
     private IPlayer thisPlayer;
     private GameState gameState;
     private PileManager pileManager;
-    private HandDisplay handDisplay;
+    private IHandDisplay handDisplay;
     private IGameField saladGameField;
     private SendMessageToAll sendMessage;
 
@@ -40,7 +40,7 @@ public class SaladTurnLogic implements ITurnLogic {
         this.gameState = gameState;
         this.thisPlayer = thisPlayer;
         this.pileManager = gameState.getPileManager();
-        this.handDisplay = gameState.getHandDisplay();
+        this.handDisplay = HandDisplayFactory.createCardFactory(gameState);
         this.saladGameField = GameFieldFactory.getGameField(gameState);
         this.sendMessage =gameState.getSendMessageToAll();
         if (thisPlayer instanceof IHumanPlayer) {
@@ -100,7 +100,6 @@ public class SaladTurnLogic implements ITurnLogic {
         // }
     }
 
-
     // Rule 8: If the player has a criteria card in their hand, they can flip it to a veggie card
     private boolean hasCriteriaCardInHand() {
         for (int i = 0; i < thisPlayer.getHand().size(); i++) {
@@ -110,7 +109,6 @@ public class SaladTurnLogic implements ITurnLogic {
         }
         return false;
     }
-
 
     private int availableMarketCards(){
         int marketCards = 0;
@@ -124,7 +122,6 @@ public class SaladTurnLogic implements ITurnLogic {
         return marketCards;
     }
 
-
     @Override
     public void startTurnPrint() {
         IHumanPlayer humanPlayer = (IHumanPlayer) thisPlayer;
@@ -133,8 +130,6 @@ public class SaladTurnLogic implements ITurnLogic {
         humanPlayer.sendMessage("\nThe piles are: ");
         humanPlayer.sendMessage(saladGameField.printGameField(pileManager));
     }
-    
-
 
     @Override
     public void endTurnPrint() {

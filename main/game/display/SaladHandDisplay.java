@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * HandDisplay class is used to display the hand of the player
  */
-public class HandDisplay {
+public class SaladHandDisplay implements IHandDisplay {
 
     /**
      * displayHand method is used to display the hand of the player
@@ -17,6 +17,7 @@ public class HandDisplay {
      * @param gameState is the current state of the game
      * @return the hand of the player as a string
      */
+    @Override
     public String displayHand(ArrayList<Card> hand, GameState gameState) {
         try {
             String handString = gameState.getSettings().getPointName() + ":\t";

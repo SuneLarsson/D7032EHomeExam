@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class SaladHumanActions implements IPlayerActions {
     private IHumanPlayer humanPlayer;
-    private GameState gameState;
     private PileManager pileManager;
 
 
@@ -23,7 +22,6 @@ public class SaladHumanActions implements IPlayerActions {
      * @param gameState the current game state
      */
     public SaladHumanActions(IPlayer thisPlayer, GameState gameState) {
-        this.gameState = gameState;
         this.humanPlayer = (IHumanPlayer) thisPlayer;
         this.pileManager = gameState.getPileManager();
     }

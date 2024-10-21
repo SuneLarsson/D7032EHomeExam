@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import main.game.card.Card;
 import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.turnlogic.TurnFactory;
 
 /**
  * Class for online players
@@ -78,7 +79,7 @@ public class OnlinePlayer implements IHumanPlayer {
 
     @Override
     public void takeTurn(GameState gameState) {
-        gameState.getSetup().getTurnFactory().takeTurn(gameState, this);
+        TurnFactory.createTurnLogic(gameState).takeTurn(gameState, this);
     }
 
     

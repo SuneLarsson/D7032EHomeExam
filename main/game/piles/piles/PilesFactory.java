@@ -1,5 +1,7 @@
 package main.game.piles.piles;
 
+import main.game.game.gameState.GameState;
+
 /**
  * Factory class for creating piles
  */
@@ -10,8 +12,8 @@ public class PilesFactory {
      * @param gameMode the game mode to create piles for
      * @return ICreatPiles Factory to create piles    
      */
-    public static ICreatePiles createPilesFactory(String gameMode) {
-        if (gameMode.equals("POINTSALAD")) {
+    public static ICreatePiles createPilesFactory(GameState gameState) {
+        if (gameState.getGameMode().equals("POINTSALAD")) {
             return new CreateSaladPiles();
         } else {
             throw new IllegalArgumentException("Error: Game mode not recognized");

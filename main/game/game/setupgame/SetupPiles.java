@@ -7,6 +7,7 @@ import main.game.piles.json.JsonReader;
 import main.game.piles.pile.Pile;
 import main.game.piles.piles.BuildDecks;
 import main.game.piles.piles.ICreatePiles;
+import main.game.piles.piles.PilesFactory;
 
 /**
  * Sets up the piles for the game.
@@ -27,7 +28,7 @@ public class SetupPiles {
         this.jsonReader = new JsonReader();
         this.cardsArray = jsonReader.jsonData(gameState.getSettings().getJsonPath());
         this.buildDecks = new BuildDecks(gameState, cardsArray);       
-        this.pilesCreator = gameState.getSetup().getPilesFactory();
+        this.pilesCreator = PilesFactory.createPilesFactory(gameState);
         pilesCreator.createPiles(gameState, buildDecks.getDecks());
         for(Pile pile : gameState.getPileManager().getPiles()) {
             pile.setupMarket();

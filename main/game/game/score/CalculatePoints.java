@@ -20,7 +20,7 @@ public class CalculatePoints {
         ArrayList<IPlayer> players = gameState.getPlayers();
         ICriteria ScoreCriteria;
         for (IPlayer player : players) {
-            ScoreCriteria = gameState.getSetup().getScoreFactory();
+            ScoreCriteria = CriteriaFactory.createCriteria(gameState);
             player.setScore(ScoreCriteria.calculateScore(player, players, cardTypes, null));
         }
     }

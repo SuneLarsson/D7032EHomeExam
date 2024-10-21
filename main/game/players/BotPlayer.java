@@ -1,6 +1,7 @@
 package main.game.players;
 import main.game.card.Card;
 import main.game.game.gameState.GameState;
+import main.game.game.gamelogic.turnlogic.TurnFactory;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class BotPlayer implements IPlayer{
     }
     @Override
     public void takeTurn(GameState gameState) {
-        gameState.getSetup().getTurnFactory().takeTurn(gameState, this);
+        TurnFactory.createTurnLogic(gameState).takeTurn(gameState, this);
     }
 
 }

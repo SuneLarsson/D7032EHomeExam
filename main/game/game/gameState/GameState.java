@@ -3,9 +3,9 @@ package main.game.game.gameState;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import main.game.display.HandDisplay;
+import main.game.display.SaladHandDisplay;
 import main.game.display.SendMessageToAll;
-import main.game.game.setupgame.FactorySetup;
+
 import main.game.piles.PileManager;
 import main.game.players.IPlayer;
 import main.game.settings.ISettings;
@@ -27,9 +27,8 @@ public class GameState {
     private int currentPlayer;
     private PileManager pileManager;
     private ISettings settings;
-    private FactorySetup setup;
     private Scanner scanner;
-    private HandDisplay handDisplay;
+    private SaladHandDisplay handDisplay;
     private SendMessageToAll sendMessageToAll;
     
     /**
@@ -42,8 +41,7 @@ public class GameState {
         this.currentPlayer = 0;
         this.pileManager = new PileManager();
         this.gameMode = gameMode;
-        this.setup = new FactorySetup(this);
-        this.handDisplay = new HandDisplay();
+        this.handDisplay = new SaladHandDisplay();
         this.sendMessageToAll = new SendMessageToAll();
         this.scanner = in;
     }
@@ -200,19 +198,12 @@ public class GameState {
         return settings;
     }
 
-    /**
-     * Gets the setup of the game.
-     * @return FactorySetup The setup of the game.
-     */
-    public FactorySetup getSetup() {
-        return setup;
-    }
-    
+   
     /**
      * Gets the hand display of the game.
      * @return HandDisplay The hand display of the game.
      */
-    public HandDisplay getHandDisplay() {
+    public SaladHandDisplay getHandDisplay() {
         return handDisplay;
     }
 
